@@ -14,7 +14,7 @@ mvn clean install
 
 The resulting archive artifact can be found in:
 ```
-./target/brooklyn-<BROOKLYN_VERSION>-dist.zip
+./target/brooklyn-vagrant-<BROOKLYN_VERSION>-dist.zip
 ```
 Extract and cd into this archive at which point you can follow the [Getting Started Guide](http://brooklyn.apache.org/v/latest/start/index.html) steps.
 
