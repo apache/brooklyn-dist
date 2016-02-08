@@ -1,3 +1,4 @@
+
 This software is distributed under the Apache License, version 2.0. See (1) below.
 This software is copyright (c) The Apache Software Foundation and contributors.
 
@@ -193,19 +194,13 @@ Contents:
 
 (2) Notices for bundled software
 
-This project includes the software: anyword-hint.js
-  Available at: http://codemirror.net/
-  Version used: 5.11.1
-  Used under the following license: The MIT License (http://opensource.org/licenses/MIT)
-  CodeMirror (c) Marijn Haverbeke and others
-
 This project includes the software: aopalliance
   Available at: http://aopalliance.sourceforge.net
   Version used: 1.0
   Used under the following license: Public Domain
 
 This project includes the software: asm
-  Available at: http://asm.objectweb.org/asm/
+  Available at: http://asm.objectweb.org/
   Developed by: ObjectWeb (http://www.objectweb.org/)
   Version used: 3.3.1
   Used under the following license: BSD License (http://asm.objectweb.org/license.html)
@@ -236,8 +231,9 @@ This project includes the software: ch.qos.logback
   Version used: 1.0.7
   Used under the following license: Eclipse Public License, version 1.0 (http://www.eclipse.org/legal/epl-v10.html)
 
-This project includes the software: codemirror.{js,css}
+This project includes the software: codemirror.js
   Available at: http://codemirror.net/
+  Inclusive of: codemirror.{js,css}, show-hint.{js,css}, placeholder.js, anyword-hint.js, yaml.js
   Version used: 5.11.1
   Used under the following license: The MIT License (http://opensource.org/licenses/MIT)
   CodeMirror (c) Marijn Haverbeke and others
@@ -261,7 +257,7 @@ This project includes the software: com.fasterxml.jackson.datatype
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.fasterxml.jackson.jaxrs
-  Available at: http://wiki.fasterxml.com/JacksonHome/jackson-jaxrs-json-provider http://wiki.fasterxml.com/JacksonHome/jackson-jaxrs-base
+  Available at: http://wiki.fasterxml.com/JacksonHome
   Developed by: FasterXML (http://fasterxml.com/)
   Version used: 2.4.5
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -284,24 +280,24 @@ This project includes the software: com.google.code.gson
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.google.guava
-  Available at: http://code.google.com/p/guava-libraries/guava
+  Available at: http://code.google.com/p/guava-libraries
   Version used: 17.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.google.http-client
-  Available at: http://code.google.com/p/google-http-java-client/google-http-client/
+  Available at: http://code.google.com/p/google-http-java-client/
   Developed by: Google (http://www.google.com/)
   Version used: 1.18.0-rc
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.google.inject
-  Available at: http://code.google.com/p/google-guice/guice/
+  Available at: http://code.google.com/p/google-guice/
   Developed by: Google, Inc. (http://www.google.com)
   Version used: 3.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.google.inject.extensions
-  Available at: http://code.google.com/p/google-guice/extensions-parent/
+  Available at: http://code.google.com/p/google-guice/
   Developed by: Google, Inc. (http://www.google.com)
   Version used: 3.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -340,12 +336,12 @@ This project includes the software: com.maxmind.geoip2
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 This project includes the software: com.squareup.okhttp
-  Available at: https://github.com/square/okhttp/okhttp
+  Available at: https://github.com/square/okhttp
   Version used: 2.2.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.squareup.okio
-  Available at: https://github.com/square/okio/okio
+  Available at: https://github.com/square/okio
   Version used: 1.2.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -356,13 +352,13 @@ This project includes the software: com.sun.jersey
   Used under the following license: Common Development and Distribution License, version 1.1 (http://glassfish.java.net/public/CDDL+GPL_1_1.html)
 
 This project includes the software: com.sun.jersey.contribs
-  Available at: https://jersey.java.net/jersey-contribs/jersey-multipart/
+  Available at: https://jersey.java.net/
   Developed by: Oracle Corporation (http://www.oracle.com/)
   Version used: 1.19
   Used under the following license: Common Development and Distribution License, version 1.1 (http://glassfish.java.net/public/CDDL+GPL_1_1.html)
 
 This project includes the software: com.thoughtworks.xstream
-  Available at: http://codehaus.org/xstream-parent/xstream/
+  Available at: http://x-stream.github.io/
   Developed by: XStream (http://xstream.codehaus.org)
   Version used: 1.4.7
   Used under the following license: BSD License (http://xstream.codehaus.org/license.html)
@@ -423,17 +419,17 @@ This project includes the software: io.airlift
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: io.cloudsoft.windows
-  Available at: http://github.com/cloudsoft/winrm4j/winrm4j http://github.com/cloudsoft/winrm4j/winrmj4-client
+  Available at: http://github.com/cloudsoft/winrm4j
   Version used: 0.2.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: io.swagger
-  Available at: https://github.com/swagger-api/swagger-core/modules/
+  Available at: https://github.com/swagger-api/swagger-core
   Version used: 1.5.3
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 This project includes the software: javax.annotation
-  Available at: http://jcp.org/aboutJava/communityprocess/final/jsr250/index.html
+  Available at: https://jcp.org/en/jsr/detail?id=250
   Version used: 1.0
   Used under the following license: Common Development and Distribution License, version 1.0 (https://glassfish.dev.java.net/public/CDDLv1.0.html)
 
@@ -454,7 +450,7 @@ This project includes the software: javax.validation
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: javax.ws.rs
-  Available at: https://jsr311.dev.java.net
+  Available at: https://jsr311.java.net/
   Developed by: Sun Microsystems, Inc (http://www.sun.com/)
   Version used: 1.1.1
   Used under the following license: CDDL License (http://www.opensource.org/licenses/cddl1.php)
@@ -550,7 +546,7 @@ This project includes the software: net.java.dev.jna
   Used under the following license: Apache License, version 2.0 (http://www.gnu.org/licenses/licenses.html)
 
 This project includes the software: net.minidev
-  Available at: (invalid url reported: http://json-smart/) (invalid url reported: http://asm/)
+  Available at: http://www.minidev.net/
   Developed by: Chemouni Uriel (http://www.minidev.net/)
   Version used: 2.1.1; 1.0.2
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -573,13 +569,13 @@ This project includes the software: org.apache.commons
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.felix
-  Available at: http://felix.apache.org/org.apache.felix.framework/
+  Available at: http://felix.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
   Version used: 4.4.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.httpcomponents
-  Available at: http://hc.apache.org/httpcomponents-client http://hc.apache.org/httpcomponents-core-ga
+  Available at: http://hc.apache.org/httpcomponents-client-ga http://hc.apache.org/httpcomponents-core-ga
   Developed by: The Apache Software Foundation (http://www.apache.org/)
   Version used: 4.4.1
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -591,31 +587,31 @@ This project includes the software: org.apache.jclouds
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.api
-  Available at: http://jclouds.apache.org/s3/ http://jclouds.apache.org/atmos/ http://jclouds.apache.org/swift/ http://jclouds.apache.org/openstack-swift/ http://jclouds.apache.org/rackspace-cloudfiles/ http://jclouds.apache.org/openstack-nova/ http://jclouds.apache.org/openstack-keystone/ http://jclouds.apache.org/openstack-nova-ec2/ http://jclouds.apache.org/byon/ http://jclouds.apache.org/ec2/ http://jclouds.apache.org/sts/ http://jclouds.apache.org/elasticstack/ http://jclouds.apache.org/cloudstack/ http://jclouds.apache.org/rackspace-cloudidentity/
+  Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
   Version used: 1.9.2
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.common
-  Available at: http://jclouds.apache.org/openstack-common/
+  Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
   Version used: 1.9.2
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.driver
-  Available at: http://jclouds.apache.org/jclouds-slf4j/ http://jclouds.apache.org/jclouds-bouncycastle/ http://jclouds.apache.org/jclouds-sshj/ http://jclouds.apache.org/jclouds-okhttp/
+  Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
   Version used: 1.9.2
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.labs
-  Available at: http://jclouds.apache.org/jclouds-labs/abiquo/ http://jclouds.apache.org/jclouds-labs-google/google-compute-engine/ http://jclouds.apache.org/jclouds-labs-google/googlecloud/ http://jclouds.apache.org/jclouds-labs/oauth/ http://jclouds.apache.org/jclouds-labs/docker/
+  Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
   Version used: 1.9.2
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.provider
-  Available at: http://jclouds.apache.org/aws-s3/ http://jclouds.apache.org/azureblob/ http://jclouds.apache.org/rackspace-cloudfiles-us/ http://jclouds.apache.org/rackspace-cloudfiles-uk/ http://jclouds.apache.org/hpcloud-objectstorage/ http://jclouds.apache.org/aws-ec2/ http://jclouds.apache.org/gogrid/ http://jclouds.apache.org/elastichosts-lon-p/ http://jclouds.apache.org/elastichosts-sat-p/ http://jclouds.apache.org/elastichosts-lon-b/ http://jclouds.apache.org/openhosting-east1/ http://jclouds.apache.org/serverlove-z1-man/ http://jclouds.apache.org/skalicloud-sdg-my/ http://jclouds.apache.org/go2cloud-jhb1/ http://jclouds.apache.org/softlayer/ http://jclouds.apache.org/hpcloud-compute/ http://jclouds.apache.org/rackspace-cloudservers-us/ http://jclouds.apache.org/rackspace-cloudservers-uk/
+  Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
   Version used: 1.9.2
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -654,7 +650,7 @@ This project includes the software: org.eclipse.jetty
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
 
 This project includes the software: org.eclipse.jetty.toolchain
-  Available at: http://www.eclipse.org/jetty/jetty-toolchain/jetty-schemas
+  Available at: http://www.eclipse.org/jetty
   Developed by: Mort Bay Consulting (http://www.mortbay.com)
   Version used: 3.1.M0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
@@ -690,7 +686,7 @@ This project includes the software: org.mongodb
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.reflections
-  Available at: http://code.google.com/p/reflections/reflections/
+  Available at: http://code.google.com/p/reflections/
   Version used: 0.9.9-RC1
   Used under the following license: WTFPL (http://www.wtfpl.net/)
 
@@ -709,12 +705,6 @@ This project includes the software: org.yaml
   Available at: http://www.snakeyaml.org
   Version used: 1.11
   Used under the following license: Apache License, version 2.0 (in-project reference: LICENSE.txt)
-
-This project includes the software: placeholder.js
-  Available at: http://codemirror.net/
-  Version used: 5.11.1
-  Used under the following license: The MIT License (http://opensource.org/licenses/MIT)
-  CodeMirror (c) Marijn Haverbeke and others
 
 This project includes the software: RequireJS
   Available at: http://requirejs.org/
@@ -749,12 +739,6 @@ This project includes the software: RequireJS (r.js maven plugin)
       Yusuke Suzuki (2012)
       Arpad Borsos (2012)
     Used under the BSD 2-Clause license.
-
-This project includes the software: show-hint.{js,css}
-  Available at: http://codemirror.net/
-  Version used: 5.11.1
-  Used under the following license: The MIT License (http://opensource.org/licenses/MIT)
-  CodeMirror (c) Marijn Haverbeke and others
 
 This project includes the software: Swagger UI
   Available at: https://github.com/swagger-api/swagger-ui
@@ -796,12 +780,6 @@ This project includes the software: xpp3
   Developed by: Extreme! Lab, Indiana University (http://www.extreme.indiana.edu/)
   Version used: 1.1.4c
   Used under the following license: Indiana University Extreme! Lab Software License, vesion 1.1.1 (https://github.com/apache/openmeetings/blob/a95714ce3f7e587d13d3d0bb3b4f570be15c67a5/LICENSE#L1361)
-
-This project includes the software: yaml.js
-  Available at: http://codemirror.net/
-  Version used: 5.11.1
-  Used under the following license: The MIT License (http://opensource.org/licenses/MIT)
-  CodeMirror (c) Marijn Haverbeke and others
 
 This project includes the software: ZeroClipboard
   Available at: http://zeroclipboard.org/
