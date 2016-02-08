@@ -233,36 +233,13 @@
   notice: Copyright (c) Twitter, Inc. (2012)
   license: ASL2
 
-- id: codemirror.{js,css}
+- id: codemirror.js
+  files: codemirror.{js,css}, show-hint.{js,css}, placeholder.js, anyword-hint.js, yaml.js
   version: 5.11.1
   url: http://codemirror.net/
   notice: CodeMirror (c) Marijn Haverbeke and others
   license: MIT
 
-- id: show-hint.{js,css}
-  version: 5.11.1
-  url: http://codemirror.net/
-  notice: CodeMirror (c) Marijn Haverbeke and others
-  license: MIT
-
-- id: placeholder.js
-  version: 5.11.1
-  url: http://codemirror.net/
-  notice: CodeMirror (c) Marijn Haverbeke and others
-  license: MIT
-
-- id: anyword-hint.js
-  version: 5.11.1
-  url: http://codemirror.net/
-  notice: CodeMirror (c) Marijn Haverbeke and others
-  license: MIT
-
-- id: yaml.js
-  version: 5.11.1
-  url: http://codemirror.net/
-  notice: CodeMirror (c) Marijn Haverbeke and others
-  license: MIT
- 
 # used in docs (not needed for licensing) 
 - id: bootstrap.js:3.1.1
   version: 3.1.1
