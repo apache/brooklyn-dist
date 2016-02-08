@@ -232,6 +232,36 @@
   url: http://twitter.github.com/bootstrap/javascript.html#transitions
   notice: Copyright (c) Twitter, Inc. (2012)
   license: ASL2
+
+- id: codemirror.{js,css}
+  version: 5.11.1
+  url: http://codemirror.net/
+  notice: CodeMirror (c) Marijn Haverbeke and others
+  license: MIT
+
+- id: show-hint.{js,css}
+  version: 5.11.1
+  url: http://codemirror.net/
+  notice: CodeMirror (c) Marijn Haverbeke and others
+  license: MIT
+
+- id: placeholder.js
+  version: 5.11.1
+  url: http://codemirror.net/
+  notice: CodeMirror (c) Marijn Haverbeke and others
+  license: MIT
+
+- id: anyword-hint.js
+  version: 5.11.1
+  url: http://codemirror.net/
+  notice: CodeMirror (c) Marijn Haverbeke and others
+  license: MIT
+
+- id: yaml.js
+  version: 5.11.1
+  url: http://codemirror.net/
+  notice: CodeMirror (c) Marijn Haverbeke and others
+  license: MIT
  
 # used in docs (not needed for licensing) 
 - id: bootstrap.js:3.1.1
@@ -325,7 +355,7 @@
   notice: Copyright (c) js-uri contributors (2013)
 
 - id: js-yaml.js
-  version: 3.2.7
+  version: 3.5.2
   organization: { name: "Vitaly Puzrin", url: "https://github.com/nodeca/" }
   url: https://github.com/nodeca/
   notice: Copyright (c) Vitaly Puzrin (2011-2015)
