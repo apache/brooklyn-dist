@@ -386,7 +386,24 @@
   name: jQuery Cookie Plugin
   version: 1.3.1
   url: https://github.com/carhartl/jquery-cookie
-  notice: Copyright (c) 2013 Klaus Hartl
+  notice: Copyright (c) Klaus Hartl (2013)
   license: MIT
 
+- id: font-awesome-fonts
+  name: Font Awesome (fonts)
+  version: 4.5.0
+  url: http://fontawesome.io/
+  files: "font-awesome/fonts/*"
+  notice: Copyright (c) Dave Gandy (2016)
+  license:
+  - url: "http://scripts.sil.org/OFL"
+    name: SIL OFL 1.1
+
+- id: font-awesome-code
+  name: Font Awesome (code)
+  version: 4.5.0
+  url: http://fontawesome.io/
+  files: "font-awesome/{css,scss,less}/*"
+  notice: Copyright (c) Dave Gandy (2016)
+  license: MIT
 
