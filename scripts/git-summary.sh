@@ -53,7 +53,7 @@ The following prefixes are shown on commits which are in some but not all locati
   * local change, not in either the pull or push upstream (do a git push, then open a pull request)
   > changes not yet upstream, in your push upstream but not your pull upstream (open a pull request)
   ^ someone else's change, in your pull upstream but not local (do a git pull to update)
-  < someone else's change, local but not in the push upstream (do a git push to update)
+  < someone else's change, local but not in the push target (do a git push to update)
 
 The optional <path> can be used to specify one or more files or paths to look at.
 
@@ -134,49 +134,65 @@ fi
 
 TMP=/tmp/git-summary-$(uuidgen)
 rm -f ${TMP}-*
-touch ${TMP}-{1-master-ahead,2-master-behind,3-up,4-local}
+touch ${TMP}-{1-pull-source-ahead,2-up,3-push-target-ahead,4-local}
 
 # basically there are 6 modes where a commit is not in all three repos
-# * pull ahead - show < and ^ - IMPORTANT means new commits we must get
+# * pull ahead - show ^ - IMPORTANT means new commits we must get
 # * pull behind - show > - IMPORTANT means PR not yet merged
-# * push ahead - show > - WEIRD means someone else pushed to our origin
-# * push behind - show < and * - means push needed to bring origin back into sync - but filter * specially
+# * push ahead - show ?> - WEIRD means someone else pushed to our origin
+# * push behind - show < - means push needed to bring origin back into sync
 # * local ahead - show * - IMPORTANT means new commits we must push
-# * local behind - show ^ - WEIRD means someone else pushed to our origin
+# * local behind - show ?^ - WEIRD means someone else pushed to our origin
 
 if [ -z "${PULL_BRANCH}" ] ; then
   true # nothing to do
 else
-  if [ "${PULL_BRANCH}" != "${PUSH_BRANCH}" ] ; then
-    git log --pretty=" < %h %aN, %ar: %s" ${PUSH_BRANCH}..${PULL_BRANCH} "$@" >> ${TMP}-1-master-ahead
-    git log --pretty=" > %h %aN, %ar: %s" ${PULL_BRANCH}..$PUSH_BRANCH "$@" >> ${TMP}-2-master-behind
+  if [ "${PULL_BRANCH}" == "${PUSH_BRANCH}" ] ; then
+    git log --pretty=" ^ %h %aN, %ar: %s" ..${PULL_BRANCH} "$@" >> ${TMP}-2-up
+    git log --pretty=" * %h %aN, %ar: %s" ${PULL_BRANCH}.. "$@" >> ${TMP}-4-local
+  else
+    # items in pull source not yet in our push target, will be correlated with items not in local
+    git log --pretty=" < %h %aN, %ar: %s" ${PUSH_BRANCH}..${PULL_BRANCH} "$@" >> ${TMP}-1-pull-source-ahead
+    git log --pretty="?^ %h %aN, %ar: %s" ..${PULL_BRANCH} "$@" >> ${TMP}-1-pull-source-ahead-of-local
+
+    # now filter items from 1-pull-source-ahead-of-local correcting items in 1-pull-source-ahead
+    cat ${TMP}-1-pull-source-ahead-of-local | while read line ; do
+      word=$(echo "$line" | awk '{print $2}')
+      if grep $word ${TMP}-1-pull-source-ahead > /dev/null 2> /dev/null ; then
+        # if missing from both, show ^
+        sed -i .bak "s/ < $word/ ^ $word/" ${TMP}-1-pull-source-ahead
+      else
+        # in pull and push but not local, show ?
+        echo " $line" >> ${TMP}-2-up
+      fi
+    done
+
+    git log --pretty=" > %h %aN, %ar: %s" ${PULL_BRANCH}..${PUSH_BRANCH} "$@" >> ${TMP}-3-push-target-ahead
+    git log --pretty="%h %aN, %ar: %s" ..${PUSH_BRANCH} "$@" >> ${TMP}-3-push-target-ahead-of-local
+    cat ${TMP}-3-push-target-ahead | while read line ; do
+      word=$(echo "$line" | awk '{print $3}')
+      if grep $word ${TMP}-3-push-target-ahead-of-local > /dev/null 2> /dev/null ; then
+        # if missing from both, show ?>
+        sed -i .bak "s/ > $word/?> $word/" ${TMP}-3-push-target-ahead
+      fi
+    done
+
+
+    git log --pretty="%h %aN, %ar: %s" ${PUSH_BRANCH}.. "$@" >> ${TMP}-4-local-ahead-of-push
+    git log --pretty="%h %aN, %ar: %s" ${PULL_BRANCH}.. "$@" >> ${TMP}-4-local-ahead-of-pull
+    cat ${TMP}-4-local-ahead-of-push | while read line ; do
+      word=$(echo "$line" | awk '{print $1}')
+      if grep $word ${TMP}-4-local-ahead-of-pull > /dev/null 2> /dev/null ; then
+        # in local but not push or pull
+        echo " * $line" >> ${TMP}-4-local
+      # else ignore, we reported it above (in local and pull target, but not in push)
+      fi
+    done
+
+    rm -f ${TMP}-{1,2,3,4}-*{-of-*,.bak}
   fi
-
-  git log --pretty=" ^ %h %aN, %ar: %s" ..${PULL_BRANCH} "$@" >> ${TMP}-3-pull-ahead-of-local
-  cat ${TMP}-3-pull-ahead-of-local | while read line ; do
-    word=$(echo "$line" | awk '{print $2}')
-    if grep $word ${TMP}-1-master-ahead > /dev/null 2> /dev/null ; then
-      sed -i .bak "s/ < $word/<^ $word/" ${TMP}-1-master-ahead
-    else
-      # only write to local if not in pull
-      echo " $line" >> ${TMP}-3-up
-    fi
-  done
-
-  git log --pretty=" * %h %aN, %ar: %s" ${PUSH_BRANCH}.. "$@" >> ${TMP}-4-local-ahead-of-push
-  cat ${TMP}-4-local-ahead-of-push | while read line ; do
-    word=$(echo "$line" | awk '{print $2}')
-    if grep $word ${TMP}-1-master-ahead > /dev/null 2> /dev/null ; then
-      sed -i .bak "s/ < $word/<* $word/" ${TMP}-1-master-ahead
-    else
-      # only write to local if not in pull
-      echo " $line" >> ${TMP}-4-local
-    fi
-  done
-  rm ${TMP}-3-pull-ahead-of-local
-  rm ${TMP}-4-local-ahead-of-push
-  rm ${TMP}-1-*.bak
 fi
+
 git status --porcelain --ignore-submodules "$@" > ${TMP}-5-commits
 cat ${TMP}-* > ${TMP}
 
@@ -192,8 +208,8 @@ SUMMARY="${SUMMARY}: ${THIS_BRANCH_DISPLAY_NAME} -> ${PUSH_BRANCH_DISPLAY_NAME}"
 
 if [ -s ${TMP} ] ; then
   AHEAD=$(wc ${TMP}-1-* | awk '{print $1}')
-  BEHIND=$(wc ${TMP}-2-* | awk '{print $1}')
-  UP=$(wc ${TMP}-3-* | awk '{print $1}')
+  BEHIND=$(wc ${TMP}-3-* | awk '{print $1}')
+  UP=$(wc ${TMP}-2-* | awk '{print $1}')
   LOCAL=$(wc ${TMP}-4-* | awk '{print $1}')
   [ "${AHEAD}" == "0" ] || COUNTS="push target ${AHEAD} behind upstream"
   [ "${BEHIND}" == "0" ] || COUNTS="${COUNTS}${COUNTS:+, }upstream ${BEHIND} behind push target"
