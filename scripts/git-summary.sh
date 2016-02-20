@@ -41,16 +41,21 @@ while true; do
 Usage: git-summary [--help] [-o|--offline] [-r|--recursive] [-m|--master REPO/BRANCH] [<path>]"
 
 This will display a one-line git log for differences between the local branch, the upstream 
-repo and branch of the local branch, and the upstream/master or origin/master branch.  
+pull source of the local branch, and the push target of the local branch.  With the "central"
+(one-repo) workflow the latter two are the same (and you won't see < or > below).
+In a triangle workflow, these might be `master`, `upstream/master`, and `origin/master`
+(or `your_github_id/master` instead of `origin`). See `man git-config` pages on `push.default`
+and `remote.pushDefault` for help configuring triangle workflow. Or use these names and
+the script will do the right thing!
 
-The following prefixes are shown on commits:
+The following prefixes are shown on commits which are in some but not all locations:
 
-  < means in upstream/master but not in your upstream branch (your upstream is behind master)
-  > means in your upstream branch but not in upstream/master (your upstream is ahead of master)
-  ^ means in your upstream branch but not locally (consider a pull)
-  * means local but not in the upstream branch (consider a push)
+  * local change, not in either the pull or push upstream (do a git push, then open a pull request)
+  > changes not yet upstream, in your push upstream but not your pull upstream (open a pull request)
+  ^ someone else's change, in your pull upstream but not local (do a git pull to update)
+  < someone else's change, local but not in the push upstream (do a git push to update)
 
-The optional <path> one or more files or paths to look at.
+The optional <path> can be used to specify one or more files or paths to look at.
 
 The following options are supported:
 
@@ -70,58 +75,134 @@ EOF
     shift || break
 done
 
-# assume master is upstream/master or origin/master
-[ -n "${MASTER_UPSTREAM_REPO}" ] || \
-  MASTER_UPSTREAM_REPO=upstream && git config remote.${MASTER_UPSTREAM_REPO}.url > /dev/null || \
-  MASTER_UPSTREAM_REPO=origin && git config remote.${MASTER_UPSTREAM_REPO}.url > /dev/null || \
-  unset MASTER_UPSTREAM_REPO
-[ -z "${MASTER_UPSTREAM_REPO}" ] || \
-  [ -n "${UPSTREAM_MASTER}" ] || UPSTREAM_MASTER=${MASTER_UPSTREAM_REPO}/master
-[ -z "${MASTER_UPSTREAM_REPO}" ] || [ -n "${OFFLINE}" ] || \
-  git fetch ${MASTER_UPSTREAM_REPO}
+# find pull and push sources using canonical git commands
+[ -n "${PULL_BRANCH}" ] || \
+  PULL_BRANCH=$(git for-each-ref --format='%(upstream:short)' $(git symbolic-ref -q HEAD)) && \
+    git show $PULL_BRANCH > /dev/null 2> /dev/null || \
+  unset PULL_BRANCH && true
 
-THIS_BRANCH_NAME=$(git symbolic-ref --short -q HEAD)
-if [ -z "${THIS_BRANCH_NAME}" ] ; then
-  THIS_BRANCH_NAME="(DETACHED)"
-  unset THIS_UPSTREAM_BRANCH
-else
-  THIS_UPSTREAM_BRANCH=$(git for-each-ref --format='%(upstream:short)' $(git symbolic-ref -q HEAD))
-  THIS_UPSTREAM_BRANCH_REPO=$(git for-each-ref --format='%(upstream:short)' $(git symbolic-ref -q HEAD) | cut -f 1 -d '/')
-  # fetch the branch's upstream repo if different to the master
-  [ -n "${OFFLINE}" ] || [ -z "${THIS_UPSTREAM_BRANCH_REPO}" ] || [ "${THIS_UPSTREAM_BRANCH_REPO}" == "${MASTER_UPSTREAM_REPO}" ] || git fetch ${THIS_UPSTREAM_BRANCH_REPO}
+[ -n "${PUSH_BRANCH}" ] || \
+  PUSH_BRANCH=$(git for-each-ref --format='%(push:short)' $(git symbolic-ref -q HEAD)) && \
+    git show $PUSH_BRANCH > /dev/null 2> /dev/null || \
+  unset PUSH_BRANCH && true
+
+# attempt some inferencing if the above didn't work
+# or if pulling and pushing from same repo, see if others are available
+# (remove this if you normally use central workflow)
+
+if [ "${PULL_BRANCH}" == "${PUSH_BRANCH}" ] ; then
+  [ "${PULL_BRANCH#upstream/}" == "${PULL_BRANCH}" ] || unset PUSH_BRANCH
+  [ "${PULL_BRANCH#origin/}" == "${PULL_BRANCH}" ] || unset PULL_BRANCH
 fi
-[ \! -z "${THIS_UPSTREAM_BRANCH}" ] && THIS_UPSTREAM_BRANCH_NAME="${THIS_UPSTREAM_BRANCH}" || THIS_UPSTREAM_BRANCH_NAME="(no upstream)"
+
+[ -n "${PULL_REPO}" ] || \
+  { [ -n "${PULL_BRANCH}" ] && PULL_REPO=$(echo $PULL_BRANCH | cut -f 1 -d '/') ; } || \
+  PULL_REPO=upstream && git config remote.${PULL_REPO}.url > /dev/null || \
+  PULL_REPO=origin && git config remote.${PULL_REPO}.url > /dev/null || \
+  unset PULL_REPO
+
+# set default PULL BRANCH if needed
+[ -z "${PULL_REPO}" ] || [ -n "${PULL_BRANCH}" ] || \
+  PULL_BRANCH=${PULL_REPO}/master
+
+[ -z "${PULL_REPO}" ] || [ -n "${OFFLINE}" ] || \
+  git fetch ${PULL_REPO}
+
+[ -n "${PUSH_REPO}" ] || \
+  { [ -n "${PUSH_BRANCH}" ] && PUSH_REPO=$(echo $PUSH_BRANCH | cut -f 1 -d '/') ; } || \
+  PUSH_REPO=origin && git config remote.${PUSH_REPO}.url > /dev/null || \
+  unset PUSH_REPO
+
+# set default PUSH BRANCH if needed
+[ -z "${PUSH_REPO}" ] || [ -n "${PUSH_BRANCH}" ] || \
+  PUSH_BRANCH=${PUSH_REPO}/master
+
+
+THIS_BRANCH_DISPLAY_NAME=$(git symbolic-ref --short -q HEAD)
+
+if [ -z "${THIS_BRANCH_DISPLAY_NAME}" ] ; then
+  THIS_BRANCH_DISPLAY_NAME="(DETACHED)"
+  unset PUSH_BRANCH
+else
+  PUSH_REPO=$(echo $PUSH_BRANCH | cut -f 1 -d '/')
+  # fetch the branch's upstream repo if different to the master
+  [ -n "${OFFLINE}" ] || [ -z "${PUSH_REPO}" ] || [ "${PUSH_REPO}" == "${PULL_REPO}" ] || git fetch ${PUSH_REPO}
+fi
+[ -n "${PUSH_BRANCH}" ] && PUSH_BRANCH_DISPLAY_NAME="${PUSH_BRANCH}" || PUSH_BRANCH_DISPLAY_NAME="(no upstream)"
+[ -n "$PUSH_BRANCH}" ] || PUSH_BRANCH=${PULL_BRANCH}
+[ -n "$PULL_BRANCH}" ] || PULL_BRANCH=${PUSH_BRANCH}
 
 TMP=/tmp/git-summary-$(uuidgen)
 rm -f ${TMP}-*
 touch ${TMP}-{1-master-ahead,2-master-behind,3-up,4-local}
 
-if [ -z "${UPSTREAM_MASTER}" -a -z "$THIS_UPSTREAM_BRANCH" ] ; then
+# basically there are 6 modes where a commit is not in all three repos
+# * pull ahead - show < and ^ - IMPORTANT means new commits we must get
+# * pull behind - show > - IMPORTANT means PR not yet merged
+# * push ahead - show > - WEIRD means someone else pushed to our origin
+# * push behind - show < and * - means push needed to bring origin back into sync - but filter * specially
+# * local ahead - show * - IMPORTANT means new commits we must push
+# * local behind - show ^ - WEIRD means someone else pushed to our origin
+
+if [ -z "${PULL_BRANCH}" ] ; then
   true # nothing to do
-elif [ "${UPSTREAM_MASTER}" == "$THIS_UPSTREAM_BRANCH" -o -z "$THIS_UPSTREAM_BRANCH" ] ; then
-  [ -z "${UPSTREAM_MASTER}" ] || git log --pretty=" ^ %h %aN, %ar: %s" ..${UPSTREAM_MASTER} "$@" > ${TMP}-3-up
-  [ -z "${UPSTREAM_MASTER}" ] || git log --pretty=" * %h %aN, %ar: %s" ${UPSTREAM_MASTER}.. "$@" > ${TMP}-4-local
 else
-  [ -z "${UPSTREAM_MASTER}" ] || git log --pretty=" < %h %aN, %ar: %s" $THIS_UPSTREAM_BRANCH..${UPSTREAM_MASTER} "$@" > ${TMP}-1-master-ahead
-  [ -z "${UPSTREAM_MASTER}" ] || git log --pretty=" > %h %aN, %ar: %s" ${UPSTREAM_MASTER}..$THIS_UPSTREAM_BRANCH "$@" > ${TMP}-2-master-behind
-  git log --pretty=" ^ %h %aN, %ar: %s" ..$THIS_UPSTREAM_BRANCH "$@" > ${TMP}-3-up
-  git log --pretty=" * %h %aN, %ar: %s" $THIS_UPSTREAM_BRANCH.. "$@" > ${TMP}-4-local
+  if [ "${PULL_BRANCH}" != "${PUSH_BRANCH}" ] ; then
+    git log --pretty=" < %h %aN, %ar: %s" ${PUSH_BRANCH}..${PULL_BRANCH} "$@" >> ${TMP}-1-master-ahead
+    git log --pretty=" > %h %aN, %ar: %s" ${PULL_BRANCH}..$PUSH_BRANCH "$@" >> ${TMP}-2-master-behind
+  fi
+
+  git log --pretty=" ^ %h %aN, %ar: %s" ..${PULL_BRANCH} "$@" >> ${TMP}-3-pull-ahead-of-local
+  cat ${TMP}-3-pull-ahead-of-local | while read line ; do
+    word=$(echo "$line" | awk '{print $2}')
+    if grep $word ${TMP}-1-master-ahead > /dev/null 2> /dev/null ; then
+      sed -i .bak "s/ < $word/<^ $word/" ${TMP}-1-master-ahead
+    else
+      # only write to local if not in pull
+      echo " $line" >> ${TMP}-3-up
+    fi
+  done
+
+  git log --pretty=" * %h %aN, %ar: %s" ${PUSH_BRANCH}.. "$@" >> ${TMP}-4-local-ahead-of-push
+  cat ${TMP}-4-local-ahead-of-push | while read line ; do
+    word=$(echo "$line" | awk '{print $2}')
+    if grep $word ${TMP}-1-master-ahead > /dev/null 2> /dev/null ; then
+      sed -i .bak "s/ < $word/<* $word/" ${TMP}-1-master-ahead
+    else
+      # only write to local if not in pull
+      echo " $line" >> ${TMP}-4-local
+    fi
+  done
+  rm ${TMP}-3-pull-ahead-of-local
+  rm ${TMP}-4-local-ahead-of-push
+  rm ${TMP}-1-*.bak
 fi
 git status --porcelain --ignore-submodules "$@" > ${TMP}-5-commits
 cat ${TMP}-* > ${TMP}
+
+# TODO unreliable way to get project name
+SUMMARY=$(basename $(pwd))
+
+# append files if needed
+[ -z "$1" ] || SUMMARY="${SUMMARY} ($@)"
+
+SUMMARY="${SUMMARY}: ${THIS_BRANCH_DISPLAY_NAME} -> ${PUSH_BRANCH_DISPLAY_NAME}"
+[ -z ${PULL_BRANCH} ] || [ "${PULL_BRANCH}" == "${PUSH_BRANCH}" ] ||
+  SUMMARY=${SUMMARY}" -> ${PULL_BRANCH}"
+
 if [ -s ${TMP} ] ; then
   AHEAD=$(wc ${TMP}-1-* | awk '{print $1}')
   BEHIND=$(wc ${TMP}-2-* | awk '{print $1}')
   UP=$(wc ${TMP}-3-* | awk '{print $1}')
   LOCAL=$(wc ${TMP}-4-* | awk '{print $1}')
-  [ "${AHEAD}" == "0" ] || COUNTS="upstream ${AHEAD} behind master"
-  [ "${BEHIND}" == "0" ] || COUNTS="${COUNTS}${COUNTS:+, }upstream ${BEHIND} ahead of master"
+  [ "${AHEAD}" == "0" ] || COUNTS="push target ${AHEAD} behind upstream"
+  [ "${BEHIND}" == "0" ] || COUNTS="${COUNTS}${COUNTS:+, }upstream ${BEHIND} behind push target"
   [ "${UP}" == "0" ] || COUNTS="${COUNTS}${COUNTS:+, }local ${UP} behind"
   [ "${LOCAL}" == "0" ] || COUNTS="${COUNTS}${COUNTS:+, }local ${LOCAL} unpushed"
-  echo $(basename $(pwd))": ${THIS_BRANCH_NAME} <- ${THIS_UPSTREAM_BRANCH_NAME} (${COUNTS:-uncommitted changes only})"
+  echo "${SUMMARY} (${COUNTS:-uncommitted changes only})"
   cat ${TMP} | sed 's/^/ /'
 else
-  echo $(basename $(pwd))": ${THIS_BRANCH_NAME} <- ${THIS_UPSTREAM_BRANCH_NAME} (up to date)"
+  echo "${SUMMARY} (all up to date)"
 fi
 rm -f ${TMP} ${TMP}-*
 
