@@ -54,7 +54,7 @@ NEW_VERSION=$2
 # pass /dev/null as the first file to search in, so the command doesn't fail if find doesn't match any files;
 # add || true for the case where grep doesn't have matches, so the script doesn't halt
 # If there's an error "Argument list too long" add -n20 to xargs arguments and loop over $FILE around sed
-FILES=`find . -type d \( -name ignored -or -name .?\* \) -prune \
+FILES=`find . -type d \( -name ignored -or -name target -or -name .?\* \) -prune \
        -o -type f -not \( -name \*.log -or -name '*.war' -or -name '*.min.js' -or -name '*.min.css' \) -print0 | \
        xargs -0 grep -l "${VERSION_MARKER}\|${VERSION_MARKER_NL}" /dev/null || true`
 
