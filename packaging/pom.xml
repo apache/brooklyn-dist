@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+    <artifactId>brooklyn-dist</artifactId>
+    <name>Brooklyn RPM Package</name>
+    <description>
+        Brooklyn RPM Package for Centos 7 and RHEL 7 operating systems
+    </description>
+
+    <parent>
+        <groupId>org.apache.brooklyn</groupId>
+        <artifactId>brooklyn-dist-root</artifactId>
+        <version>0.9.0-SNAPSHOT</version>  <!-- BROOKLYN_VERSION -->
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.brooklyn</groupId>
+            <artifactId>brooklyn-all</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- TODO include examples -->
+        <!-- TODO include documentation -->
+        <dependency>
+            <groupId>org.apache.brooklyn</groupId>
+            <artifactId>brooklyn-test-support</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>rpm-maven-plugin</artifactId>
+                <version>2.1.5</version>
+                <executions>
+                    <execution>
+                        <id>generate-rpm</id>
+                        <goals>
+                            <goal>rpm</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <name>apache-brooklyn</name>
+                    <license>ASL 2.0</license>
+                    <group>Applications/Internet</group>
+                    <changelogFile><!--TODO--></changelogFile>
+                    <needarch>true</needarch>
+                    <targetOS>Linux</targetOS>
+                    <mappings>
+                        <mapping>
+                            <directory>/etc/brooklyn</directory>
+                            <configuration>true</configuration>
+                            <filemode>755</filemode>
+                            <username>brooklyn</username>
+                            <groupname>brooklyn</groupname>
+                            <sources>
+                                <source>
+                                    <location>src/conf</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/etc/brooklyn</directory>
+                            <directoryIncluded>false</directoryIncluded>
+                            <configuration>true</configuration>
+                            <filemode>600</filemode>
+                            <username>brooklyn</username>
+                            <groupname>brooklyn</groupname>
+                            <sources>
+                                <source>
+                                    <location>src/conf/brooklyn.conf</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/etc/brooklyn</directory>
+                            <directoryIncluded>false</directoryIncluded>
+                            <configuration>true</configuration>
+                            <filemode>644</filemode>
+                            <username>brooklyn</username>
+                            <groupname>brooklyn</groupname>
+                            <sources>
+                                <source>
+                                    <location>src/conf/logback.xml</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/opt/brooklyn</directory>
+                            <filemode>755</filemode>
+                            <username>brooklyn</username>
+                            <groupname>brooklyn</groupname>
+                            <sources>
+                                <source>
+                                    <location>../dist/target/brooklyn-dist/brooklyn</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/var/lib/brooklyn</directory>
+                            <configuration>true</configuration>
+                            <filemode>755</filemode>
+                            <username>brooklyn</username>
+                            <groupname>brooklyn</groupname>
+                        </mapping>
+                        <mapping>
+                            <directory>/var/log/brooklyn</directory>
+                            <configuration>true</configuration>
+                            <filemode>644</filemode>
+                            <username>brooklyn</username>
+                            <groupname>brooklyn</groupname>
+                        </mapping>
+                        <mapping>
+                            <directory>/etc/systemd/system/multi-user.target.wants</directory>
+                            <filemode>755</filemode>
+                            <username>root</username>
+                            <groupname>root</groupname>
+                            <sources>
+                                <source>
+                                    <location>src/service</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                    </mappings>
+                    <preinstallScriptlet>
+                        <script>
+                            /bin/getent group brooklyn || /sbin/groupadd -r brooklyn
+                            /bin/getent passwd brooklyn || /sbin/useradd -r -g brooklyn -d /opt/brooklyn -s /sbin/nologin brooklyn
+                        </script>
+                    </preinstallScriptlet>
+                    <postinstallScriptlet>
+                        <script>
+                            /bin/systemctl enable brooklyn.service
+                            /bin/systemctl daemon-reload
+                            /bin/systemctl start brooklyn.service
+                        </script>
+                    </postinstallScriptlet>
+                    <preremoveScriptlet>
+                        <script>/bin/systemctl stop brooklyn</script>
+                    </preremoveScriptlet>
+                    <postremoveScriptlet>
+                        <script>/sbin/userdel brooklyn</script>
+                    </postremoveScriptlet>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
