@@ -89,6 +89,25 @@
                             </artifactItems>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>unpack-client-cli</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>brooklyn-client-cli</artifactId>
+                                    <classifier>bin</classifier>
+                                    <type>zip</type>
+                                    <version>${project.version}</version>
+                                    <outputDirectory>${project.build.directory}/brooklyn-client-cli</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
