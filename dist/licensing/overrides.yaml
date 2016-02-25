@@ -99,6 +99,38 @@
 
 # info on non-maven projects
 
+# used in brooklyn-client (Go project)
+
+- id: github.com/codegangsta/cli
+  url: https://github.com/codegangsta/cli
+  name: github.com/codegangsta/cli
+  description: A small package for building command line apps in Go
+  license: MIT
+  notices:
+  - Copyright (C) 2013 Jeremy Saenz
+
+- id: golang.org/x/crypto/ssh
+  url: https://godoc.org/golang.org/x/crypto/ssh
+  name: golang.org/x/crypto/ssh
+  description: Package ssh implements an SSH client and server.
+  license: BSD-3-Clause
+  notices:
+  - Copyright (c) 2009 The Go Authors. All rights reserved.
+
+# Used in brooklyn-server/rest/rest-server
+- id: xml-resolver:1.2
+  url: http://xml.apache.org/commons/components/resolver/
+  name: XML Commons Resolver Component
+  description: xml-commons provides an Apache-hosted set of DOM, SAX, and JAXP interfaces for use in other xml-based projects.
+  license: ASL-2
+  notices:
+  - Apache XML Commons Resolver
+  - Copyright 2006 The Apache Software Foundation.
+  - This product includes software developed at
+  - The Apache Software Foundation http://www.apache.org/
+  - Portions of this code are derived from classes placed in the public domain by Arbortext on 10 Apr 2000. See
+  - http://www.arbortext.com/customer_support/updates_and_technical_notes/catalogs/docs/README.htm
+
 # used in UI
 - id: jquery-core:1.7.2
   url: http://jquery.com/

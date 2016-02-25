@@ -1,2 +1,4 @@
-../../../brooklyn-ui
-../../../brooklyn-server/server-cli
+../../brooklyn-ui
+../../brooklyn-server/server-cli
+../../brooklyn-server/rest/rest-server
+
