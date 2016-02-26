@@ -54,7 +54,7 @@ echo "(2) Notices for bundled software"
 echo
 pushd .. > /dev/null
 # add -X on next line to get debug info
-mvn -X org.heneveld.maven:license-audit-maven-plugin:notices \
+mvn org.heneveld.maven:license-audit-maven-plugin:notices \
         -DlicensesPreferred=ASL2,ASL,EPL1,BSD-2-Clause,BSD-3-Clause,CDDL1.1,CDDL1,CDDL \
         -DoverridesFile=licensing/overrides.yaml \
         -DextrasFiles=${BROOKLYN_LICENSE_EXTRAS_FILES:-`cat licensing/extras-files`} \
