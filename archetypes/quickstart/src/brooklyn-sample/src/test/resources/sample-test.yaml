@@ -1,0 +1,43 @@
+name: my test
+services:
+- type: com.acme.sample.brooklyn.MySample
+  id: sample
+
+- type: org.apache.brooklyn.test.framework.TestCase
+  brooklyn.children:
+
+  # Starting
+  - type: org.apache.brooklyn.test.framework.TestSensor
+    targetId: sample
+    sensor: service.isUp
+    timeout: 10s
+    assert:
+      equalTo: true
+  - type: org.apache.brooklyn.test.framework.TestSensor
+    targetId: sample
+    sensor: lastCall
+    assert:
+      equalTo: "start"
+
+  # Call our example effector
+  - type: org.apache.brooklyn.test.framework.TestEffector
+    targetId: sample
+    effector: myEffector
+    params:
+      arg1: "myVal"
+  - type: org.apache.brooklyn.test.framework.TestSensor
+    targetId: sample
+    sensor: lastCall
+    assert:
+      equalTo: "myEffector(myVal)"
+
+  # Stopping
+  - type: org.apache.brooklyn.test.framework.TestEffector
+    targetId: sample
+    effector: stop
+  - type: org.apache.brooklyn.test.framework.TestSensor
+    targetId: sample
+    sensor: service.isUp
+    timeout: 10s
+    assert:
+      equalTo: false

@@ -13,16 +13,15 @@
   <groupId>com.acme.sample</groupId>
   <artifactId>brooklyn-sample</artifactId>
   <version>0.1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
 
-  <name>Sample Brooklyn Project com.acme.sample:brooklyn-sample v0.1.0-SNAPSHOT</name>
+  <name>Sample Apache Brooklyn Project com.acme.sample:brooklyn-sample v0.1.0-SNAPSHOT</name>
   <description>
-    Sample optional description goes here.
+    Sample Apache Brooklyn Project for Java entity development, and OSGi bundle generation.
   </description>
 
   <!-- Optional metadata (commented out in this sample) 
 
-  <url>https://github.com/sample/sample</url>
+  <url>https://github.com/acme/sample</url>
 
   <licenses>
     <license>
@@ -39,16 +38,12 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/sample/sample</connection>
-    <developerConnection>scm:git:git@github.com:sample/sample.git</developerConnection>
-    <url>http://github.com/sample/sample</url>
+    <connection>scm:git:git://github.com/acme/sample</connection>
+    <developerConnection>scm:git:git@github.com:acme/sample.git</developerConnection>
+    <url>http://github.com/acme/sample</url>
   </scm>
 
   -->
-
-  <properties>
-    <project.entry>com.acme.sample.brooklyn.SampleMain</project.entry>
-  </properties>
 
   <repositories>
     <repository>
@@ -58,18 +53,33 @@
       <releases>
         <enabled>false</enabled>
       </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </repository>
   </repositories>
 
   <dependencies>
     <dependency>
-      <!-- this pulls in all brooklyn entities and clouds; 
-           you can cherry pick selected ones instead (for a smaller build) -->
+      <!--
+          All Brooklyn dependencies (note that the OSGi imports in the built artifacts will
+          only list the packages actually used). It is possible to be far more selective
+          about the required dependencies.
+      -->
       <groupId>org.apache.brooklyn</groupId>
       <artifactId>brooklyn-all</artifactId>
       <version>${brooklyn.version}</version>
     </dependency>
 
+    <dependency>
+      <!-- this gives us flexible and easy-to-use logging; just edit logback-custom.xml! -->
+      <groupId>org.apache.brooklyn</groupId>
+      <artifactId>brooklyn-logback-xml</artifactId>
+      <version>${brooklyn.version}</version>
+      <optional>true</optional>
+      <scope>provided</scope>
+    </dependency>
+    
     <dependency>
       <!-- includes testng and useful logging for tests -->
       <groupId>org.apache.brooklyn</groupId>
@@ -79,24 +89,43 @@
     </dependency>
 
     <dependency>
-      <!-- this gives us flexible and easy-to-use logging; just edit logback-custom.xml! -->
+      <!-- includes org.apache.brooklyn.test.support.LoggingVerboseReporter -->
       <groupId>org.apache.brooklyn</groupId>
-      <artifactId>brooklyn-logback-xml</artifactId>
+      <artifactId>brooklyn-utils-test-support</artifactId>
       <version>${brooklyn.version}</version>
+      <scope>test</scope>
     </dependency>
-  </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptors>
-            <descriptor>src/main/assembly/assembly.xml</descriptor>
-          </descriptors>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+    <dependency>
+      <!-- for useful entity testing, such as TestEntity and BrooklynAppUnitTestSupport -->
+      <groupId>org.apache.brooklyn</groupId>
+      <artifactId>brooklyn-core</artifactId>
+      <version>${brooklyn.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- for useful YAML-based testing, such as AbstractYamlTest -->
+    <dependency>
+      <groupId>org.apache.brooklyn</groupId>
+      <artifactId>brooklyn-camp</artifactId>
+      <version>${brooklyn.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.brooklyn</groupId>
+      <artifactId>brooklyn-camp</artifactId>
+      <version>${brooklyn.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.brooklyn</groupId>
+      <artifactId>brooklyn-test-framework</artifactId>
+      <version>${brooklyn.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
 
 </project>
