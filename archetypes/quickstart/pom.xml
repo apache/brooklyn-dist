@@ -139,7 +139,9 @@
               <basedir>${basedir}/src/brooklyn-sample/</basedir>
               <outputBasedir>${basedir}</outputBasedir>
               <outputDir>src/main/resources/archetype-resources/</outputDir>
-              <includes> <include>**/*</include> </includes>
+              <includes>
+                <include>**/*</include>
+              </includes>
               <excludes> 
                 <exclude>src/main/java/**</exclude> 
                 <exclude>src/test/java/**</exclude> 
@@ -217,9 +219,9 @@
                 <exclude>**/src/main/resources/logback-custom.xml</exclude>
                 <exclude>**/src/brooklyn-sample/README.md</exclude>
                 <exclude>**/src/brooklyn-sample/pom.xml</exclude>
-                <exclude>**/src/brooklyn-sample/src/main/assembly/files/conf/*</exclude>
                 <exclude>**/src/brooklyn-sample/src/main/java/**/*.java</exclude>
-                <exclude>**/src/brooklyn-sample/src/main/resources/logback-custom.xml</exclude>
+                <exclude>**/src/brooklyn-sample/src/test/resources/**/*.bom</exclude>
+                <exclude>**/src/brooklyn-sample/src/test/resources/**/*.yaml</exclude>
                 <exclude>**/src/brooklyn-sample/src/test/java/**/*.java</exclude>
               </excludes>
             </configuration>
