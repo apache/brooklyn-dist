@@ -1,4 +1,11 @@
+# this file lists projects with custom licenses
+# optionally taking the dir where source-inclusions.yaml lives and files/LICENSE should be written
+# this auto-generates the extras-file (but that is also checked in, for no good reason)
+
 ../../brooklyn-ui
+
 ../../brooklyn-server/server-cli
-../../brooklyn-client
+
+# client has "go" structure so license in a different place
+../../brooklyn-client release/license
 
