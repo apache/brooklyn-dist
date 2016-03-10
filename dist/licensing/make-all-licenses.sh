@@ -23,7 +23,7 @@
 set -e
 
 # update the extras-files file from projects-with-custom-licenses
-cat projects-with-custom-licenses | awk '{ printf("%s/src/main/license/source-inclusions.yaml:", $0); }' | sed 's/:$//' > extras-files
+cat projects-with-custom-licenses | grep -v '^\s*$' | awk '{ printf("%s/src/main/license/source-inclusions.yaml:", $0); }' | sed 's/:$//' > extras-files
 
 unset BROOKLYN_LICENSE_SPECIALS
 unset BROOKLYN_LICENSE_EXTRAS_FILES

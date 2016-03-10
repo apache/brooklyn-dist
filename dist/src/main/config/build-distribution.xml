@@ -80,6 +80,10 @@
                 <exclude>bin/*</exclude>
             </excludes>
         </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/brooklyn-client-cli</directory>
+            <outputDirectory>bin</outputDirectory>
+        </fileSet>
     </fileSets>
     <!-- TODO include documentation -->
     <!-- TODO include examples -->

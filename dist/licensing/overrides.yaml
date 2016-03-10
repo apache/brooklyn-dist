@@ -99,6 +99,24 @@
 
 # info on non-maven projects
 
+# used in brooklyn-client (Go project)
+
+- id: github.com/codegangsta/cli
+  url: https://github.com/codegangsta/cli
+  name: github.com/codegangsta/cli
+  description: A small package for building command line apps in Go
+  license: MIT
+  notices:
+  - Copyright (C) 2013 Jeremy Saenz
+
+- id: golang.org/x/crypto/ssh
+  url: https://godoc.org/golang.org/x/crypto/ssh
+  name: golang.org/x/crypto/ssh
+  description: Package ssh implements an SSH client and server.
+  license: BSD-3-Clause
+  notices:
+  - Copyright (c) 2009 The Go Authors. All rights reserved.
+
 # used in UI
 - id: jquery-core:1.7.2
   url: http://jquery.com/
