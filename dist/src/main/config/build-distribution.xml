@@ -80,6 +80,11 @@
                 <exclude>bin/*</exclude>
             </excludes>
         </fileSet>
+        <fileSet>
+            <!-- Fortunately this preserves permissions from the CLI build -->
+            <directory>${project.build.directory}/brooklyn-client-cli-unpacked/brooklyn-client-cli-${project.version}</directory>
+            <outputDirectory>bin/brooklyn-client-cli</outputDirectory>
+        </fileSet>
     </fileSets>
     <!-- TODO include documentation -->
     <!-- TODO include examples -->

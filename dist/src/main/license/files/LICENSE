@@ -345,17 +345,11 @@ This project includes the software: com.squareup.okio
   Version used: 1.2.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-This project includes the software: com.sun.jersey
-  Available at: https://jersey.java.net/
+This project includes the software: com.sun.xml.bind
+  Available at: http://jaxb.java.net
   Developed by: Oracle Corporation (http://www.oracle.com/)
-  Version used: 1.19
-  Used under the following license: Common Development and Distribution License, version 1.1 (http://glassfish.java.net/public/CDDL+GPL_1_1.html)
-
-This project includes the software: com.sun.jersey.contribs
-  Available at: https://jersey.java.net/
-  Developed by: Oracle Corporation (http://www.oracle.com/)
-  Version used: 1.19
-  Used under the following license: Common Development and Distribution License, version 1.1 (http://glassfish.java.net/public/CDDL+GPL_1_1.html)
+  Version used: 2.2.11
+  Used under the following license: CDDL+GPL License (http://glassfish.java.net/public/CDDL+GPL_1_1.html)
 
 This project includes the software: com.thoughtworks.xstream
   Available at: http://x-stream.github.io/
@@ -405,6 +399,30 @@ This project includes the software: dom4j
   Version used: 1.6.1
   Used under the following license: MetaStuff BSD style license (3-clause) (http://dom4j.sourceforge.net/dom4j-1.6.1/license.html)
 
+This project includes the software: Font Awesome (code)
+  Available at: http://fontawesome.io/
+  Inclusive of: font-awesome/{css,scss,less}/*
+  Version used: 4.5.0
+  Used under the following license: The MIT License (http://opensource.org/licenses/MIT)
+  Copyright (c) Dave Gandy (2016)
+
+This project includes the software: Font Awesome (fonts)
+  Available at: http://fontawesome.io/
+  Inclusive of: font-awesome/fonts/*
+  Version used: 4.5.0
+  Used under the following license: SIL OFL 1.1 (http://scripts.sil.org/OFL)
+  Copyright (c) Dave Gandy (2016)
+
+This project includes the software: github.com/codegangsta/cli
+  Available at: https://github.com/codegangsta/cli
+  Used under the following license: The MIT License (http://opensource.org/licenses/MIT)
+  Copyright (C) 2013 Jeremy Saenz
+
+This project includes the software: golang.org/x/crypto/ssh
+  Available at: https://godoc.org/golang.org/x/crypto/ssh
+  Used under the following license: The BSD 3-Clause (New BSD) License (http://opensource.org/licenses/BSD-3-Clause)
+  Copyright (c) 2009 The Go Authors. All rights reserved.
+
 This project includes the software: handlebars.js
   Available at: https://github.com/wycats/handlebars.js
   Developed by: Yehuda Katz (https://github.com/wycats/)
@@ -420,7 +438,7 @@ This project includes the software: io.airlift
 
 This project includes the software: io.cloudsoft.windows
   Available at: http://github.com/cloudsoft/winrm4j
-  Version used: 0.2.0
+  Version used: 0.3.1
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: io.swagger
@@ -429,9 +447,12 @@ This project includes the software: io.swagger
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 This project includes the software: javax.annotation
-  Available at: https://jcp.org/en/jsr/detail?id=250
-  Version used: 1.0
-  Used under the following license: Common Development and Distribution License, version 1.0 (https://glassfish.dev.java.net/public/CDDLv1.0.html)
+  Available at: https://jcp.org/en/jsr/detail?id=250 http://jcp.org/en/jsr/detail?id=250
+  Developed by: GlassFish Community (https://glassfish.java.net)
+  Version used: 1.0; 1.2
+  Used under the following licenses:
+    Common Development and Distribution License, version 1.0 (https://glassfish.dev.java.net/public/CDDLv1.0.html)
+    CDDL + GPLv2 with classpath exception (https://glassfish.dev.java.net/nonav/public/CDDL+GPL.html)
 
 This project includes the software: javax.inject
   Available at: http://code.google.com/p/atinject/
@@ -450,10 +471,10 @@ This project includes the software: javax.validation
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: javax.ws.rs
-  Available at: https://jsr311.java.net/
-  Developed by: Sun Microsystems, Inc (http://www.sun.com/)
-  Version used: 1.1.1
-  Used under the following license: CDDL License (http://www.opensource.org/licenses/cddl1.php)
+  Available at: http://jax-rs-spec.java.net
+  Developed by: Oracle Corporation (http://www.oracle.com/)
+  Version used: 2.0.1
+  Used under the following license: Common Development and Distribution License, version 1.1 (http://glassfish.java.net/public/CDDL+GPL_1_1.html)
 
 This project includes the software: joda-time
   Available at: http://joda-time.sourceforge.net
@@ -568,6 +589,12 @@ This project includes the software: org.apache.commons
   Version used: 3.3.2; 1.4
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+This project includes the software: org.apache.cxf
+  Available at: http://cxf.apache.org
+  Developed by: The Apache Software Foundation (http://www.apache.org/)
+  Version used: 3.1.4
+  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 This project includes the software: org.apache.felix
   Available at: http://felix.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
@@ -575,10 +602,12 @@ This project includes the software: org.apache.felix
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.httpcomponents
-  Available at: http://hc.apache.org/httpcomponents-client-ga http://hc.apache.org/httpcomponents-core-ga
+  Available at: http://hc.apache.org/httpcomponents-core-ga http://hc.apache.org/httpcomponents-asyncclient http://hc.apache.org/httpcomponents-client-ga
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 4.4.1
-  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  Version used: 4.4.1; 4.1
+  Used under the following licenses:
+    Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+    Apache License, version 2.0 (in-project reference: LICENSE.txt)
 
 This project includes the software: org.apache.jclouds
   Available at: http://jclouds.apache.org/
@@ -616,6 +645,18 @@ This project includes the software: org.apache.jclouds.provider
   Version used: 1.9.2
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+This project includes the software: org.apache.neethi
+  Available at: http://ws.apache.org/neethi/
+  Developed by: The Apache Software Foundation (http://www.apache.org/)
+  Version used: 3.0.3
+  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This project includes the software: org.apache.ws.xmlschema
+  Available at: http://ws.apache.org/commons/xmlschema20/
+  Developed by: The Apache Software Foundation (http://www.apache.org/)
+  Version used: 2.2.1
+  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 This project includes the software: org.bouncycastle
   Available at: http://www.bouncycastle.org/java.html
   Version used: 1.49
@@ -627,21 +668,13 @@ This project includes the software: org.codehaus.groovy
   Version used: 2.3.7
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-This project includes the software: org.codehaus.jackson
-  Available at: http://jackson.codehaus.org
-  Developed by: FasterXML (http://fasterxml.com)
-  Version used: 1.9.13
-  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-This project includes the software: org.codehaus.jettison
-  Version used: 1.1
-  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
-
 This project includes the software: org.codehaus.woodstox
-  Available at: http://wiki.fasterxml.com/WoodstoxStax2
-  Developed by: fasterxml.com (http://fasterxml.com)
-  Version used: 3.1.4
-  Used under the following license: BSD License (http://www.opensource.org/licenses/bsd-license.php)
+  Available at: http://woodstox.codehaus.org http://wiki.fasterxml.com/WoodstoxStax2
+  Developed by: Codehaus (http://www.codehaus.org/) fasterxml.com (http://fasterxml.com)
+  Version used: 4.4.1; 3.1.4
+  Used under the following licenses:
+    Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+    BSD License (http://www.opensource.org/licenses/bsd-license.php)
 
 This project includes the software: org.eclipse.jetty
   Available at: http://www.eclipse.org/jetty
@@ -674,16 +707,22 @@ This project includes the software: org.javassist
   Version used: 3.16.1-GA
   Used under the following license: Apache License, version 2.0 (http://www.mozilla.org/MPL/MPL-1.1.html)
 
-This project includes the software: org.jvnet.mimepull
-  Available at: http://mimepull.java.net
-  Developed by: Oracle Corporation (http://www.oracle.com/)
-  Version used: 1.9.3
-  Used under the following license: Common Development and Distribution License, version 1.1 (https://glassfish.java.net/public/CDDL+GPL_1_1.html)
-
 This project includes the software: org.mongodb
   Available at: http://www.mongodb.org
   Version used: 3.0.3
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+This project includes the software: org.osgi
+  Available at: http://www.osgi.org
+  Developed by: OSGi Alliance (http://www.osgi.org)
+  Version used: 6.0.0
+  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+
+This project includes the software: org.ow2.asm
+  Available at: http://asm.objectweb.org/
+  Developed by: ObjectWeb (http://www.objectweb.org/)
+  Version used: 5.0.4
+  Used under the following license: BSD License (http://asm.objectweb.org/license.html)
 
 This project includes the software: org.reflections
   Available at: http://code.google.com/p/reflections/
@@ -769,6 +808,17 @@ This project includes the software: underscore.js:1.7.0
   Version used: 1.7.0
   Used under the following license: The MIT License (http://opensource.org/licenses/MIT)
   Copyright (c) Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors (2009-2014)
+
+This project includes the software: wsdl4j
+  Available at: http://sf.net/projects/wsdl4j
+  Version used: 1.6.3
+  Used under the following license: Common Public License (http://www.opensource.org/licenses/cpl1.0.txt)
+
+This project includes the software: xml-resolver
+  Available at: http://xml.apache.org/commons/components/resolver/
+  Developed by: Apache Software Foundation (http://www.apache.org/)
+  Version used: 1.2
+  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: xmlpull
   Available at: http://www.xmlpull.org
