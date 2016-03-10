@@ -161,7 +161,9 @@
         <profile>
             <id>go-client</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>!no-go-client</name>
+                </property>
             </activation>
             <build>
                 <plugins>
