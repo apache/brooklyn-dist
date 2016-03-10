@@ -182,7 +182,7 @@
                                             <classifier>bin</classifier>
                                             <type>zip</type>
                                             <version>${project.version}</version>
-                                            <outputDirectory>${project.build.directory}/brooklyn-client-cli</outputDirectory>
+                                            <outputDirectory>${project.build.directory}/brooklyn-client-cli-unpacked</outputDirectory>
                                         </artifactItem>
                                     </artifactItems>
                                 </configuration>
