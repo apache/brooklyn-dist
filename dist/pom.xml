@@ -194,9 +194,6 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>no-go-client</id>
-        </profile>
-
     </profiles>
+
 </project>
