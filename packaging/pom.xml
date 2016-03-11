@@ -19,8 +19,8 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
-    <artifactId>brooklyn-dist</artifactId>
+    <packaging>pom</packaging>
+    <artifactId>brooklyn-packaging</artifactId>
     <name>Brooklyn RPM Package</name>
     <description>
         Brooklyn RPM Package for Centos 7 and RHEL 7 operating systems
@@ -36,21 +36,8 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.brooklyn</groupId>
-            <artifactId>brooklyn-all</artifactId>
+            <artifactId>brooklyn-dist</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <!-- TODO include examples -->
-        <!-- TODO include documentation -->
-        <dependency>
-            <groupId>org.apache.brooklyn</groupId>
-            <artifactId>brooklyn-test-support</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -63,7 +50,7 @@
                     <execution>
                         <id>generate-rpm</id>
                         <goals>
-                            <goal>rpm</goal>
+                            <goal>attached-rpm</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -72,8 +59,11 @@
                     <license>ASL 2.0</license>
                     <group>Applications/Internet</group>
                     <changelogFile><!--TODO--></changelogFile>
-                    <needarch>true</needarch>
+                    <needarch>noarch</needarch>
                     <targetOS>Linux</targetOS>
+                    <requires>
+                        <require>java</require>
+                    </requires>
                     <mappings>
                         <mapping>
                             <directory>/etc/brooklyn</directory>
