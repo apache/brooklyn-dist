@@ -24,15 +24,6 @@
     <formats><!-- empty, intended for caller to specify --></formats>
     <fileSets>
         <fileSet>
-            <directory>${project.basedir}/../..</directory>
-            <outputDirectory></outputDirectory>
-            <fileMode>0644</fileMode>
-            <directoryMode>0755</directoryMode>
-            <includes>
-                <include>DISCLAIMER*</include>
-            </includes>
-        </fileSet>
-        <fileSet>
             <directory>${project.basedir}/src/main/license/files</directory>
             <outputDirectory></outputDirectory>
             <fileMode>0644</fileMode>
