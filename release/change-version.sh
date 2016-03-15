@@ -49,13 +49,13 @@ NEW_VERSION=$2
 
 # grep --exclude-dir working only in recent versions, not on all platforms, replace with find;
 # skip folders named "ignored" or .xxx (but not the current folder ".");
-# exclude log, war, etc. files;
+# exclude log, war, swp, etc. files;
 # use null delimiters so files containing spaces are supported;
 # pass /dev/null as the first file to search in, so the command doesn't fail if find doesn't match any files;
 # add || true for the case where grep doesn't have matches, so the script doesn't halt
 # If there's an error "Argument list too long" add -n20 to xargs arguments and loop over $FILE around sed
 FILES=`find . -type d \( -name ignored -or -name target -or -name .?\* \) -prune \
-       -o -type f -not \( -name \*.log -or -name '*.war' -or -name '*.min.js' -or -name '*.min.css' \) -print0 | \
+       -o -type f -not \( -name \*.log -or -name '*.war' -or -name '*.min.js' -or -name '*.min.css' -or -name '*.swp' \) -print0 | \
        xargs -0 grep -l "${VERSION_MARKER}\|${VERSION_MARKER_NL}" /dev/null || true`
 
 FILES_COUNT=`echo $FILES | wc | awk '{print $2}'`
