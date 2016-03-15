@@ -70,11 +70,27 @@
         </mailingList>
     </mailingLists>
 
+
+    <profiles>
+        <profile>
+            <!-- skip the RPM build by setting -Dno-rpm - useful if RPM tool is not available -->
+            <id>rpm-module</id>
+            <activation>
+                <property>
+                    <name>!no-rpm</name>
+                </property>
+            </activation>
+            <modules>
+                <module>packaging</module>
+            </modules>
+        </profile>
+    </profiles>
+
+
     <modules>
         <module>downstream-parent</module>
         <module>all</module>
         <module>dist</module>
-        <module>packaging</module>
         <module>vagrant</module>
         <module>archetypes/quickstart</module>
     </modules>
