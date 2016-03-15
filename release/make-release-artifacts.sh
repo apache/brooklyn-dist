@@ -25,11 +25,12 @@
 
 set -e
 
-###############################################################################
-fail() {
-    echo >&2 "$@"
+release_script_dir=$( cd $( dirname $0 ) && pwd )
+[ -f "${release_script_dir}/common.sh" ] || {
+    echo >&2 "Could not find common.sh in the same directory as this script"
     exit 1
 }
+. "${release_script_dir}/common.sh"
 
 ###############################################################################
 show_help() {
@@ -56,39 +57,6 @@ Additionally if APACHE_DIST_SVN_DIR is set, this will transfer artifacts to
 that directory and svn commit them.
 END
 # ruler                      --------------------------------------------------
-}
-
-###############################################################################
-confirm() {
-    # call with a prompt string or use a default
-    if [ "${batch_confirm_y}" == "true" ] ; then
-        true
-    else
-      read -r -p "${1:-Are you sure? [y/N]} " response
-      case $response in
-        [yY][eE][sS]|[yY]) 
-            true
-            ;;
-        *)
-            false
-            ;;
-      esac
-    fi
-}
-
-###############################################################################
-detect_version() {
-    if [ \! -z "${current_version}" ]; then
-        return
-    fi
-
-    set +e
-    current_version=$( xmlstarlet select -t -v '/_:project/_:version/text()' pom.xml 2>/dev/null )
-    success=$?
-    set -e
-    if [ "${success}" -ne 0 -o -z "${current_version}" ]; then
-        fail Could not detect version number
-    fi
 }
 
 ###############################################################################
@@ -121,7 +89,7 @@ shift $((OPTIND-1))
 
 ###############################################################################
 # Prerequisite checks
-[ -d .git ] || fail Must run in brooklyn project root directory
+assert_in_project_root
 
 detect_version
 
@@ -135,7 +103,6 @@ else
     artifact_name=${release_name}-rc${rc_suffix}
 fi
 
-release_script_dir=$( cd $( dirname $0 ) && pwd )
 brooklyn_dir=$( pwd )
 rm -rf ${release_script_dir}/tmp
 staging_dir="${release_script_dir}/tmp/source/"
