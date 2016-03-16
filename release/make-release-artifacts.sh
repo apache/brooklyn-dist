@@ -104,11 +104,12 @@ else
 fi
 
 brooklyn_dir=$( pwd )
-rm -rf ${release_script_dir}/tmp
-staging_dir="${release_script_dir}/tmp/source/"
-src_staging_dir="${release_script_dir}/tmp/source/${release_name}-src"
-bin_staging_dir="${release_script_dir}/tmp/bin/"
-artifact_dir="${release_script_dir}/tmp/${artifact_name}"
+working_dir=${TMPDIR:-/tmp}/release-working-dir
+rm -rf ${working_dir}
+staging_dir="${working_dir}/source/"
+src_staging_dir="${working_dir}/source/${release_name}-src"
+bin_staging_dir="${working_dir}/bin/"
+artifact_dir="${release_script_dir}/${artifact_name}"
 
 echo "The version is ${current_version}"
 echo "The rc suffix is rc${rc_suffix}"
@@ -120,6 +121,7 @@ if [ ! -z "${APACHE_DIST_SVN_DIR}" ] ; then
 else
   echo "The artifacts will not be copied into a Subversion working copy"
 fi
+echo "The working directory is ${working_dir}"
 echo ""
 confirm "Is this information correct? [y/N]" || exit
 echo ""
