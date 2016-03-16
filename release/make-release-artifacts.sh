@@ -145,9 +145,13 @@ fi
 # A GPG no-op, but causes the password request to happen. It should then be cached by gpg-agent.
 gpg2 -o /dev/null --sign /dev/null
 
+# Discover submodules
+submodules="$( perl -n -e 'if ($_ =~ /path += +(.*)$/) { print $1."\n" }' < .gitmodules )"
+modules=". ${submodules}"
+
 ###############################################################################
 # Clean the workspace
-git clean -dxf
+for module in ${modules}; do ( cd $module && git clean -dxf ); done
 
 ###############################################################################
 # Source release
@@ -240,4 +244,6 @@ set +x
 echo "The release is done - here is what has been created:"
 ls ${artifact_dir}
 echo "You can find these files in: ${artifact_dir}"
-echo "The git commit ID for the voting emails is: $( git rev-parse HEAD )"
+echo "The git commit IDs for the voting emails are:"
+echo -n "brooklyn: " && git rev-parse HEAD
+git submodule --quiet foreach 'echo -n "${name}: " && git rev-parse HEAD'
