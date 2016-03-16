@@ -22,6 +22,7 @@
 #   binary  (-bin)     - contains the brooklyn dist binary release
 #   source  (-src)     - contains all the source code files that are permitted to be released
 #   vagrant (-vagrant) - contains a Vagrantfile/scripts to start a Brooklyn getting started environment
+#   RPM (.rpm)         - contains the RPM package
 
 set -e
 
@@ -221,6 +222,11 @@ mv ${bin_staging_dir}/brooklyn-vagrant-${current_version} ${bin_staging_dir}/${r
 
 ( cd ${bin_staging_dir} && tar czf ${artifact_dir}/${artifact_name}-vagrant.tar.gz ${release_name}-vagrant )
 ( cd ${bin_staging_dir} && zip -qr ${artifact_dir}/${artifact_name}-vagrant.zip ${release_name}-vagrant )
+
+###############################################################################
+# RPM artifacts
+
+cp ${src_staging_dir}/brooklyn-dist/packaging/target/rpm/apache-brooklyn/RPMS/noarch/apache-brooklyn-${current_version}-1.noarch.rpm ${artifact_dir}/${release_name}-1.noarch.rpm
 
 ###############################################################################
 # Signatures and checksums
