@@ -133,6 +133,18 @@ echo "This script will cause uploads to be made to a staging repository on the A
 echo ""
 confirm "Shall I continue?  [y/N]" || exit
 
+# Set up GPG agent
+if [ ! -z "${GPG_AGENT_INFO}" ]; then
+  echo "GPG_AGENT_INFO set; assuming gpg-agent is running correctly."
+else
+  eval $(gpg-agent --daemon --no-grab --write-env-file $HOME/.gpg-agent-info)
+  GPG_TTY=$(tty)
+  export GPG_TTY GPG_AGENT_INFO
+fi
+
+# A GPG no-op, but causes the password request to happen. It should then be cached by gpg-agent.
+gpg2 -o /dev/null --sign /dev/null
+
 ###############################################################################
 # Clean the workspace
 git clean -dxf
@@ -165,14 +177,6 @@ set +x
 echo "Proceeding to build binary release"
 set -x
 
-# Set up GPG agent
-if ps x | grep [g]pg-agent ; then
-  echo "gpg-agent already running; assuming it is set up and exported correctly."
-else
-  eval $(gpg-agent --daemon --no-grab --write-env-file $HOME/.gpg-agent-info)
-  GPG_TTY=$(tty)
-  export GPG_TTY GPG_AGENT_INFO
-fi
 
 # Workaround for bug BROOKLYN-1
 ( cd ${src_staging_dir} && mvn clean --projects :brooklyn-archetype-quickstart )
