@@ -49,6 +49,9 @@ release.
                              the artifacts.
   -y                         answers "y" to all questions automatically, to
                              use defaults and make this suitable for batch mode
+  -n                         dry run - Maven deployments and SVN commits will
+                             NOT be done. This will still delete working and
+                             temporary files, however.
 
 Specifying the RC number is required. Specifying the version number is
 discouraged; if auto detection is not working, then this script is buggy.
@@ -63,7 +66,7 @@ END
 # Argument parsing
 rc_suffix=
 OPTIND=1
-while getopts "h?v:r:y?" opt; do
+while getopts "h?v:r:y?:n?" opt; do
     case "$opt" in
         h|\?)
             show_help
@@ -77,6 +80,9 @@ while getopts "h?v:r:y?" opt; do
             ;;
         y)
             batch_confirm_y=true
+            ;;
+        n)
+            dry_run=true
             ;;
         *)
             show_help
@@ -116,7 +122,7 @@ echo "The rc suffix is rc${rc_suffix}"
 echo "The release name is ${release_name}"
 echo "The artifact name is ${artifact_name}"
 echo "The artifact directory is ${artifact_dir}"
-if [ ! -z "${APACHE_DIST_SVN_DIR}" ] ; then
+if [ -z "${dry_run}" -a ! -z "${APACHE_DIST_SVN_DIR}" ] ; then
   echo "The artifacts will be copied to ${APACHE_DIST_SVN_DIR} and readied for commit"
 else
   echo "The artifacts will not be copied into a Subversion working copy"
@@ -130,10 +136,12 @@ echo "This includes build artifacts and all uncommitted local files and director
 echo "If you want to check what will happen, answer no and run 'git clean -dxn' to dry run."
 echo ""
 confirm || exit
-echo ""
-echo "This script will cause uploads to be made to a staging repository on the Apache Nexus server."
-echo ""
-confirm "Shall I continue?  [y/N]" || exit
+if [ -z "${dry_run}" ]; then
+    echo ""
+    echo "This script will cause uploads to be made to a staging repository on the Apache Nexus server."
+    echo ""
+    confirm "Shall I continue?  [y/N]" || exit
+fi
 
 # Set up GPG agent
 if [ ! -z "${GPG_AGENT_INFO}" ]; then
@@ -187,10 +195,12 @@ set -x
 # Workaround for bug BROOKLYN-1
 ( cd ${src_staging_dir} && mvn clean --projects :brooklyn-archetype-quickstart )
 
-# Perform the build and deploy to Nexus staging repository
-( cd ${src_staging_dir} && mvn deploy -Papache-release )
-## To test the script without a big deploy, use the line below instead of above
-#( cd ${src_staging_dir} && mvn clean install )
+# Perform the build
+if [ -z "${dry_run}" ]; then
+    ( cd ${src_staging_dir} && mvn deploy -Papache-release )
+else
+    ( cd ${src_staging_dir} && mvn install -Papache-release )
+fi
 
 # Re-pack the archive with the correct names
 tar xzf ${src_staging_dir}/brooklyn-dist/dist/target/brooklyn-dist-${current_version}-dist.tar.gz -C ${bin_staging_dir}
@@ -230,13 +240,13 @@ which sha256sum >/dev/null || alias sha256sum='shasum -a 256' && shopt -s expand
 
 ###############################################################################
 
-if [ ! -z "${APACHE_DIST_SVN_DIR}" ] ; then
-  pushd ${APACHE_DIST_SVN_DIR}
-  rm -rf ${artifact_name}
+if [ -z "${dry_run}" -a ! -z "${APACHE_DIST_SVN_DIR}" ] ; then (
+  cd ${APACHE_DIST_SVN_DIR}
+  [ -d ${artifact_name} ] && ( svn revert -R ${artifact_name}; svn rm -R ${artifact_name}; rm -rf ${artifact_name} )
   cp -r ${artifact_dir} ${artifact_name}
   svn add ${artifact_name}
+  )
   artifact_dir=${APACHE_DIST_SVN_DIR}/${artifact_name}
-  popd
 fi
 
 ###############################################################################
