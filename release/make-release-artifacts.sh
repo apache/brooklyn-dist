@@ -169,7 +169,7 @@ for module in ${modules}; do ( cd $module && git clean -dxf ); done
 echo "Creating source release folder ${release_name}"
 set -x
 mkdir -p ${src_staging_dir}
-mkdir -p ${bin_staging_dir}
+
 # exclude: 
 # * docs (which isn't part of the release, and adding license headers to js files is cumbersome)
 # * sandbox (which hasn't been vetted so thoroughly)
@@ -192,6 +192,7 @@ set +x
 echo "Proceeding to build binary release"
 set -x
 
+mkdir -p ${bin_staging_dir}
 
 # Workaround for bug BROOKLYN-1
 ( cd ${src_staging_dir} && mvn clean --projects :brooklyn-archetype-quickstart )
