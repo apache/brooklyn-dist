@@ -38,7 +38,6 @@ Vagrant.configure(2) do |config|
     vb.cpus = 2
   end
 
-  config.vm.network "forwarded_port", guest: 8008, host: 8008
 
   config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
   config.vm.provision "file", source: "~/.gnupg/gpg.conf", destination: ".gnupg/gpg.conf"
@@ -52,13 +51,8 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
     apt-get upgrade -y
-    wget -q -O /tmp/artifactory.zip http://bit.ly/Hqv9aj
     apt-get install -y default-jdk git subversion xmlstarlet zip unzip language-pack-en vim-nox gnupg2 gnupg-agent pinentry-curses
     mkdir -p /opt
-    unzip /tmp/artifactory.zip -d /opt
-    sudo sed -i -e '/Connector port=/ s/=\".*\"/=\"'"8008"'\"/' /opt/artifactory*/tomcat/conf/server.xml
-    /opt/artifactory*/bin/installService.sh
-    service artifactory start
     chmod -R go= ~vagrant/.gnupg
     curl http://archive.apache.org/dist/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz | tar xz -C /opt
     ln -s /opt/apache-maven-3.1.1/bin/mvn /usr/local/bin
