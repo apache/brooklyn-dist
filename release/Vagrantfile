@@ -49,9 +49,10 @@ Vagrant.configure(2) do |config|
   # Update the VM, install Java and Maven, enable passwordless-ssh-to-localhost,
   # clone the canonical repository
   config.vm.provision "shell", inline: <<-SHELL
+    add-apt-repository -y ppa:mwhudson/go16-trusty
     apt-get update
     apt-get upgrade -y
-    apt-get install -y default-jdk git subversion xmlstarlet zip unzip language-pack-en vim-nox gnupg2 gnupg-agent pinentry-curses
+    apt-get install -y default-jdk git subversion xmlstarlet zip unzip language-pack-en vim-nox gnupg2 gnupg-agent pinentry-curses golang-1.6 rpm
     mkdir -p /opt
     chmod -R go= ~vagrant/.gnupg
     curl http://archive.apache.org/dist/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz | tar xz -C /opt
