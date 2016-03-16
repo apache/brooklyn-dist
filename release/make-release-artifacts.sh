@@ -54,7 +54,7 @@ Specifying the RC number is required. Specifying the version number is
 discouraged; if auto detection is not working, then this script is buggy.
 
 Additionally if APACHE_DIST_SVN_DIR is set, this will transfer artifacts to
-that directory and svn commit them.
+that directory.
 END
 # ruler                      --------------------------------------------------
 }
@@ -116,9 +116,9 @@ echo "The release name is ${release_name}"
 echo "The artifact name is ${artifact_name}"
 echo "The artifact directory is ${artifact_dir}"
 if [ ! -z "${APACHE_DIST_SVN_DIR}" ] ; then
-  echo "The artifacts will be copied and uploaded via ${APACHE_DIST_SVN_DIR}"
+  echo "The artifacts will be copied to ${APACHE_DIST_SVN_DIR} and readied for commit"
 else
-  echo "The artifacts will not be copied and uploaded to the svn repo"
+  echo "The artifacts will not be copied into a Subversion working copy"
 fi
 echo ""
 confirm "Is this information correct? [y/N]" || exit
@@ -225,7 +225,6 @@ if [ ! -z "${APACHE_DIST_SVN_DIR}" ] ; then
   rm -rf ${artifact_name}
   cp -r ${artifact_dir} ${artifact_name}
   svn add ${artifact_name}
-  svn commit --message "Add ${artifact_name} artifacts for incubator/brooklyn"
   artifact_dir=${APACHE_DIST_SVN_DIR}/${artifact_name}
   popd
 fi
