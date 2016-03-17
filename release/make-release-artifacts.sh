@@ -22,14 +22,16 @@
 #   binary  (-bin)     - contains the brooklyn dist binary release
 #   source  (-src)     - contains all the source code files that are permitted to be released
 #   vagrant (-vagrant) - contains a Vagrantfile/scripts to start a Brooklyn getting started environment
+#   RPM (.rpm)         - contains the RPM package
 
 set -e
 
-###############################################################################
-fail() {
-    echo >&2 "$@"
+release_script_dir=$( cd $( dirname $0 ) && pwd )
+[ -f "${release_script_dir}/common.sh" ] || {
+    echo >&2 "Could not find common.sh in the same directory as this script"
     exit 1
 }
+. "${release_script_dir}/common.sh"
 
 ###############################################################################
 show_help() {
@@ -48,54 +50,24 @@ release.
                              the artifacts.
   -y                         answers "y" to all questions automatically, to
                              use defaults and make this suitable for batch mode
+  -n                         dry run - Maven deployments and SVN commits will
+                             NOT be done. This will still delete working and
+                             temporary files, however.
 
 Specifying the RC number is required. Specifying the version number is
 discouraged; if auto detection is not working, then this script is buggy.
 
 Additionally if APACHE_DIST_SVN_DIR is set, this will transfer artifacts to
-that directory and svn commit them.
+that directory.
 END
 # ruler                      --------------------------------------------------
-}
-
-###############################################################################
-confirm() {
-    # call with a prompt string or use a default
-    if [ "${batch_confirm_y}" == "true" ] ; then
-        true
-    else
-      read -r -p "${1:-Are you sure? [y/N]} " response
-      case $response in
-        [yY][eE][sS]|[yY]) 
-            true
-            ;;
-        *)
-            false
-            ;;
-      esac
-    fi
-}
-
-###############################################################################
-detect_version() {
-    if [ \! -z "${current_version}" ]; then
-        return
-    fi
-
-    set +e
-    current_version=$( xmlstarlet select -t -v '/_:project/_:version/text()' pom.xml 2>/dev/null )
-    success=$?
-    set -e
-    if [ "${success}" -ne 0 -o -z "${current_version}" ]; then
-        fail Could not detect version number
-    fi
 }
 
 ###############################################################################
 # Argument parsing
 rc_suffix=
 OPTIND=1
-while getopts "h?v:r:y?" opt; do
+while getopts "h?v:r:y?:n?" opt; do
     case "$opt" in
         h|\?)
             show_help
@@ -110,6 +82,9 @@ while getopts "h?v:r:y?" opt; do
         y)
             batch_confirm_y=true
             ;;
+        n)
+            dry_run=true
+            ;;
         *)
             show_help
             exit 1
@@ -121,7 +96,7 @@ shift $((OPTIND-1))
 
 ###############################################################################
 # Prerequisite checks
-[ -d .git ] || fail Must run in brooklyn project root directory
+assert_in_project_root
 
 detect_version
 
@@ -135,24 +110,25 @@ else
     artifact_name=${release_name}-rc${rc_suffix}
 fi
 
-release_script_dir=$( cd $( dirname $0 ) && pwd )
 brooklyn_dir=$( pwd )
-rm -rf ${release_script_dir}/tmp
-staging_dir="${release_script_dir}/tmp/source/"
-src_staging_dir="${release_script_dir}/tmp/source/${release_name}-src"
-bin_staging_dir="${release_script_dir}/tmp/bin/"
-artifact_dir="${release_script_dir}/tmp/${artifact_name}"
+working_dir=${TMPDIR:-/tmp}/release-working-dir
+rm -rf ${working_dir}
+staging_dir="${working_dir}/source/"
+src_staging_dir="${working_dir}/source/${release_name}-src"
+bin_staging_dir="${working_dir}/bin/"
+artifact_dir="${release_script_dir}/${artifact_name}"
 
 echo "The version is ${current_version}"
 echo "The rc suffix is rc${rc_suffix}"
 echo "The release name is ${release_name}"
 echo "The artifact name is ${artifact_name}"
 echo "The artifact directory is ${artifact_dir}"
-if [ ! -z "${APACHE_DIST_SVN_DIR}" ] ; then
-  echo "The artifacts will be copied and uploaded via ${APACHE_DIST_SVN_DIR}"
+if [ -z "${dry_run}" -a ! -z "${APACHE_DIST_SVN_DIR}" ] ; then
+  echo "The artifacts will be copied to ${APACHE_DIST_SVN_DIR} and readied for commit"
 else
-  echo "The artifacts will not be copied and uploaded to the svn repo"
+  echo "The artifacts will not be copied into a Subversion working copy"
 fi
+echo "The working directory is ${working_dir}"
 echo ""
 confirm "Is this information correct? [y/N]" || exit
 echo ""
@@ -161,21 +137,39 @@ echo "This includes build artifacts and all uncommitted local files and director
 echo "If you want to check what will happen, answer no and run 'git clean -dxn' to dry run."
 echo ""
 confirm || exit
-echo ""
-echo "This script will cause uploads to be made to a staging repository on the Apache Nexus server."
-echo ""
-confirm "Shall I continue?  [y/N]" || exit
+if [ -z "${dry_run}" ]; then
+    echo ""
+    echo "This script will cause uploads to be made to a staging repository on the Apache Nexus server."
+    echo ""
+    confirm "Shall I continue?  [y/N]" || exit
+fi
+
+# Set up GPG agent
+if [ ! -z "${GPG_AGENT_INFO}" ]; then
+  echo "GPG_AGENT_INFO set; assuming gpg-agent is running correctly."
+else
+  eval $(gpg-agent --daemon --no-grab --write-env-file $HOME/.gpg-agent-info)
+  GPG_TTY=$(tty)
+  export GPG_TTY GPG_AGENT_INFO
+fi
+
+# A GPG no-op, but causes the password request to happen. It should then be cached by gpg-agent.
+gpg2 -o /dev/null --sign /dev/null
+
+# Discover submodules
+submodules="$( perl -n -e 'if ($_ =~ /path += +(.*)$/) { print $1."\n" }' < .gitmodules )"
+modules=". ${submodules}"
 
 ###############################################################################
 # Clean the workspace
-git clean -dxf
+for module in ${modules}; do ( cd $module && git clean -dxf ); done
 
 ###############################################################################
 # Source release
 echo "Creating source release folder ${release_name}"
 set -x
 mkdir -p ${src_staging_dir}
-mkdir -p ${bin_staging_dir}
+
 # exclude: 
 # * docs (which isn't part of the release, and adding license headers to js files is cumbersome)
 # * sandbox (which hasn't been vetted so thoroughly)
@@ -198,22 +192,17 @@ set +x
 echo "Proceeding to build binary release"
 set -x
 
-# Set up GPG agent
-if ps x | grep [g]pg-agent ; then
-  echo "gpg-agent already running; assuming it is set up and exported correctly."
-else
-  eval $(gpg-agent --daemon --no-grab --write-env-file $HOME/.gpg-agent-info)
-  GPG_TTY=$(tty)
-  export GPG_TTY GPG_AGENT_INFO
-fi
+mkdir -p ${bin_staging_dir}
 
 # Workaround for bug BROOKLYN-1
 ( cd ${src_staging_dir} && mvn clean --projects :brooklyn-archetype-quickstart )
 
-# Perform the build and deploy to Nexus staging repository
-( cd ${src_staging_dir} && mvn deploy -Papache-release )
-## To test the script without a big deploy, use the line below instead of above
-#( cd ${src_staging_dir} && mvn clean install )
+# Perform the build
+if [ -z "${dry_run}" ]; then
+    ( cd ${src_staging_dir} && mvn deploy -Papache-release )
+else
+    ( cd ${src_staging_dir} && mvn install -Papache-release )
+fi
 
 # Re-pack the archive with the correct names
 tar xzf ${src_staging_dir}/brooklyn-dist/dist/target/brooklyn-dist-${current_version}-dist.tar.gz -C ${bin_staging_dir}
@@ -236,6 +225,11 @@ mv ${bin_staging_dir}/brooklyn-vagrant-${current_version} ${bin_staging_dir}/${r
 ( cd ${bin_staging_dir} && zip -qr ${artifact_dir}/${artifact_name}-vagrant.zip ${release_name}-vagrant )
 
 ###############################################################################
+# RPM artifacts
+
+cp ${src_staging_dir}/brooklyn-dist/packaging/target/rpm/apache-brooklyn/RPMS/noarch/apache-brooklyn-${current_version}-1.noarch.rpm ${artifact_dir}/${release_name}-1.noarch.rpm
+
+###############################################################################
 # Signatures and checksums
 
 # OSX doesn't have sha256sum, even if MacPorts md5sha1sum package is installed.
@@ -253,14 +247,13 @@ which sha256sum >/dev/null || alias sha256sum='shasum -a 256' && shopt -s expand
 
 ###############################################################################
 
-if [ ! -z "${APACHE_DIST_SVN_DIR}" ] ; then
-  pushd ${APACHE_DIST_SVN_DIR}
-  rm -rf ${artifact_name}
+if [ -z "${dry_run}" -a ! -z "${APACHE_DIST_SVN_DIR}" ] ; then (
+  cd ${APACHE_DIST_SVN_DIR}
+  [ -d ${artifact_name} ] && ( svn revert -R ${artifact_name}; svn rm -R ${artifact_name}; rm -rf ${artifact_name} )
   cp -r ${artifact_dir} ${artifact_name}
   svn add ${artifact_name}
-  svn commit --message "Add ${artifact_name} artifacts for incubator/brooklyn"
+  )
   artifact_dir=${APACHE_DIST_SVN_DIR}/${artifact_name}
-  popd
 fi
 
 ###############################################################################
@@ -270,4 +263,6 @@ set +x
 echo "The release is done - here is what has been created:"
 ls ${artifact_dir}
 echo "You can find these files in: ${artifact_dir}"
-echo "The git commit ID for the voting emails is: $( git rev-parse HEAD )"
+echo "The git commit IDs for the voting emails are:"
+echo -n "brooklyn: " && git rev-parse HEAD
+git submodule --quiet foreach 'echo -n "${name}: " && git rev-parse HEAD'

@@ -16,14 +16,6 @@
             <username>xxx</username>
             <password>xxx</password>
         </server>
-
-        <!-- This is used for deployments to the play Artifactory instance that is provisioned by the Vagrant scripts.
-           - It may be safely ignored. -->
-        <server>
-            <id>vagrant-ubuntu-trusty-64</id>
-            <username>admin</username>
-            <password>password</password>
-        </server>
     </servers>
 
 </settings>

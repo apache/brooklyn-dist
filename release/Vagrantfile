@@ -34,10 +34,30 @@ Vagrant.configure(2) do |config|
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "2048"
+    vb.memory = "6144"
+    vb.cpus = 2
   end
 
-  config.vm.network "forwarded_port", guest: 8008, host: 8008
+  config.vm.provider :aws do |aws, override|
+    aws.access_key_id = ENV['AWS_ACCESS_KEY_ID']
+    aws.secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
+    aws.keypair_name = "richardcloudsoft"
+    aws.region = "eu-west-1"
+    aws.tags = {
+      'Name' => 'Release Apache Brooklyn'
+    }
+    aws.instance_type = "m4.xlarge"
+
+    aws.region_config "eu-west-1" do |region|
+      region.ami = "ami-f95ef58a"
+      region.subnet_id = "subnet-56d3f922"
+      region.associate_public_ip = true
+      region.security_groups = [ 'sg-ac8f86c8' ]
+    end
+
+    override.ssh.username = "ubuntu"
+    override.ssh.private_key_path = ENV['HOME']+"/.ssh/id_rsa"
+  end
 
   config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
   config.vm.provision "file", source: "~/.gnupg/gpg.conf", destination: ".gnupg/gpg.conf"
@@ -49,18 +69,20 @@ Vagrant.configure(2) do |config|
   # Update the VM, install Java and Maven, enable passwordless-ssh-to-localhost,
   # clone the canonical repository
   config.vm.provision "shell", inline: <<-SHELL
+    NORMALUSER=$( getent passwd 1000 | cut -f1 -d: )
+    add-apt-repository -y ppa:mwhudson/go16-trusty
     apt-get update
     apt-get upgrade -y
-    apt-get install -y default-jdk maven git xmlstarlet zip unzip language-pack-en vim-nox gnupg2 gnupg-agent pinentry-curses
-    wget -q -O /tmp/artifactory.zip http://bit.ly/Hqv9aj
+    apt-get install -y default-jdk git subversion xmlstarlet zip unzip language-pack-en vim-nox gnupg2 gnupg-agent pinentry-curses golang-1.6 rpm
     mkdir -p /opt
-    unzip /tmp/artifactory.zip -d /opt
-    sudo sed -i -e '/Connector port=/ s/=\".*\"/=\"'"8008"'\"/' /opt/artifactory*/tomcat/conf/server.xml
-    /opt/artifactory*/bin/installService.sh
-    service artifactory start
-    chmod -R go= ~vagrant/.gnupg
+    curl http://archive.apache.org/dist/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz | tar xz -C /opt
+    ln -s /opt/apache-maven-3.1.1/bin/mvn /usr/local/bin
+    echo "MAVEN_OPTS=\"-Xmx512m -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M\"" >> /etc/environment
+    mkdir -p /work
+    mount -ttmpfs -osize=3g none /work
+    eval chmod -R go= ~${NORMALUSER}/.gnupg
     cat /etc/ssh/ssh_host_*_key.pub | awk '{print "localhost,127.0.0.1 "$0}' >> /etc/ssh/ssh_known_hosts
-    su -c 'ssh-keygen -t rsa -b 2048 -N "" -f ~/.ssh/id_rsa; cat ~/.ssh/*.pub >> ~/.ssh/authorized_keys' vagrant
-    su -c 'git clone https://git-wip-us.apache.org/repos/asf/incubator-brooklyn.git apache-brooklyn-git' vagrant
+    su -c 'ssh-keygen -t rsa -b 2048 -N "" -f ~/.ssh/id_rsa; cat ~/.ssh/*.pub >> ~/.ssh/authorized_keys' $NORMALUSER
+    su -c '/vagrant/clone-and-configure-repos.sh' $NORMALUSER
   SHELL
 end
