@@ -71,9 +71,6 @@
                         <mapping>
                             <directory>/etc/brooklyn</directory>
                             <configuration>true</configuration>
-                            <filemode>755</filemode>
-                            <username>brooklyn</username>
-                            <groupname>brooklyn</groupname>
                             <sources>
                                 <source>
                                     <location>src/conf</location>
@@ -82,7 +79,6 @@
                         </mapping>
                         <mapping>
                             <directory>/etc/brooklyn</directory>
-                            <directoryIncluded>false</directoryIncluded>
                             <configuration>true</configuration>
                             <filemode>600</filemode>
                             <username>brooklyn</username>
@@ -95,7 +91,6 @@
                         </mapping>
                         <mapping>
                             <directory>/etc/brooklyn</directory>
-                            <directoryIncluded>false</directoryIncluded>
                             <configuration>true</configuration>
                             <filemode>644</filemode>
                             <username>brooklyn</username>
