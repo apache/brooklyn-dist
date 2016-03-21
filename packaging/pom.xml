@@ -122,7 +122,7 @@
                         <mapping>
                             <directory>/var/log/brooklyn</directory>
                             <configuration>true</configuration>
-                            <filemode>644</filemode>
+                            <filemode>700</filemode>
                             <username>brooklyn</username>
                             <groupname>brooklyn</groupname>
                         </mapping>
