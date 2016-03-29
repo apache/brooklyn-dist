@@ -40,38 +40,6 @@
       or that contribute additional functionality to Brooklyn.
   </description>
 
-  <properties>
-    <!-- Compilation -->
-    <java.version>1.7</java.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-    <!-- Testing -->
-    <testng.version>6.8.8</testng.version>
-    <surefire.version>2.18.1</surefire.version>
-    <includedTestGroups />
-    <excludedTestGroups>Integration,Acceptance,Live,Live-sanity,WIP</excludedTestGroups>
-
-    <!-- Dependencies -->
-    <brooklyn.version>0.9.0-SNAPSHOT</brooklyn.version>  <!-- BROOKLYN_VERSION -->
-    <jclouds.groupId>org.apache.jclouds</jclouds.groupId> <!-- JCLOUDS_GROUPID_VERSION -->
-
-    <!-- versions should match those used by Brooklyn, to avoid conflicts -->
-    <jclouds.version>1.9.2</jclouds.version> <!-- JCLOUDS_VERSION -->
-    <logback.version>1.0.7</logback.version>
-    <slf4j.version>1.6.6</slf4j.version>  <!-- used for java.util.logging jul-to-slf4j interception -->
-    <guava.version>17.0</guava.version>
-    <xstream.version>1.4.7</xstream.version>
-    <jackson.version>1.9.13</jackson.version>  <!-- codehaus jackson, used by brooklyn rest server -->
-    <fasterxml.jackson.version>2.4.5</fasterxml.jackson.version>  <!-- more recent jackson, but not compatible with old annotations! -->
-    <jersey.version>1.19</jersey.version>
-    <httpclient.version>4.4.1</httpclient.version>
-    <commons-lang3.version>3.3.2</commons-lang3.version>
-    <groovy.version>2.3.7</groovy.version> <!-- Version supported by https://github.com/groovy/groovy-eclipse/wiki/Groovy-Eclipse-2.9.1-Release-Notes -->
-    <jsr305.version>2.0.1</jsr305.version>
-    <snakeyaml.version>1.11</snakeyaml.version>
-  </properties>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
