@@ -44,7 +44,7 @@ servers:
     ip: 10.10.10.100
     shell:
       env:
-        BROOKLYN_VERSION: 0.9.0-SNAPSHOT
+        BROOKLYN_VERSION: 0.9.0
         INSTALL_FROM_LOCAL_DIST: false
       cmd:
         - chmod a+x /vagrant/files/install_brooklyn.sh      
