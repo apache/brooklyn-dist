@@ -20,7 +20,7 @@
 #
 
 # Specify minimum Vagrant version and Vagrant API version
-Vagrant.require_version ">= 1.8.1"
+Vagrant.require_version ">= 1.7.0"
 VAGRANTFILE_API_VERSION = "2"
 
 # Update OS (Debian/RedHat based only)
