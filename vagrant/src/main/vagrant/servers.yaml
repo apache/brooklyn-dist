@@ -41,7 +41,9 @@ servers:
     box: ubuntu/wily64
     ram: 2048
     cpus: 4
-    ip: 10.10.10.100
+    forwarded_ports:
+     - guest: 8081
+       host: 8081
     shell:
       env:
         BROOKLYN_VERSION: 0.9.0
