@@ -44,6 +44,7 @@ servers:
     forwarded_ports:
      - guest: 8081
        host: 8081
+       autocorrect: true
     shell:
       env:
         BROOKLYN_VERSION: 0.10.0-SNAPSHOT
