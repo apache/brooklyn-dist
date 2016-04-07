@@ -146,13 +146,12 @@
                     </preinstallScriptlet>
                     <postinstallScriptlet>
                         <script>
-                            /bin/systemctl enable brooklyn.service
                             /bin/systemctl daemon-reload
                             /bin/systemctl start brooklyn.service
                         </script>
                     </postinstallScriptlet>
                     <preremoveScriptlet>
-                        <script>/bin/systemctl stop brooklyn</script>
+                        <script>/bin/systemctl stop brooklyn.service</script>
                     </preremoveScriptlet>
                     <postremoveScriptlet>
                         <script>/sbin/userdel brooklyn</script>
