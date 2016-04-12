@@ -97,7 +97,19 @@
                 </property>
             </activation>
             <modules>
-                <module>packaging</module>
+                <module>rpm-packaging</module>
+            </modules>
+        </profile>
+        <profile>
+            <!-- skip the DEB build by setting -Dno-deb - useful if Debian tools are not available -->
+            <id>deb-module</id>
+            <activation>
+                <property>
+                    <name>!no-deb</name>
+                </property>
+            </activation>
+            <modules>
+                <module>deb-packaging</module>
             </modules>
         </profile>
     </profiles>
