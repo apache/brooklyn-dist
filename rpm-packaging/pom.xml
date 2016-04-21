@@ -73,7 +73,7 @@
                             <configuration>true</configuration>
                             <sources>
                                 <source>
-                                    <location>src/conf</location>
+                                    <location>../src/conf</location>
                                 </source>
                             </sources>
                         </mapping>
@@ -85,7 +85,7 @@
                             <groupname>brooklyn</groupname>
                             <sources>
                                 <source>
-                                    <location>src/conf/brooklyn.conf</location>
+                                    <location>../src/conf/brooklyn.conf</location>
                                 </source>
                             </sources>
                         </mapping>
@@ -97,7 +97,7 @@
                             <groupname>brooklyn</groupname>
                             <sources>
                                 <source>
-                                    <location>src/conf/logback.xml</location>
+                                    <location>../src/conf/logback.xml</location>
                                 </source>
                             </sources>
                         </mapping>
@@ -133,29 +133,31 @@
                             <groupname>root</groupname>
                             <sources>
                                 <source>
-                                    <location>src/service</location>
+                                    <location>../src/service/systemd</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/etc/init/</directory>
+                            <filemode>755</filemode>
+                            <username>root</username>
+                            <groupname>root</groupname>
+                            <sources>
+                                <source>
+                                    <location>../src/service/upstart/rpm/</location>
                                 </source>
                             </sources>
                         </mapping>
                     </mappings>
                     <preinstallScriptlet>
-                        <script>
-                            /bin/getent group brooklyn || /sbin/groupadd -r brooklyn
-                            /bin/getent passwd brooklyn || /sbin/useradd -r -g brooklyn -d /opt/brooklyn -s /sbin/nologin brooklyn
-                        </script>
+                        <scriptFile>${basedir}/rpm/preinstall.sh</scriptFile>
                     </preinstallScriptlet>
                     <postinstallScriptlet>
-                        <script>
-                            /bin/systemctl daemon-reload
-                            /bin/systemctl start brooklyn.service
-                        </script>
+                        <scriptFile>${basedir}/rpm/postinstall.sh</scriptFile>
                     </postinstallScriptlet>
                     <preremoveScriptlet>
-                        <script>/bin/systemctl stop brooklyn.service</script>
+                        <scriptFile>${basedir}/rpm/preremove.sh</scriptFile>
                     </preremoveScriptlet>
-                    <postremoveScriptlet>
-                        <script>/sbin/userdel brooklyn</script>
-                    </postremoveScriptlet>
                 </configuration>
             </plugin>
         </plugins>
