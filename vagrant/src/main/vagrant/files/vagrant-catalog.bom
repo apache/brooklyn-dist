@@ -20,7 +20,7 @@ brooklyn.catalog:
   items:
   - id: byon1
     name: Vagrant BYON VM 1
-    version: 0.9.0  # BROOKLYN_VERSION
+    version: 0.9.1-SNAPSHOT  # BROOKLYN_VERSION
     itemType: location
     item:
       type: byon
@@ -32,7 +32,7 @@ brooklyn.catalog:
 
   - id: byon2
     name: Vagrant BYON VM 2
-    version: 0.9.0  # BROOKLYN_VERSION
+    version: 0.9.1-SNAPSHOT  # BROOKLYN_VERSION
     itemType: location
     item:
       type: byon
@@ -44,7 +44,7 @@ brooklyn.catalog:
 
   - id: byon3
     name: Vagrant BYON VM 3
-    version: 0.9.0  # BROOKLYN_VERSION
+    version: 0.9.1-SNAPSHOT  # BROOKLYN_VERSION
     itemType: location
     item:
       type: byon
@@ -56,7 +56,7 @@ brooklyn.catalog:
 
   - id: byon4
     name: Vagrant BYON VM 4
-    version: 0.9.0  # BROOKLYN_VERSION
+    version: 0.9.1-SNAPSHOT  # BROOKLYN_VERSION
     itemType: location
     item:
       type: byon
@@ -68,7 +68,7 @@ brooklyn.catalog:
 
   - id: byon-all
     name: Vagrant BYON VM 1-4
-    version: 0.9.0  # BROOKLYN_VERSION
+    version: 0.9.1-SNAPSHOT  # BROOKLYN_VERSION
     itemType: location
     item:
       type: byon
