@@ -54,7 +54,7 @@
                         <configuration>
                             <verbose>true</verbose>
                             <deb>${project.build.directory}/apache-brooklyn_${project.version}_all.deb</deb>
-                            <controlDir>${basedir}/src/deb/control</controlDir>
+                            <controlDir>${basedir}/deb/control</controlDir>
                             <dataSet>
                                 <data>
                                     <src>../dist/target/brooklyn-dist</src>
@@ -67,11 +67,20 @@
                                     </mapper>
                                 </data>
                                 <data>
-                                    <src>${basedir}/src/deb/init.d/brooklyn</src>
+                                    <src>../src/service/upstart/deb/brooklyn.conf</src>
                                     <type>file</type>
                                     <mapper>
                                         <type>perm</type>
-                                        <prefix>/etc/init.d</prefix>
+                                        <prefix>/etc/init</prefix>
+                                        <filemode>755</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>../src/service/systemd/brooklyn.service</src>
+                                    <type>file</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>/etc/systemd/system/multi-user.target.wants</prefix>
                                         <filemode>755</filemode>
                                     </mapper>
                                 </data>
@@ -89,7 +98,7 @@
                                     </mapper>
                                 </data>
                                 <data>
-                                    <src>${basedir}/src/conf/brooklyn.conf</src>
+                                    <src>../src/conf/brooklyn.conf</src>
                                     <type>file</type>
                                     <conffile>true</conffile>
                                     <mapper>
@@ -101,7 +110,7 @@
                                     </mapper>
                                 </data>
                                 <data>
-                                    <src>${basedir}/src/conf/logback.xml</src>
+                                    <src>../src/conf/logback.xml</src>
                                     <type>file</type>
                                     <conffile>true</conffile>
                                     <mapper>
