@@ -39,9 +39,46 @@
             <artifactId>brooklyn-dist</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.brooklyn</groupId>
+            <artifactId>shared-packaging</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                          <artifactItems>
+                            <artifactItem>
+                              <groupId>org.apache.brooklyn</groupId>
+                              <artifactId>brooklyn-dist</artifactId>
+                              <version>${project.version}</version>
+                              <classifier>dist</classifier>
+                              <type>tar.gz</type>
+                              <outputDirectory>${project.build.directory}/deps</outputDirectory>
+                            </artifactItem>
+                            <artifactItem>
+                              <groupId>org.apache.brooklyn</groupId>
+                              <artifactId>shared-packaging</artifactId>
+                              <version>${project.version}</version>
+                              <type>jar</type>
+                              <outputDirectory>${project.build.directory}/deps/shared-packaging</outputDirectory>
+                            </artifactItem>
+                          </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>rpm-maven-plugin</artifactId>
@@ -67,15 +104,14 @@
                     <defineStatements>
                         <defineStatement>_binaries_in_noarch_packages_terminate_build 0</defineStatement>
                     </defineStatements>
+                    <defaultDirmode>755</defaultDirmode>
+                    <defaultFilemode>644</defaultFilemode>
+                    <defaultGroupname>brooklyn</defaultGroupname>
+                    <defaultUsername>brooklyn</defaultUsername>
                     <mappings>
                         <mapping>
                             <directory>/etc/brooklyn</directory>
                             <configuration>true</configuration>
-                            <sources>
-                                <source>
-                                    <location>../src/conf</location>
-                                </source>
-                            </sources>
                         </mapping>
                         <mapping>
                             <directory>/etc/brooklyn</directory>
@@ -85,39 +121,30 @@
                             <groupname>brooklyn</groupname>
                             <sources>
                                 <source>
-                                    <location>../src/conf/brooklyn.conf</location>
+                                    <location>${project.build.directory}/deps/shared-packaging/conf/brooklyn.conf</location>
                                 </source>
                             </sources>
                         </mapping>
                         <mapping>
                             <directory>/etc/brooklyn</directory>
                             <configuration>true</configuration>
-                            <filemode>644</filemode>
-                            <username>brooklyn</username>
-                            <groupname>brooklyn</groupname>
                             <sources>
                                 <source>
-                                    <location>../src/conf/logback.xml</location>
+                                    <location>${project.build.directory}/deps/shared-packaging/conf/logback.xml</location>
                                 </source>
                             </sources>
                         </mapping>
                         <mapping>
                             <directory>/opt/brooklyn</directory>
-                            <filemode>755</filemode>
-                            <username>brooklyn</username>
-                            <groupname>brooklyn</groupname>
                             <sources>
                                 <source>
-                                    <location>../dist/target/brooklyn-dist/brooklyn</location>
+                                    <location>${project.build.directory}/deps/brooklyn-dist-${project.version}</location>
                                 </source>
                             </sources>
                         </mapping>
                         <mapping>
                             <directory>/var/lib/brooklyn</directory>
                             <configuration>true</configuration>
-                            <filemode>755</filemode>
-                            <username>brooklyn</username>
-                            <groupname>brooklyn</groupname>
                         </mapping>
                         <mapping>
                             <directory>/var/log/brooklyn</directory>
@@ -128,23 +155,25 @@
                         </mapping>
                         <mapping>
                             <directory>/etc/systemd/system/multi-user.target.wants</directory>
-                            <filemode>755</filemode>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>644</filemode>
                             <username>root</username>
                             <groupname>root</groupname>
                             <sources>
                                 <source>
-                                    <location>../src/service/systemd</location>
+                                    <location>${project.build.directory}/deps/shared-packaging/service/systemd</location>
                                 </source>
                             </sources>
                         </mapping>
                         <mapping>
-                            <directory>/etc/init/</directory>
-                            <filemode>755</filemode>
+                            <directory>/etc/init</directory>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>644</filemode>
                             <username>root</username>
                             <groupname>root</groupname>
                             <sources>
                                 <source>
-                                    <location>../src/service/upstart/rpm/</location>
+                                    <location>${project.build.directory}/deps/shared-packaging/service/upstart/rpm/</location>
                                 </source>
                             </sources>
                         </mapping>

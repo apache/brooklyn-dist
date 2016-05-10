@@ -1,0 +1,273 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+brooklyn.catalog:
+  version: 0.10.0-SNAPSHOT  # BROOKLYN_VERSION
+### brooklyn install entities ###
+  apt-config: &apt-config
+    install.command: |
+      sudo apt-get update
+      sudo apt-get install -y default-jre-headless
+      sudo dpkg -i brooklyn-package.deb
+  yum-config: &yum-config
+    install.command: |
+      if sudo iptables -L | grep REJECT; then
+        # Only for CentOS 6
+        sudo iptables -I INPUT -p tcp -m tcp --dport 8081 -j ACCEPT
+        sudo service iptables save
+      fi
+      sudo yum -y install java-1.7.0-openjdk.x86_64
+      sudo yum -y install brooklyn-package.rpm
+  items:
+  - id: systemd-brooklyn
+    item:
+      type: org.apache.brooklyn.entity.software.base.VanillaSoftwareProcess
+      brooklyn.config:
+        launch.command: |
+          sudo systemctl start brooklyn
+        checkRunning.command: |
+          sudo systemctl status brooklyn
+        stop.command: |
+          sudo systemctl stop brooklyn
+  - id: upstart-brooklyn
+    item:
+      type: org.apache.brooklyn.entity.software.base.VanillaSoftwareProcess
+      brooklyn.config:
+        launch.command: |
+          sudo status brooklyn | grep running || sudo start brooklyn
+        checkRunning.command: |
+          sudo status brooklyn | grep running
+        stop.command: |
+          sudo stop brooklyn
+  - id: apt-systemd-brooklyn
+    item:
+      type: systemd-brooklyn
+      id: brooklyn
+      brooklyn.config: *apt-config
+  - id: apt-upstart-brooklyn
+    item:
+      type: upstart-brooklyn
+      id: brooklyn
+      brooklyn.config: *apt-config
+  - id: yum-systemd-brooklyn
+    item:
+      type: systemd-brooklyn
+      id: brooklyn
+      brooklyn.config: *yum-config
+  - id: yum-upstart-brooklyn
+    item:
+      type: upstart-brooklyn
+      id: brooklyn
+      brooklyn.config: *yum-config
+### Tests ###
+  - id: test-is-up
+    item:
+      type: org.apache.brooklyn.test.framework.TestSensor
+      name: Check server is up
+      sensor: service.isUp
+      assert:
+      - equals: true
+  - id: test-is-not-up
+    item:
+      type: org.apache.brooklyn.test.framework.TestSensor
+      name: Check server is up
+      sensor: service.isUp
+      assert:
+      - equals: false
+  - id: test-process-running
+    item:
+      type: org.apache.brooklyn.test.framework.SimpleShellCommandTest
+      name: Check process has started
+      # The brackets prevent grep from matching its own process
+      command: ps ax | grep "[o]rg.apache.brooklyn.cli.Main"
+      assertStatus:
+        equals: 0
+      assertOut:
+        isEmpty: false
+      assertErr:
+        isEmpty: true
+  - id: test-process-not-running
+    item:
+      type: org.apache.brooklyn.test.framework.SimpleShellCommandTest
+      name: Check process is not started
+      # The brackets prevent grep from matching its own process
+      command: ps ax | grep "[o]rg.apache.brooklyn.cli.Main"
+      assertStatus:
+        equals: 1
+      assertOut:
+        isEmpty: true
+      assertErr:
+        isEmpty: true
+  - id: test-process-user
+    item:
+      type: org.apache.brooklyn.test.framework.SimpleShellCommandTest
+      name: Check user the process is running under
+      # The brackets prevent grep from matching its own process
+      command: ps -fu brooklyn | grep "[o]rg.apache.brooklyn.cli.Main"
+      assertStatus:
+        equals: 0
+      assertOut:
+        isEmpty: false
+      assertErr:
+        isEmpty: true
+  - id: test-port-reachable
+    item:
+      type: org.apache.brooklyn.test.framework.TestHttpCall
+      name: Check HTTP Response Status Code
+      url:
+        $brooklyn:formatString:
+        - "http://%s:8081/"
+        - $brooklyn:entity("brooklyn").attributeWhenReady("host.address")
+      applyAssertionTo: status
+      assert:
+      - isEqualTo: 401
+  - id: test-path-permissions
+    item:
+      type: org.apache.brooklyn.test.framework.SimpleShellCommandTest
+      name: Check paths permissions
+      command: |
+        [ "$(stat -c "%A %U %G" /opt/brooklyn)" = "drwxr-xr-x brooklyn brooklyn" ] && \
+        [ "$(stat -c "%A %U %G" /var/lib/brooklyn)" = "drwxr-xr-x brooklyn brooklyn" ] && \
+        [ "$(stat -c "%A %U %G" /var/log/brooklyn)" = "drwx------ brooklyn brooklyn" ] && \
+        [ "$(stat -c "%A %U %G" /etc/systemd/system/multi-user.target.wants)" = "drwxr-xr-x root root" ] && \
+        [ "$(sudo stat -c "%A %U %G" /etc/systemd/system/multi-user.target.wants/brooklyn.service)" = "-rw-r--r-- root root" ] && \
+        [ "$(stat -c "%A %U %G" /etc/init)" = "drwxr-xr-x root root" ] && \
+        [ "$(stat -c "%A %U %G" /etc/init/brooklyn.conf)" = "-rw-r--r-- root root" ] && \
+        [ "$(stat -c "%A %U %G" /etc/brooklyn)" = "drwxr-xr-x brooklyn brooklyn" ] && \
+        [ "$(sudo stat -c "%A %U %G" /etc/brooklyn/brooklyn.conf)" = "-rw------- brooklyn brooklyn" ] && \
+        [ "$(stat -c "%A %U %G" /etc/brooklyn/logback.xml)" = "-rw-r--r-- brooklyn brooklyn" ] && \
+        ! find /opt/brooklyn | xargs stat -c "%A %U %G" | grep -v "drwxr-xr-x brooklyn brooklyn\|-rw-r--r-- brooklyn brooklyn"
+      assertStatus:
+        equals: 0
+  - id: test-log-files-exist
+    item:
+      type: org.apache.brooklyn.test.framework.SimpleShellCommandTest
+      name: Check log files created at expected location
+      command: sudo ls /var/log/brooklyn/brooklyn.{debug,info}.log | wc -l
+      assertOut:
+        equals: "2"
+  - id: test-healthy
+    item:
+      type: org.apache.brooklyn.test.framework.TestCase
+      name: Check entity is healthy
+      brooklyn.children:
+      - type: test-is-up
+        name: 001. Test isUp
+      - type: test-process-running
+        name: 002. Test process is running
+      - type: test-port-reachable
+        name: 003. Test port is reachable
+  - id: test-start
+    item:
+      type: org.apache.brooklyn.test.framework.TestEffector
+      name: Invoke start Effector
+      effector: start
+  - id: test-stop
+    item:
+      type: org.apache.brooklyn.test.framework.TestEffector
+      name: Invoke stop Effector
+      effector: stop
+      params:
+        stopMachineMode: NEVER
+  - id: test-restart
+    item:
+      type: org.apache.brooklyn.test.framework.TestEffector
+      name: Invoke restart Effector
+      effector: restart
+      params:
+        restartMachine: false
+  - id: test-restart-machine
+    item:
+      type: org.apache.brooklyn.test.framework.SimpleShellCommandTest
+      name: Restart the machine
+      command: sudo shutdown -r now
+      assertStatus:
+        # Replacement for anything accepted
+        # Could be 0 or -1, depending on whether the socket closes before restart takes place
+        notNull: true
+  - id: packaging-asserts
+    item:
+      type: org.apache.brooklyn.test.framework.TestCase
+      targetId: brooklyn
+      brooklyn.config:
+        timeout: 1m
+      brooklyn.children:
+      - type: test-is-up
+        name: 01. Block until started
+        brooklyn.config:
+          timeout: 10m
+      - type: test-healthy
+        name: 02. Check healthy
+      - type: test-process-user
+        name: 03. Test process user
+      - type: test-path-permissions
+        name: 04. Test paths permissions
+      - type: test-log-files-exist
+        name: 05. Check log files created
+      - type: test-stop
+        name: 06. Test stop effector
+      - type: test-is-not-up
+        name: 07. Check not running
+      - type: test-process-not-running
+        name: 08. Check process not running
+      - type: test-start
+        name: 09. Test start effector
+      - type: test-healthy
+        name: 10. Check healthy
+      - type: test-restart
+        name: 11. Test restart effector
+      - type: test-healthy
+        name: 12. Check healthy
+      - type: test-restart-machine
+        name: 13. Restart machine
+      - type: test-is-not-up
+        name: 14. Check not running while restarting
+      - type: test-healthy
+        name: 15. Check healthy
+### Combined tests with target entity - system specific ###
+  - id: test-yum-upstart-brooklyn
+    item:
+      type: org.apache.brooklyn.entity.stock.BasicApplication
+      brooklyn.children:
+      - type: yum-upstart-brooklyn
+      - type: packaging-asserts
+  - id: test-yum-systemd-brooklyn
+    item:
+      type: org.apache.brooklyn.entity.stock.BasicApplication
+      brooklyn.children:
+      - type: yum-systemd-brooklyn
+      - type: packaging-asserts
+  - id: test-apt-upstart-brooklyn
+    item:
+      type: org.apache.brooklyn.entity.stock.BasicApplication
+      brooklyn.children:
+      - type: apt-upstart-brooklyn
+      - type: packaging-asserts
+  - id: test-apt-systemd-brooklyn
+    item:
+      type: org.apache.brooklyn.entity.stock.BasicApplication
+      brooklyn.children:
+      - type: apt-systemd-brooklyn
+      - type: packaging-asserts
+### How to use in a blueprint:
+### location: xxx
+### services:
+### - type: test-apt-systemd-brooklyn
+###   brooklyn.config:
+###     files.preinstall:
+###       <path to package>: brooklyn-package.{deb, rpm}

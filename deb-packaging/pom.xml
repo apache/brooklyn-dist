@@ -20,6 +20,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>deb-packaging</artifactId>
+    <packaging>pom</packaging>
     <name>Brooklyn DEB Package</name>
     <description>
         Brooklyn DEB Package for Debian and Ubuntu operating systems
@@ -38,9 +39,46 @@
             <artifactId>brooklyn-dist</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.brooklyn</groupId>
+            <artifactId>shared-packaging</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                          <artifactItems>
+                            <artifactItem>
+                              <groupId>org.apache.brooklyn</groupId>
+                              <artifactId>brooklyn-dist</artifactId>
+                              <version>${project.version}</version>
+                              <classifier>dist</classifier>
+                              <type>tar.gz</type>
+                              <outputDirectory>${project.build.directory}/deps</outputDirectory>
+                            </artifactItem>
+                            <artifactItem>
+                              <groupId>org.apache.brooklyn</groupId>
+                              <artifactId>shared-packaging</artifactId>
+                              <version>${project.version}</version>
+                              <type>jar</type>
+                              <outputDirectory>${project.build.directory}/deps/shared-packaging</outputDirectory>
+                            </artifactItem>
+                          </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>jdeb</artifactId>
                 <groupId>org.vafer</groupId>
@@ -52,36 +90,38 @@
                             <goal>jdeb</goal>
                         </goals>
                         <configuration>
-                            <verbose>true</verbose>
+                            <verbose>false</verbose>
+                            <skipPOMs>false</skipPOMs>
                             <deb>${project.build.directory}/apache-brooklyn_${project.version}_all.deb</deb>
                             <controlDir>${basedir}/deb/control</controlDir>
                             <dataSet>
                                 <data>
-                                    <src>../dist/target/brooklyn-dist</src>
+                                    <src>${project.build.directory}/deps/brooklyn-dist-${project.version}</src>
                                     <type>directory</type>
                                     <mapper>
                                         <type>perm</type>
-                                        <prefix>/opt</prefix>
+                                        <prefix>/opt/brooklyn</prefix>
                                         <user>brooklyn</user>
                                         <group>brooklyn</group>
                                     </mapper>
                                 </data>
                                 <data>
-                                    <src>../src/service/upstart/deb/brooklyn.conf</src>
+                                    <src>${project.build.directory}/deps/shared-packaging/service/upstart/deb/brooklyn.conf</src>
                                     <type>file</type>
                                     <mapper>
                                         <type>perm</type>
                                         <prefix>/etc/init</prefix>
-                                        <filemode>755</filemode>
+                                        <filemode>644</filemode>
                                     </mapper>
                                 </data>
                                 <data>
-                                    <src>../src/service/systemd/brooklyn.service</src>
+                                    <!-- TODO Probably should live in /usr/lib/systemd/system with a symlink in the following folder -->
+                                    <src>${project.build.directory}/deps/shared-packaging/service/systemd/brooklyn.service</src>
                                     <type>file</type>
                                     <mapper>
                                         <type>perm</type>
                                         <prefix>/etc/systemd/system/multi-user.target.wants</prefix>
-                                        <filemode>755</filemode>
+                                        <filemode>644</filemode>
                                     </mapper>
                                 </data>
                                 <data>
@@ -89,7 +129,6 @@
                                     <paths>
                                         <path>etc/brooklyn</path>
                                         <path>var/lib/brooklyn</path>
-                                        <path>var/log/brooklyn</path>
                                     </paths>
                                     <mapper>
                                         <type>perm</type>
@@ -98,7 +137,19 @@
                                     </mapper>
                                 </data>
                                 <data>
-                                    <src>../src/conf/brooklyn.conf</src>
+                                    <type>template</type>
+                                    <paths>
+                                        <path>var/log/brooklyn</path>
+                                    </paths>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <user>brooklyn</user>
+                                        <group>brooklyn</group>
+                                        <filemode>700</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${project.build.directory}/deps/shared-packaging/conf/brooklyn.conf</src>
                                     <type>file</type>
                                     <conffile>true</conffile>
                                     <mapper>
@@ -110,7 +161,7 @@
                                     </mapper>
                                 </data>
                                 <data>
-                                    <src>../src/conf/logback.xml</src>
+                                    <src>${project.build.directory}/deps/shared-packaging/conf/logback.xml</src>
                                     <type>file</type>
                                     <conffile>true</conffile>
                                     <mapper>
