@@ -121,6 +121,7 @@
         <module>dist</module>
         <module>vagrant</module>
         <module>archetypes/quickstart</module>
+        <module>shared-packaging</module>
     </modules>
 
     <build>
