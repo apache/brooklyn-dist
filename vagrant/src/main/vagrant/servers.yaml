@@ -50,7 +50,7 @@ servers:
         BROOKLYN_VERSION: 0.10.0-SNAPSHOT
         INSTALL_FROM_LOCAL_DIST: false
       cmd:
-        - ssh-keygen -t rsa -N "" -f id_rsa
+        - ssh-keygen -t rsa -N "" -f $HOME/.ssh/id_rsa
         - chmod a+x /vagrant/files/install_brooklyn.sh      
         - /vagrant/files/install_brooklyn.sh -v ${BROOKLYN_VERSION} -l ${INSTALL_FROM_LOCAL_DIST}
         - sudo systemctl start brooklyn
