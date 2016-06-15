@@ -40,9 +40,6 @@ else
   exit 1
 fi
 
-# remove binaries and stuff
-if [ -f pom.xml ] && [ -d target ] ; then mvn clean ; fi
-
 VERSION_MARKER_NL=${VERSION_MARKER}_BELOW
 CURRENT_VERSION=$1
 NEW_VERSION=$2
