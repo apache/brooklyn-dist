@@ -212,6 +212,24 @@ mv ${bin_staging_dir}/brooklyn-dist-${current_version} ${bin_staging_dir}/${rele
 ( cd ${bin_staging_dir} && zip -qr ${artifact_dir}/${artifact_name}-bin.zip ${release_name}-bin )
 
 ###############################################################################
+# CLI release
+set +x
+echo "Make CLI artifacts"
+set -x
+
+for p in linux windows macosx; do
+    mkdir ${bin_staging_dir}/${release_name}-client-cli-${p}
+    rsync -a ${bin_staging_dir}/${release_name}-bin/bin/brooklyn-client-cli/ ${bin_staging_dir}/${release_name}-client-cli-${p} --exclude '*.386' --exclude '*.amd64'
+done
+cp ${bin_staging_dir}/${release_name}-bin/bin/brooklyn-client-cli/linux.386/br ${bin_staging_dir}/${release_name}-client-cli-linux
+cp ${bin_staging_dir}/${release_name}-bin/bin/brooklyn-client-cli/windows.386/br.exe ${bin_staging_dir}/${release_name}-client-cli-windows
+cp ${bin_staging_dir}/${release_name}-bin/bin/brooklyn-client-cli/darwin.amd64/br ${bin_staging_dir}/${release_name}-client-cli-macosx
+for p in linux windows macosx; do
+    ( cd ${bin_staging_dir} && tar czf ${artifact_dir}/${artifact_name}-client-cli-${p}.tar.gz ${release_name}-client-cli-${p} )
+    ( cd ${bin_staging_dir} && zip -qr ${artifact_dir}/${artifact_name}-client-cli-${p}.zip ${release_name}-client-cli-${p} )
+done
+
+###############################################################################
 # Vagrant release
 set +x
 echo "Proceeding to rename and repackage vagrant environment release"
@@ -237,7 +255,7 @@ cp ${src_staging_dir}/brooklyn-dist/packaging/target/rpm/apache-brooklyn/RPMS/no
 which sha256sum >/dev/null || alias sha256sum='shasum -a 256' && shopt -s expand_aliases
 
 ( cd ${artifact_dir} &&
-    for a in *.tar.gz *.zip; do
+    for a in *.tar.gz *.zip *.rpm; do
         md5sum -b ${a} > ${a}.md5
         sha1sum -b ${a} > ${a}.sha1
         sha256sum -b ${a} > ${a}.sha256

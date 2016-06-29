@@ -84,20 +84,20 @@ detect_version
 
 if [ -z "${release_version}" ]; then
     release_version=${current_version%-SNAPSHOT}
-    [ "${release_version}" = "${current_version}" ] && fail Could not detect release version. Please provide using the -r option.
+    [ "${release_version}" = "${current_version}" ] && fail Could not detect release version. Please provide using the -v option.
 else
     [ "${release_version}" = "${current_version}" ] && { echo >&2 The provided release version is the same as the current version.; confirm || exit; }
 fi
 
 if [ -z "${continue_version}" ]; then
-    continue_version=$( perl -e 'die unless "'"$current_version"'" =~ /^(\d+)\.(\d+)\.(\d+)(.*)$/; printf "%d.%d.0-SNAPSHOT\n", $1, $2+1' ) || fail Could not detect the continuing version. Please provide using the -c option.
+    continue_version=$( perl -e 'die unless "'"$current_version"'" =~ /^(\d+)\.(\d+)\.(\d+)(.*)$/; printf "%d.%d.0-SNAPSHOT\n", $1, $2+1' ) || fail Could not detect the continuing version. Please provide using the -d option.
 else
     [ "${continue_version}" = "${current_version}" ] && { echo >&2 The provided continue version is the same as the current version.; confirm || exit; }
     [ "${continue_version}" = "${release_version}" ] && { echo >&2 The provided continue version is the same as the release version.; confirm || exit; }
 fi
 
 echo >&2 "The current version is: ${current_version}"
-echo >&2 "The release version is: ${release_version}"
+echo >&2 "The release version is: ${release_version} release candidate ${rc_suffix}"
 echo >&2 "The continuing version is: ${continue_version}"
 confirm || exit
 
