@@ -24,7 +24,7 @@
 
   <artifactId>apache-brooklyn</artifactId>
   <packaging>karaf-assembly</packaging>
-  <name>Brooklyn Karaf Distro</name>
+  <name>Brooklyn Karaf Distribution</name>
 
   <parent>
       <groupId>org.apache.brooklyn</groupId>
@@ -47,7 +47,6 @@
       <classifier>features</classifier>
       <version>${karaf.version}</version>
       <type>xml</type>
-      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -56,7 +55,6 @@
       <classifier>features</classifier>
       <version>${karaf.version}</version>
       <type>xml</type>
-      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -65,7 +63,6 @@
       <version>${project.version}</version>
       <type>xml</type>
       <classifier>features</classifier>
-      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -74,14 +71,20 @@
       <version>${project.version}</version>
       <type>xml</type>
       <classifier>features</classifier>
-      <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.brooklyn</groupId>
       <artifactId>brooklyn-library-catalog</artifactId>
       <version>${project.version}</version>
-      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.brooklyn</groupId>
+      <artifactId>brooklyn-dist-features</artifactId>
+      <version>${project.version}</version>
+      <type>xml</type>
+      <classifier>features</classifier>
     </dependency>
 
   </dependencies>
@@ -96,11 +99,11 @@
         </includes>
       </resource>
       <resource>
-	<directory>src/main/filtered-resources</directory>
-	<filtering>true</filtering>
-	<includes>
-         <include>**/*</include>
-	</includes>
+        <directory>src/main/filtered-resources</directory>
+        <filtering>true</filtering>
+        <includes>
+        <include>**/*</include>
+        </includes>
       </resource>
     </resources>
 
@@ -120,32 +123,16 @@
         <version>${karaf.version}</version>
         <extensions>true</extensions>
         <configuration>
+          <installedFeatures>
+            <feature>wrapper</feature> <!-- https://karaf.apache.org/manual/latest/wrapper -->
+          </installedFeatures>
+          <startupFeatures>
+            <feature>eventadmin</feature>
+            <feature>brooklyn-startup-features</feature>
+          </startupFeatures>
           <bootFeatures>
-            <bootFeature>aries-blueprint</bootFeature>
-            <bootFeature>bundle</bootFeature>
-            <bootFeature>config</bootFeature>
-            <bootFeature>deployer</bootFeature>
-            <bootFeature>diagnostic</bootFeature>
-            <bootFeature>feature</bootFeature>
-            <bootFeature>instance</bootFeature>
-            <bootFeature>jaas</bootFeature>
-            <bootFeature>kar</bootFeature>
-            <bootFeature>log</bootFeature>
-            <bootFeature>management</bootFeature>
-            <bootFeature>package</bootFeature>
-            <bootFeature>service</bootFeature>
-            <bootFeature>shell</bootFeature>
-            <bootFeature>shell-compat</bootFeature>
-            <bootFeature>ssh</bootFeature>
-            <bootFeature>system</bootFeature>
-            <bootFeature>wrap</bootFeature>
-            <!-- brooklyn features -->
-            <bootFeature>brooklyn-osgi-launcher</bootFeature>
-            <bootFeature>brooklyn-jsgui</bootFeature>
-            <bootFeature>brooklyn-rest-resources</bootFeature>
-            <bootFeature>brooklyn-commands</bootFeature>
-            <bootFeature>brooklyn-server-software-all</bootFeature>
-            <bootFeature>brooklyn-library-all</bootFeature>
+            <!-- Goes into org.apache.karaf.features.cfg. Can use brackets to guide loading order (same as prerequisite). -->
+            <bootFeature>brooklyn-boot</bootFeature>
           </bootFeatures>
         </configuration>
       </plugin>

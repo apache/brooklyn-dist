@@ -119,7 +119,7 @@
         <module>downstream-parent</module>
         <module>all</module>
         <module>dist</module>
-        <module>dist-karaf</module>
+        <module>karaf</module>
         <module>vagrant</module>
         <module>archetypes/quickstart</module>
         <module>shared-packaging</module>

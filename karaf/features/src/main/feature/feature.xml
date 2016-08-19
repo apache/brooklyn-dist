@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.2.0"
+          name="org.apache.brooklyn-${project.version}"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://karaf.apache.org/xmlns/features/v1.2.0">
+
+    <feature name="brooklyn-startup-features" version="${project.version}" description="Bundles to add to startup.properties">
+        <!-- Register javax.mail along with pax-logging-service so it doesn't get refreshed later -->
+        <bundle>mvn:javax.mail/mail/${javax.mail.version}</bundle>
+    </feature>
+
+    <feature name="brooklyn-guava-optional-deps" version="${project.version}" description="Guava dependencies to avoid refreshing the bundle">
+        <!-- Register javax.annotation (coming from cxf-jaxrs) before guava so it doesn't get rewired when it sees it -->
+        <bundle>mvn:javax.annotation/javax.annotation-api/${cxf.javax.annotation-api.version}</bundle>
+    </feature>
+
+    <feature name="brooklyn-headless" version="${project.version}" description="All Brooklyn bundles witht the exception of the launcher">
+        <feature prerequisite="true">standard</feature>
+        <feature prerequisite="true">brooklyn-guava-optional-deps</feature>
+        <feature>brooklyn-core</feature>
+        <feature>brooklyn-rest-resources</feature>
+        <feature>brooklyn-commands</feature>
+        <feature>brooklyn-server-software-all</feature>
+        <feature>brooklyn-library-all</feature>
+        <feature>brooklyn-locations-jclouds</feature>
+    </feature>
+
+    <feature name="brooklyn-jsgui-prereqs" version="${project.version}" description="Brooklyn REST JavaScript Web GUI">
+        <feature>pax-jetty</feature> <!-- jaas bundle -->
+        <bundle>mvn:org.apache.brooklyn/brooklyn-karaf-jetty-config/${project.version}</bundle>
+        <feature>war</feature>
+    </feature>
+
+    <feature name="brooklyn-jsgui" version="${project.version}" description="Brooklyn REST JavaScript Web GUI">
+        <feature>brooklyn-jsgui-prereqs</feature>
+        <bundle>mvn:org.apache.brooklyn/brooklyn-jsgui/${project.version}/war</bundle>
+    </feature>
+
+    <feature name="brooklyn-boot" version="${project.version}" description="Bundles to start on boot">
+        <feature prerequisite="true">brooklyn-headless</feature>
+        <feature prerequisite="true">brooklyn-jsgui</feature>
+        <feature>brooklyn-osgi-launcher</feature>
+    </feature>
+
+</features>
