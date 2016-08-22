@@ -23,9 +23,9 @@
 
     <artifactId>brooklyn-dist-karaf</artifactId>
 
-    <name>Brooklyn Karaf Distribution</name>
+    <name>Brooklyn Karaf Distribution Parent</name>
     <description>
-        Brooklyn Apache Karaf distribution archive
+        Brooklyn Apache Karaf Distribution Parent
     </description>
 
     <parent>
@@ -62,6 +62,7 @@
     </properties>
 
     <modules>
+        <module>features</module>
         <module>apache-brooklyn</module>
         <module>itest</module>
     </modules>
