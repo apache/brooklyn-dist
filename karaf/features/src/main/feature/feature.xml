@@ -21,6 +21,30 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:noNamespaceSchemaLocation="http://karaf.apache.org/xmlns/features/v1.2.0">
 
+    <feature name="brooklyn-standard-karaf" version="${project.version}" description="Karaf standard feature with RMI excluded">
+        <feature>wrap</feature>
+        <feature>aries-blueprint</feature>
+        <feature>shell</feature>
+        <feature>shell-compat</feature>
+        <feature>feature</feature>
+        <feature>jaas</feature>
+        <feature>ssh</feature>
+        <!-- Don't load the feature as it opens ports protected by the default credentials -->
+        <!-- Could alternatively reconfigure the feature to use more restricted realm, but we don't use this functionality anyway. -->
+        <!-- feature>management</feature -->
+        <feature>bundle</feature>
+        <feature>config</feature>
+        <feature>deployer</feature>
+        <feature>diagnostic</feature>
+        <feature>feature</feature>
+        <feature>instance</feature>
+        <feature>kar</feature>
+        <feature>log</feature>
+        <feature>package</feature>
+        <feature>service</feature>
+        <feature>system</feature>
+    </feature>
+
     <feature name="brooklyn-startup-features" version="${project.version}" description="Bundles to add to startup.properties">
         <!-- Register javax.mail along with pax-logging-service so it doesn't get refreshed later -->
         <bundle>mvn:javax.mail/mail/${javax.mail.version}</bundle>
@@ -32,7 +56,7 @@
     </feature>
 
     <feature name="brooklyn-headless" version="${project.version}" description="All Brooklyn bundles witht the exception of the launcher">
-        <feature prerequisite="true">standard</feature>
+        <feature prerequisite="true">brooklyn-standard-karaf</feature>
         <feature prerequisite="true">brooklyn-guava-optional-deps</feature>
         <feature>brooklyn-core</feature>
         <feature>brooklyn-rest-resources</feature>
