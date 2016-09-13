@@ -18,22 +18,8 @@
 #
 brooklyn.catalog:
   version: "0.10.0-SNAPSHOT"  # BROOKLYN_VERSION
-### brooklyn install entities ###
-  apt-config: &apt-config
-    install.command: |
-      sudo apt-get update
-      sudo apt-get install -y default-jre-headless
-      sudo dpkg -i brooklyn-package.deb
-  yum-config: &yum-config
-    install.command: |
-      if sudo iptables -L | grep REJECT; then
-        # Only for CentOS 6
-        sudo iptables -I INPUT -p tcp -m tcp --dport 8081 -j ACCEPT
-        sudo service iptables save
-      fi
-      sudo yum -y install java-1.7.0-openjdk.x86_64
-      sudo yum -y install brooklyn-package.rpm
   items:
+
   - id: systemd-brooklyn
     item:
       type: org.apache.brooklyn.entity.software.base.VanillaSoftwareProcess
@@ -44,6 +30,7 @@ brooklyn.catalog:
           sudo systemctl status brooklyn
         stop.command: |
           sudo systemctl stop brooklyn
+
   - id: upstart-brooklyn
     item:
       type: org.apache.brooklyn.entity.software.base.VanillaSoftwareProcess
@@ -54,26 +41,64 @@ brooklyn.catalog:
           sudo status brooklyn | grep running
         stop.command: |
           sudo stop brooklyn
+
   - id: apt-systemd-brooklyn
     item:
       type: systemd-brooklyn
       id: brooklyn
-      brooklyn.config: *apt-config
+      brooklyn.config:
+        files.preinstall:
+          $brooklyn:config("package.file") : brooklyn-package.deb
+        install.command: |
+          sudo apt-get update
+          sudo apt-get install -y default-jre-headless
+          sudo dpkg -i brooklyn-package.deb
+
   - id: apt-upstart-brooklyn
     item:
       type: upstart-brooklyn
       id: brooklyn
-      brooklyn.config: *apt-config
+      brooklyn.config:
+        files.preinstall:
+          $brooklyn:config("package.file"): brooklyn-package.deb
+        install.command: |
+          sudo apt-get update
+          sudo apt-get install -y default-jre-headless
+          sudo dpkg -i brooklyn-package.deb
+
   - id: yum-systemd-brooklyn
     item:
       type: systemd-brooklyn
       id: brooklyn
-      brooklyn.config: *yum-config
+      brooklyn.config:
+        files.preinstall:
+          $brooklyn:config("package.file"): brooklyn-package.rpm
+        install.command: |
+          if sudo iptables -L | grep REJECT; then
+            # Only for CentOS 6
+            sudo iptables -I INPUT -p tcp -m tcp --dport 8081 -j ACCEPT
+            sudo service iptables save
+          fi
+          sudo yum -y install java-1.7.0-openjdk.x86_64
+          sudo yum -y install brooklyn-package.rpm
+
   - id: yum-upstart-brooklyn
     item:
       type: upstart-brooklyn
       id: brooklyn
-      brooklyn.config: *yum-config
+      brooklyn.config:
+        files.preinstall:
+          $brooklyn:config("package.file") : brooklyn-package.rpm
+        install.command: |
+          if sudo iptables -L | grep REJECT; then
+            # Only for CentOS 6
+            sudo iptables -I INPUT -p tcp -m tcp --dport 8081 -j ACCEPT
+            sudo service iptables save
+          fi
+          sudo yum -y install java-1.7.0-openjdk.x86_64
+          sudo yum -y install brooklyn-package.rpm
+
+
 ### Tests ###
   - id: test-is-up
     item:

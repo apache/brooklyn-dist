@@ -25,8 +25,7 @@ services:
       # privateKeyFile: ~/.ssh/<private key>
       user: vagrant
   brooklyn.config:
-    files.preinstall:
-      ~/.m2/repository/org/apache/brooklyn/deb-packaging/0.10.0-SNAPSHOT/deb-packaging-0.10.0-SNAPSHOT.deb: brooklyn-package.deb # BROOKLYN_VERSION
+    package.file:  ~/.m2/repository/org/apache/brooklyn/deb-packaging/0.10.0-SNAPSHOT/deb-packaging-0.10.0-SNAPSHOT.deb # BROOKLYN_VERSION
 
 ---
 
@@ -39,8 +38,7 @@ services:
       # privateKeyFile: ~/.ssh/<private key>
       user: vagrant
   brooklyn.config:
-    files.preinstall:
-      ~/.m2/repository/org/apache/brooklyn/deb-packaging/0.10.0-SNAPSHOT/deb-packaging-0.10.0-SNAPSHOT.deb: brooklyn-package.deb # BROOKLYN_VERSION
+    package.file: ~/.m2/repository/org/apache/brooklyn/deb-packaging/0.10.0-SNAPSHOT/deb-packaging-0.10.0-SNAPSHOT.deb # BROOKLYN_VERSION
 
 ---
 
@@ -53,8 +51,7 @@ services:
       # privateKeyFile: ~/.ssh/<private key>
       user: vagrant
   brooklyn.config:
-    files.preinstall:
-      ~/.m2/repository/org/apache/brooklyn/rpm-packaging/0.10.0-SNAPSHOT/rpm-packaging-0.10.0-SNAPSHOT.rpm: brooklyn-package.rpm # BROOKLYN_VERSION
+    package.file: ~/.m2/repository/org/apache/brooklyn/rpm-packaging/0.10.0-SNAPSHOT/rpm-packaging-0.10.0-SNAPSHOT.rpm # BROOKLYN_VERSION
 
 ---
 
@@ -67,37 +64,6 @@ services:
       # privateKeyFile: ~/.ssh/<private key>
       user: vagrant
   brooklyn.config:
-    files.preinstall:
-      ~/.m2/repository/org/apache/brooklyn/rpm-packaging/0.10.0-SNAPSHOT/rpm-packaging-0.10.0-SNAPSHOT.rpm: brooklyn-package.rpm # BROOKLYN_VERSION
+    package.file: ~/.m2/repository/org/apache/brooklyn/rpm-packaging/0.10.0-SNAPSHOT/rpm-packaging-0.10.0-SNAPSHOT.rpm # BROOKLYN_VERSION
 
 
----
-
-# Vagrantfile
-Vagrant.configure(2) do |config|
-  config.vm.provider "virtualbox" do |vb|
-    vb.memory = "1024"
-    vb.customize ["modifyvm", :id, "--nictype1", "virtio"]
-    vb.customize ["modifyvm", :id, "--nictype2", "virtio"]
-  end
-  config.vm.provision "shell", privileged: false, inline: <<-SHELL
-    echo "<REPLACE public key fingerprint>" >> ~/.ssh/authorized_keys
-  SHELL
-
-  config.vm.define "apt-systemd" do |config|
-    config.vm.box = "ubuntu/wily64"
-    config.vm.network "private_network", ip: "172.28.128.3"
-  end
-  config.vm.define "apt-upstart" do |config|
-    config.vm.box = "ubuntu/trusty64"
-    config.vm.network "private_network", ip: "172.28.128.4"
-  end
-  config.vm.define "yum-systemd" do |config|
-    config.vm.box = "centos/7"
-    config.vm.network "private_network", ip: "172.28.128.5"
-  end
-  config.vm.define "yum-upstart" do |config|
-    config.vm.box = "nrel/CentOS-6.5-x86_64"
-    config.vm.network "private_network", ip: "172.28.128.6"
-  end
-end
