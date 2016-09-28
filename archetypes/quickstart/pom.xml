@@ -180,6 +180,7 @@
                 <replacement> <token>\$</token> <value>\\\$</value> </replacement>
                 -->
                 
+                <replacement> <token>brooklyn-sample-extra-repo-url</token> <value>\$\{archetypeRepository}</value> </replacement>
                 <replacement> <token>brooklyn-sample</token> <value>\$\{artifactId}</value> </replacement>
                 <replacement> <token>com\.acme\.sample\.brooklyn</token> <value>\$\{package}</value> </replacement>
                 <replacement> <token>com/acme/sample/brooklyn</token> <value>\$\{packageInPathFormat}</value> </replacement>
