@@ -47,6 +47,11 @@
 
   <repositories>
     <repository>
+      <id>extra.repo</id>
+      <name>Extra Repository</name>
+      <url>brooklyn-sample-extra-repo-url</url> 
+    </repository>
+    <repository>
       <id>apache.snapshots</id>
       <name>Apache Snapshot Repository</name>
       <url>http://repository.apache.org/snapshots</url>
