@@ -49,7 +49,7 @@
     <repository>
       <id>extra.repo</id>
       <name>Extra Repository</name>
-      <url>brooklyn-sample-extra-repo-url</url> 
+      <url>extra://brooklyn-sample-extra-repo-url</url>
     </repository>
     <repository>
       <id>apache.snapshots</id>

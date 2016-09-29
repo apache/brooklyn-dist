@@ -120,6 +120,7 @@
               <outputDir>src/main/resources/archetype-resources/src/main/java</outputDir>
               <includes> <include>**/*</include> </includes>
               <replacements>
+                <replacement> <token>extra://brooklyn-sample-extra-repo-url</token> <value>\$\{archetypeRepository}</value> </replacement>
                 <replacement> <token>brooklyn-sample</token> <value>\$\{artifactId}</value> </replacement>
                 <replacement> <token>com\.acme\.sample\.brooklyn</token> <value>\$\{package}</value> </replacement>
                 <replacement> <token>com/acme/sample/brooklyn</token> <value>\$\{packageInPathFormat}</value> </replacement>
@@ -139,6 +140,7 @@
               <outputDir>src/main/resources/archetype-resources/src/test/java</outputDir>
               <includes> <include>**/*</include> </includes>
               <replacements>
+                <replacement> <token>extra://brooklyn-sample-extra-repo-url</token> <value>\$\{archetypeRepository}</value> </replacement>
                 <replacement> <token>brooklyn-sample</token> <value>\$\{artifactId}</value> </replacement>
                 <replacement> <token>com\.acme\.sample\.brooklyn</token> <value>\$\{package}</value> </replacement>
                 <replacement> <token>com/acme/sample/brooklyn</token> <value>\$\{packageInPathFormat}</value> </replacement>
@@ -180,7 +182,7 @@
                 <replacement> <token>\$</token> <value>\\\$</value> </replacement>
                 -->
                 
-                <replacement> <token>brooklyn-sample-extra-repo-url</token> <value>\$\{archetypeRepository}</value> </replacement>
+                <replacement> <token>extra://brooklyn-sample-extra-repo-url</token> <value>\$\{archetypeRepository}</value> </replacement>
                 <replacement> <token>brooklyn-sample</token> <value>\$\{artifactId}</value> </replacement>
                 <replacement> <token>com\.acme\.sample\.brooklyn</token> <value>\$\{package}</value> </replacement>
                 <replacement> <token>com/acme/sample/brooklyn</token> <value>\$\{packageInPathFormat}</value> </replacement>
