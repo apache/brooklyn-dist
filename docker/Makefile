@@ -16,28 +16,33 @@ image-only:
 	docker build -t brooklyncentral/brooklyn:$(BROOKLYN_VERSION) .
 
 image-debug: prep
-	docker build -t brooklyncentral/brooklyn:${BROOKLYN_VERSION} --build-arg debug=true .
+        # image based on ubuntu (instead of alpine) with more tools installed and better debug output
+	docker build -t brooklyncentral/brooklyn:${BROOKLYN_VERSION}-debug -f Dockerfile-debug-ubuntu .
 
 all: prep image-only
 
-# copy this if you want to pass arguments
+
+# illustrations, useful for copy-pasting
+
 run:
         # BROOKLYN_VERSION_BELOW
-	docker run -p 8081:8081 brooklyncentral/brooklyn:0.10.0-SNAPSHOT
+	docker run -d -p 8081:8081 brooklyncentral/brooklyn:0.10.0-SNAPSHOT --password S3CR3T > /tmp/brooklyn_container
+	docker logs -f `cat /tmp/brooklyn_container`
 
 run-shell:
 	docker run -ti --entrypoint /bin/bash brooklyncentral/brooklyn:$(BROOKLYN_VERSION)
 
 
-# an example
+# an example pre-installing blueprints and even taking a location as argument to quick launch
 
 example-image-hyperledger: prep
 	docker build -t brooklyncentral/brooklyn-hyperledger \
 	  --build-arg install_bom="https://raw.githubusercontent.com/cloudsoft/brooklyn-hyperledger/master/docker.bom https://raw.githubusercontent.com/cloudsoft/brooklyn-hyperledger/master/catalog.bom" \
-          --build-arg application=hyperledger-fabric-multi-cluster-application \
+          --build-arg application=hyperledger-fabric-single-cluster-application \
 	  .
 
 example-run-hyperledger:
-	docker run -p 8081:8081 brooklyncentral/brooklyn-hyperledger
+	# add   id:cred@cloud   as an argument to launch the blueprint in that cloud
+	docker run -p 8081:8081 brooklyncentral/brooklyn-hyperledger --password S3CR3T
 
 

@@ -18,11 +18,27 @@
 #
 
 
-FROM openjdk:8-jre-alpine
+FROM ubuntu:latest
+# other options: alpine:latest openjdk:8-jre-alpine
+
 MAINTAINER Alex Heneveld "alex@cloudsoft.io"
 
-RUN apk add --update bash openssh && rm -rf /var/cache/apk/*
-RUN adduser -D brooklyn
+RUN \
+  apt-get update ; \
+  apt-get install -y openjdk-8-jre-headless ; \
+  # options: openjdk-8-jre-headless default-jre ; \
+  apt-get install -y ssh
+
+# debug installs extra things
+ENV debug true
+RUN \
+  if [ -n "${debug}" ] ; then \
+    apt-get update ; \
+    apt-get install -y sudo zip tar less curl vim ; \
+  fi
+
+# run as user brooklyn
+RUN adduser brooklyn < /dev/null
 WORKDIR /home/brooklyn
 
 # now install software brooklyn
