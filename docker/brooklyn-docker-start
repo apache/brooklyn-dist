@@ -172,7 +172,7 @@ location:
     identity: ${creds/:*/}
     credential: ${creds/*:/}
 EOF
-  cat initial.yaml
+  cat initial.yaml | sed 's/\(.*credential:\).*/\1 <suppressed>/'
   ARGS+=(--app file://`pwd -P`/initial.yaml)
 fi
 
