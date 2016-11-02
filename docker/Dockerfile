@@ -53,6 +53,7 @@ RUN \
   fi
 
 # and start
+EXPOSE 8081
 ENTRYPOINT ["bin/brooklyn-docker-start"]
 CMD []
 
