@@ -133,6 +133,7 @@
                 <configuration>
                     <excludes combine.children="append">
                         <exclude>scripts/README.md</exclude>
+                        <exclude>docker/README.md</exclude>
                     </excludes>
                 </configuration>
             </plugin>
