@@ -21,7 +21,8 @@
 FROM openjdk:8-jre-alpine
 MAINTAINER Alex Heneveld "alex@cloudsoft.io"
 
-RUN apk add --update bash openssh && rm -rf /var/cache/apk/*
+RUN apk add --update --no-cache bash openssh ; \
+    mv /dev/random /dev/random-real && ln -s /dev/urandom /dev/random
 RUN adduser -D brooklyn
 WORKDIR /home/brooklyn
 
