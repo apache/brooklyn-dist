@@ -75,6 +75,7 @@ IF NOT "%BROOKLYN_CLASSPATH%"=="" SET "INITIAL_CLASSPATH=%BROOKLYN_CLASSPATH%;%I
 REM force resolution of localhost to be loopback, otherwise we hit problems
 REM TODO should be changed in code
 SET JAVA_OPTS=-Dbrooklyn.location.localhost.address=127.0.0.1 %JAVA_OPTS%
+SET JAVA_OPTS=-XX:SoftRefLRUPolicyMSPerMB=1 %JAVA_OPTS%
 
 REM workaround for http://bugs.sun.com/view_bug.do?bug_id=4787931
 SET JAVA_OPTS=-Duser.home="%USERPROFILE%" %JAVA_OPTS%
