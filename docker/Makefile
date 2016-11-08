@@ -55,7 +55,7 @@ run-shell:
 
 example-image-hyperledger: prep
 	docker build -t brooklyncentral/brooklyn-hyperledger \
-	  --build-arg install_bom="https://raw.githubusercontent.com/cloudsoft/brooklyn-hyperledger/master/docker.bom https://raw.githubusercontent.com/cloudsoft/brooklyn-hyperledger/master/catalog.bom" \
+	  --build-arg install_boms="https://raw.githubusercontent.com/cloudsoft/brooklyn-hyperledger/master/docker.bom https://raw.githubusercontent.com/cloudsoft/brooklyn-hyperledger/master/catalog.bom" \
           --build-arg application=hyperledger-fabric-single-cluster-application \
 	  .
 
