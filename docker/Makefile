@@ -55,7 +55,8 @@ run-shell:
 
 example-image-hyperledger: prep
 	docker build -t brooklyncentral/brooklyn-hyperledger \
-	  --build-arg install_boms="https://raw.githubusercontent.com/cloudsoft/brooklyn-hyperledger/master/docker.bom https://raw.githubusercontent.com/cloudsoft/brooklyn-hyperledger/master/catalog.bom" \
+	  --build-arg install_boms="https://raw.githubusercontent.com/cloudsoft/brooklyn-hyperledger/master/docker.bom \
+	    https://raw.githubusercontent.com/cloudsoft/brooklyn-hyperledger/master/catalog.bom" \
           --build-arg application=hyperledger-fabric-single-cluster-application \
 	  .
 
@@ -63,4 +64,13 @@ example-run-hyperledger:
 	# add   id:cred@cloud   as an argument to launch the blueprint in that cloud
 	docker run -p 8081:8081 brooklyncentral/brooklyn-hyperledger --password S3CR3T
 
+example-image-kubernetes: prep
+	docker build -t brooklyncentral/brooklyn-kubernetes \
+	  --build-arg install_boms="classpath://swarm/catalog.bom classpath://kubernetes/catalog.bom" \
+	  --build-arg dropins_jars="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=io.brooklyn.etcd&a=brooklyn-etcd&v=2.3.0-SNAPSHOT \
+	    https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=io.brooklyn.clocker&a=clocker-common&v=2.1.0-SNAPSHOT \
+	    https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=io.brooklyn.clocker&a=clocker-swarm&v=2.1.0-SNAPSHOT \
+	    https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=io.brooklyn.clocker&a=clocker-kubernetes&v=2.1.0-SNAPSHOT" \
+         --build-arg application=kubernetes-cluster-template \
+         .
 
