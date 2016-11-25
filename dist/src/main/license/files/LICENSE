@@ -239,33 +239,33 @@ This project includes the software: codemirror.js
   CodeMirror (c) Marijn Haverbeke and others
 
 This project includes the software: com.fasterxml.jackson.core
-  Available at: http://github.com/FasterXML/jackson https://github.com/FasterXML/jackson
+  Available at: http://github.com/FasterXML/jackson https://github.com/FasterXML/jackson-core
   Developed by: FasterXML (http://fasterxml.com/)
-  Version used: 2.4.5
+  Version used: 2.7.5
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.fasterxml.jackson.dataformat
-  Available at: https://github.com/FasterXML/jackson http://wiki.fasterxml.com/JacksonExtensionXmlDataBinding
+  Available at: http://wiki.fasterxml.com/JacksonExtensionXmlDataBinding https://github.com/FasterXML/jackson
   Developed by: FasterXML (http://fasterxml.com/)
-  Version used: 2.4.5
+  Version used: 2.7.5
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.fasterxml.jackson.datatype
-  Available at: http://wiki.fasterxml.com/JacksonModuleJoda
+  Available at: https://github.com/FasterXML/jackson-datatypes-collections http://wiki.fasterxml.com/JacksonModuleJoda
   Developed by: FasterXML (http://fasterxml.com/)
-  Version used: 2.4.5
+  Version used: 2.7.5
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.fasterxml.jackson.jaxrs
   Available at: http://wiki.fasterxml.com/JacksonHome
   Developed by: FasterXML (http://fasterxml.com/)
-  Version used: 2.4.5
+  Version used: 2.7.5
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.fasterxml.jackson.module
-  Available at: http://wiki.fasterxml.com/JacksonJAXBAnnotations
+  Available at: http://github.com/FasterXML/jackson-module-jaxb-annotations
   Developed by: FasterXML (http://fasterxml.com/)
-  Version used: 2.4.5
+  Version used: 2.7.5
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.google.code.findbugs
@@ -281,13 +281,7 @@ This project includes the software: com.google.code.gson
 
 This project includes the software: com.google.guava
   Available at: http://code.google.com/p/guava-libraries
-  Version used: 17.0
-  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-This project includes the software: com.google.http-client
-  Available at: http://code.google.com/p/google-http-java-client/
-  Developed by: Google (http://www.google.com/)
-  Version used: 1.18.0-rc
+  Version used: 16.0.1
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.google.inject
@@ -301,11 +295,6 @@ This project includes the software: com.google.inject.extensions
   Developed by: Google, Inc. (http://www.google.com)
   Version used: 3.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-This project includes the software: com.googlecode.concurrentlinkedhashmap
-  Available at: http://code.google.com/p/concurrentlinkedhashmap
-  Version used: 1.0_jdk5
-  Used under the following license: Apache License (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.jamesmurty.utils
   Available at: https://github.com/jmurty/java-xmlbuilder
@@ -326,13 +315,13 @@ This project includes the software: com.jcraft
 This project includes the software: com.maxmind.db
   Available at: http://dev.maxmind.com/
   Developed by: MaxMind, Inc. (http://www.maxmind.com/)
-  Version used: 0.3.4
+  Version used: 1.2.1
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 This project includes the software: com.maxmind.geoip2
   Available at: http://dev.maxmind.com/geoip/geoip2/web-services
   Developed by: MaxMind, Inc. (http://www.maxmind.com/)
-  Version used: 0.8.1
+  Version used: 2.8.0-rc1
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 This project includes the software: com.squareup.okhttp
@@ -354,7 +343,7 @@ This project includes the software: com.sun.xml.bind
 This project includes the software: com.thoughtworks.xstream
   Available at: http://x-stream.github.io/
   Developed by: XStream (http://xstream.codehaus.org)
-  Version used: 1.4.7
+  Version used: 1.4.8
   Used under the following license: BSD License (http://xstream.codehaus.org/license.html)
 
 This project includes the software: commons-beanutils
@@ -413,10 +402,15 @@ This project includes the software: Font Awesome (fonts)
   Used under the following license: SIL OFL 1.1 (http://scripts.sil.org/OFL)
   Copyright (c) Dave Gandy (2016)
 
-This project includes the software: github.com/codegangsta/cli
-  Available at: https://github.com/codegangsta/cli
+This project includes the software: github.com/NodePrime/jsonpath/cli/jsonpath
+  Available at: github.com/NodePrime/jsonpath/
   Used under the following license: The MIT License (http://opensource.org/licenses/MIT)
-  Copyright (C) 2013 Jeremy Saenz
+  Copyright (c) 2015 NodePrime Inc.
+
+This project includes the software: github.com/urfave/cli
+  Available at: https://github.com/urfave/cli
+  Used under the following license: The MIT License (http://opensource.org/licenses/MIT)
+  Copyright (c) 2016 Jeremy Saenz & Contributors
 
 This project includes the software: golang.org/x/crypto/ssh
   Available at: https://godoc.org/golang.org/x/crypto/ssh
@@ -438,12 +432,12 @@ This project includes the software: io.airlift
 
 This project includes the software: io.cloudsoft.windows
   Available at: http://github.com/cloudsoft/winrm4j
-  Version used: 0.3.5
+  Version used: 0.4.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: io.swagger
   Available at: https://github.com/swagger-api/swagger-core
-  Version used: 1.5.3
+  Version used: 1.5.6
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 This project includes the software: javax.annotation
@@ -477,9 +471,9 @@ This project includes the software: javax.ws.rs
   Used under the following license: Common Development and Distribution License, version 1.1 (http://glassfish.java.net/public/CDDL+GPL_1_1.html)
 
 This project includes the software: joda-time
-  Available at: http://joda-time.sourceforge.net
+  Available at: http://www.joda.org/joda-time/
   Developed by: Joda.org (http://www.joda.org)
-  Version used: 2.2
+  Version used: 2.4
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: jQuery JavaScript Library
@@ -502,6 +496,14 @@ This project includes the software: jQuery BBQ: Back Button & Query Library
   Used under the following license: The MIT License (http://opensource.org/licenses/MIT)
   Copyright (c) "Cowboy" Ben Alman (2010)"
 
+This project includes the software: jQuery hashchange event
+  Available at: http://benalman.com/projects/jquery-hashchange-plugin/
+  Developed by: "Cowboy" Ben Alman (http://benalman.com/)
+  Inclusive of: jquery.ba-bbq*.js
+  Version used: 1.2
+  Used under the following license: The MIT License (http://opensource.org/licenses/MIT)
+  Copyright (c) "Cowboy" Ben Alman (2010)"
+
 This project includes the software: DataTables Table plug-in for jQuery
   Available at: http://www.datatables.net/
   Developed by: SpryMedia Ltd (http://sprymedia.co.uk/)
@@ -512,7 +514,7 @@ This project includes the software: DataTables Table plug-in for jQuery
 
 This project includes the software: jquery.easy-autocomplete.js
   Available at: https://github.com/pawelczak/EasyAutocomplete
-  Version used: 1.3.1
+  Version used: 1.3.3
   Used under the following license: The MIT License (http://opensource.org/licenses/MIT)
   Copyright (c) Łukasz Pawełczak (2015)
 
@@ -604,7 +606,7 @@ This project includes the software: org.apache.cxf
 This project includes the software: org.apache.felix
   Available at: http://felix.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 4.4.0
+  Version used: 5.4.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.httpcomponents
@@ -748,8 +750,8 @@ This project includes the software: org.tukaani
 
 This project includes the software: org.yaml
   Available at: http://www.snakeyaml.org
-  Version used: 1.11
-  Used under the following license: Apache License, version 2.0 (in-project reference: LICENSE.txt)
+  Version used: 1.16
+  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: RequireJS
   Available at: http://requirejs.org/
