@@ -101,13 +101,21 @@
 
 # used in brooklyn-client (Go project)
 
-- id: github.com/codegangsta/cli
-  url: https://github.com/codegangsta/cli
-  name: github.com/codegangsta/cli
-  description: A small package for building command line apps in Go
+- id: github.com/urfave/cli
+  url: https://github.com/urfave/cli
+  name: github.com/urfave/cli
+  description: A simple, fast, and fun package for building command line apps in Go
   license: MIT
   notices:
-  - Copyright (C) 2013 Jeremy Saenz
+  - Copyright (c) 2016 Jeremy Saenz & Contributors
+
+- id: github.com/NodePrime/jsonpath/cli/jsonpath
+  url: github.com/NodePrime/jsonpath/
+  name: github.com/NodePrime/jsonpath/cli/jsonpath
+  description: OpenSource JSON-Path
+  license: MIT
+  notices:
+  - Copyright (c) 2015 NodePrime Inc.
 
 - id: golang.org/x/crypto/ssh
   url: https://godoc.org/golang.org/x/crypto/ssh
@@ -168,7 +176,7 @@
 # not used anymore? swagger-ui includes what it needs, it seems.
 - id: swagger:2.1.6
   name: Swagger JS
-  files: swagger-client.js
+  files: swagger-client.js swagger.css
   version: 2.1.6
   url: https://github.com/swagger-api/swagger-js
   license: ASL2
@@ -259,7 +267,7 @@
   license: MIT
 
 - id: jquery.easy-autocomplete.js
-  version: 1.3.1
+  version: 1.3.3
   url: https://github.com/pawelczak/EasyAutocomplete
   notice: Copyright (c) Łukasz Pawełczak (2015)
   license: MIT
@@ -318,6 +326,15 @@
   files: jquery.ba-bbq*.js
   version: 1.2.1
   url: http://benalman.com/projects/jquery-bbq-plugin/
+  organization: { name: "\"Cowboy\" Ben Alman", url: "http://benalman.com/" }
+  notice: Copyright (c) "Cowboy" Ben Alman (2010)"
+  license: MIT
+
+- id: jquery.ba-bbq.js-hashchange
+  name: "jQuery hashchange event"
+  files: jquery.ba-bbq*.js
+  version: 1.2
+  url: http://benalman.com/projects/jquery-hashchange-plugin/
   organization: { name: "\"Cowboy\" Ben Alman", url: "http://benalman.com/" }
   notice: Copyright (c) "Cowboy" Ben Alman (2010)"
   license: MIT
