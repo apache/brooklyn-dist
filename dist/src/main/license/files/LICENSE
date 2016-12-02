@@ -251,7 +251,7 @@ This project includes the software: com.fasterxml.jackson.dataformat
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.fasterxml.jackson.datatype
-  Available at: https://github.com/FasterXML/jackson-datatypes-collections http://wiki.fasterxml.com/JacksonModuleJoda
+  Available at: http://wiki.fasterxml.com/JacksonModuleJoda
   Developed by: FasterXML (http://fasterxml.com/)
   Version used: 2.7.5
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -281,7 +281,7 @@ This project includes the software: com.google.code.gson
 
 This project includes the software: com.google.guava
   Available at: http://code.google.com/p/guava-libraries
-  Version used: 16.0.1
+  Version used: 18.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.google.inject
@@ -571,7 +571,7 @@ This project includes the software: net.iharder
 
 This project includes the software: net.java.dev.jna
   Available at: https://github.com/twall/jna
-  Version used: 4.0.0
+  Version used: 4.1.0
   Used under the following license: Apache License, version 2.0 (http://www.gnu.org/licenses/licenses.html)
 
 This project includes the software: net.minidev
