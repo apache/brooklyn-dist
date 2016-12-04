@@ -205,11 +205,19 @@ else
 fi
 
 # Re-pack the archive with the correct names
+# Classic release
 tar xzf ${src_staging_dir}/brooklyn-dist/dist/target/brooklyn-dist-${current_version}-dist.tar.gz -C ${bin_staging_dir}
 mv ${bin_staging_dir}/brooklyn-dist-${current_version} ${bin_staging_dir}/${release_name}-bin
 
 ( cd ${bin_staging_dir} && tar czf ${artifact_dir}/${artifact_name}-bin.tar.gz ${release_name}-bin )
 ( cd ${bin_staging_dir} && zip -qr ${artifact_dir}/${artifact_name}-bin.zip ${release_name}-bin )
+
+# Karaf release
+tar xzf ${src_staging_dir}/brooklyn-dist/karaf/apache-brooklyn/target/apache-brooklyn-${current_version}.tar.gz -C ${bin_staging_dir}
+mv ${bin_staging_dir}/apache-brooklyn-${current_version} ${bin_staging_dir}/${release_name}-karaf
+
+( cd ${bin_staging_dir} && tar czf ${artifact_dir}/${artifact_name}-karaf.tar.gz ${release_name}-karaf )
+( cd ${bin_staging_dir} && zip -qr ${artifact_dir}/${artifact_name}-karaf.zip ${release_name}-karaf )
 
 ###############################################################################
 # CLI release
@@ -245,7 +253,7 @@ mv ${bin_staging_dir}/brooklyn-vagrant-${current_version} ${bin_staging_dir}/${r
 ###############################################################################
 # RPM artifacts
 
-cp ${src_staging_dir}/brooklyn-dist/packaging/target/rpm/apache-brooklyn/RPMS/noarch/apache-brooklyn-${current_version}-1.noarch.rpm ${artifact_dir}/${release_name}-1.noarch.rpm
+cp ${src_staging_dir}/brooklyn-dist/rpm-packaging/target/rpm/apache-brooklyn/RPMS/noarch/apache-brooklyn-${current_version}-1.noarch.rpm ${artifact_dir}/${release_name}-1.noarch.rpm
 
 ###############################################################################
 # Signatures and checksums
