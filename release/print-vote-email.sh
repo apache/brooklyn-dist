@@ -43,7 +43,8 @@ if ! echo $archetype_check | grep ${VERSION_NAME} > /dev/null ; then
   fail wrong version at https://repository.apache.org/content/repositories/${staging_repo_id}
 fi
 
-artifact=release/tmp/${base}/${base}-bin.tar.gz
+RELEASE_FOLDER=$(dirname $0)/${base}
+artifact=${RELEASE_FOLDER}/${base}-bin.tar.gz
 if [ ! -f $artifact ] ; then
   fail could not find artifact $artifact
 fi
@@ -70,13 +71,15 @@ binary distribution, and Maven artifacts.
 The source and binary distributions, including signatures, digests, etc. can
 be found at:
 
-  https://dist.apache.org/repos/dist/dev/incubator/brooklyn/${base}
+  https://dist.apache.org/repos/dist/dev/brooklyn/${base}
 
 The artifact SHA-256 checksums are as follows:
 
 EOF
 
-cat release/tmp/${base}/*.sha256 | awk '{print "  "$0}'
+cat ${RELEASE_FOLDER}/*.sha256 | awk '{print "  "$0}'
+COMMIT_IDS_MESSAGE=$(echo -n "brooklyn: " && git rev-parse HEAD && git submodule --quiet foreach 'echo -n "${name}: " && git rev-parse HEAD')
+
 
 cat <<EOF
 
@@ -90,13 +93,13 @@ All release artifacts are signed with the following key:
 
 KEYS file available here:
 
-    https://dist.apache.org/repos/dist/release/incubator/brooklyn/KEYS
+    https://dist.apache.org/repos/dist/release/brooklyn/KEYS
 
 
-The artifacts were built from git commit ID $( git rev-parse HEAD ):
+The artifacts were built from git commit IDs:
 
-    https://git-wip-us.apache.org/repos/asf?p=incubator-brooklyn.git;a=commit;h=$( git rev-parse HEAD )
-
+${COMMIT_IDS_MESSAGE}
+All of the above have been tagged as "apache-brooklyn-${VERSION_NAME}-rc${RC_NUMBER}"
 
 Please vote on releasing this package as Apache Brooklyn ${VERSION_NAME}.
 

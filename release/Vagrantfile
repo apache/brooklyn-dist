@@ -28,7 +28,7 @@
 # you're doing.
 Vagrant.configure(2) do |config|
 
-  config.vm.box = "ubuntu/wily64"
+  config.vm.box = "ubuntu/xenial64"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -73,11 +73,12 @@ Vagrant.configure(2) do |config|
     add-apt-repository -y ppa:ubuntu-lxc/lxd-stable
     apt-get update
     apt-get upgrade -y
-    apt-get install -y default-jdk git subversion xmlstarlet zip unzip language-pack-en vim-nox gnupg2 gnupg-agent pinentry-curses golang rpm mmv
+    apt-get install -y default-jdk git subversion xmlstarlet zip unzip language-pack-en \
+                       vim-nox gnupg2 gnupg-agent pinentry-curses golang rpm mmv haveged
     mkdir -p /opt
-    curl http://archive.apache.org/dist/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz | tar xz -C /opt
-    ln -s /opt/apache-maven-3.1.1/bin/mvn /usr/local/bin
-    echo "MAVEN_OPTS=\"-Xmx512m -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M\"" >> /etc/environment
+    MAVEN_VERSION=3.3.39
+    curl http://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz | tar xz -C /opt
+    ln -s /opt/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/local/bin
     mkdir -p /work
     mount -ttmpfs -osize=3g none /work
     eval chmod -R go= ~${NORMALUSER}/.gnupg

@@ -267,7 +267,7 @@ which sha256sum >/dev/null || alias sha256sum='shasum -a 256' && shopt -s expand
 
 if [ -z "${dry_run}" -a ! -z "${APACHE_DIST_SVN_DIR}" ] ; then (
   cd ${APACHE_DIST_SVN_DIR}
-  [ -d ${artifact_name} ] && ( svn revert -R ${artifact_name}; svn rm -R ${artifact_name}; rm -rf ${artifact_name} )
+  [ -d ${artifact_name} ] && ( svn revert -R ${artifact_name}; svn rm --force ${artifact_name}; rm -rf ${artifact_name} )
   cp -r ${artifact_dir} ${artifact_name}
   svn add ${artifact_name}
   )
