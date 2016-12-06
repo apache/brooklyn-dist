@@ -47,7 +47,7 @@ servers:
        autocorrect: true
     shell:
       env:
-        BROOKLYN_VERSION: "0.11.0-SNAPSHOT"
+        BROOKLYN_VERSION: "0.10.0"
         INSTALL_FROM_LOCAL_DIST: false
       cmd:
         - ssh-keygen -t rsa -N "" -f $HOME/.ssh/id_rsa
@@ -60,19 +60,39 @@ servers:
     ram: 512
     cpus: 2
     ip: 10.10.10.101
+    shell:
+      env: {}
+      cmd:
+        - sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+        - sudo service sshd restart
   - name: byon2
     box: centos/7
     ram: 512
     cpus: 2
     ip: 10.10.10.102
+    shell:
+      env: {}
+      cmd:
+        - sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+        - sudo service sshd restart
   - name: byon3
     box: centos/7
     ram: 512
     cpus: 2
     ip: 10.10.10.103
+    shell:
+      env: {}
+      cmd:
+        - sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+        - sudo service sshd restart
   - name: byon4
     box: centos/7
     ram: 512
     cpus: 2
     ip: 10.10.10.104
+    shell:
+      env: {}
+      cmd:
+        - sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+        - sudo service sshd restart
 ...

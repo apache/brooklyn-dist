@@ -48,11 +48,11 @@ fi
 if [ ! "${INSTALL_FROM_LOCAL_DIST}" == "true" ]; then
   if [ ! -z "${BROOKLYN_VERSION##*-SNAPSHOT}" ] ; then
     # url for official release versions
-    BROOKLYN_URL="https://www.apache.org/dyn/closer.lua?action=download&filename=brooklyn/apache-brooklyn-${BROOKLYN_VERSION}/apache-brooklyn-${BROOKLYN_VERSION}-bin.tar.gz"
+    BROOKLYN_URL="https://dist.apache.org/repos/dist/dev/brooklyn/apache-brooklyn-0.10.0-rc1/apache-brooklyn-0.10.0-rc1-bin.tar.gz"
     BROOKLYN_DIR="apache-brooklyn-${BROOKLYN_VERSION}-bin"
   else
     # url for community-managed snapshots
-    BROOKLYN_URL="https://repository.apache.org/service/local/artifact/maven/redirect?r=snapshots&g=org.apache.brooklyn&a=brooklyn-dist&v=${BROOKLYN_VERSION}&c=dist&e=tar.gz"
+    #BROOKLYN_URL="https://repository.apache.org/service/local/artifact/maven/redirect?r=snapshots&g=org.apache.brooklyn&a=brooklyn-dist&v=${BROOKLYN_VERSION}&c=dist&e=tar.gz"
     BROOKLYN_DIR="brooklyn-dist-${BROOKLYN_VERSION}"
   fi
 else
@@ -78,12 +78,12 @@ tar zxf ${TMP_ARCHIVE_NAME}
 echo "Creating Brooklyn dirs and symlinks"
 ln -s ${BROOKLYN_DIR} apache-brooklyn
 sudo mkdir -p /var/log/brooklyn
-sudo chown -R vagrant:vagrant /var/log/brooklyn
-mkdir -p /home/vagrant/.brooklyn
+sudo chown -R ubuntu:ubuntu /var/log/brooklyn
+mkdir -p /home/ubuntu/.brooklyn
 
 echo "Copying default vagrant Brooklyn properties file"
-cp /vagrant/files/brooklyn.properties /home/vagrant/.brooklyn/
-chmod 600 /home/vagrant/.brooklyn/brooklyn.properties
+cp /vagrant/files/brooklyn.properties /home/ubuntu/.brooklyn/
+chmod 600 /home/ubuntu/.brooklyn/brooklyn.properties
 
 echo "Installing JRE"
 sudo sh -c 'export DEBIAN_FRONTEND=noninteractive; apt-get install --yes openjdk-8-jre-headless'
