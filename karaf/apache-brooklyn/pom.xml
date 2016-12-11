@@ -136,6 +136,13 @@
           </bootFeatures>
         </configuration>
       </plugin>
+      <!-- Exclude META-INF from dist; Disables https://github.com/apache/maven-pom/blob/43dd8d34421ae2dfda40b1adde404b52f3800735/asf/pom.xml#L285-L301 -->
+      <plugin>
+        <artifactId>maven-remote-resources-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
