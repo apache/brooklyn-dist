@@ -59,11 +59,11 @@
         <feature prerequisite="true">brooklyn-standard-karaf</feature>
         <feature prerequisite="true">brooklyn-guava-optional-deps</feature>
         <feature>brooklyn-core</feature>
+        <feature>brooklyn-locations-jclouds</feature>
         <feature>brooklyn-rest-resources</feature>
         <feature>brooklyn-commands</feature>
         <feature>brooklyn-server-software-all</feature>
         <feature>brooklyn-library-all</feature>
-        <feature>brooklyn-locations-jclouds</feature>
     </feature>
 
     <feature name="brooklyn-jsgui-prereqs" version="${project.version}" description="Brooklyn REST JavaScript Web GUI">
