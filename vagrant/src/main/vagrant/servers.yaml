@@ -38,7 +38,7 @@ default_config:
     run_os_update: true
 servers:
   - name: brooklyn
-    box: ubuntu/xenial64
+    box: centos/7
     ram: 2048
     cpus: 4
     forwarded_ports:
