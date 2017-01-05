@@ -143,6 +143,50 @@
           <skip>true</skip>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>brooklyn-dist-config</artifactId>
+                  <version>${project.version}</version>
+                  <classifier>classrename</classifier>
+                  <type>cfg</type>
+                  <outputDirectory>${project.build.directory}/assembly/etc</outputDirectory>
+                  <destFileName>${project.groupId}.classrename.cfg</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>brooklyn-dist-config</artifactId>
+                  <version>${project.version}</version>
+                  <classifier>core.catalog.bomscanner</classifier>
+                  <type>cfg</type>
+                  <outputDirectory>${project.build.directory}/assembly/etc</outputDirectory>
+                  <destFileName>${project.groupId}.core.catalog.bomscanner.cfg</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>brooklyn-dist-config</artifactId>
+                  <version>${project.version}</version>
+                  <classifier>osgilauncher</classifier>
+                  <type>cfg</type>
+                  <outputDirectory>${project.build.directory}/assembly/etc</outputDirectory>
+                  <destFileName>${project.groupId}.osgilauncher.cfg</destFileName>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
