@@ -86,7 +86,7 @@ cp /vagrant/files/brooklyn.properties /home/vagrant/.brooklyn/
 chmod 600 /home/vagrant/.brooklyn/brooklyn.properties
 
 echo "Installing JRE"
-sudo sh -c 'yum install -y java-1.8.0-openjdk-headless'
+sudo sh -c 'yum -y install java-1.8.0-openjdk-headless'
 
 echo "Copying Brooklyn systemd service unit file"
 sudo cp /vagrant/files/brooklyn.service /etc/systemd/system/brooklyn.service
