@@ -18,4 +18,18 @@
         </server>
     </servers>
 
+    <profiles>
+        <profile>
+            <id>gpg</id>
+            <properties>
+                <gpg.executable>gpg2</gpg.executable>
+                <gpg.useAgent>true</gpg.useAgent>
+                <useAgent>true</useAgent>
+                <gpg.useagent>true</gpg.useagent>
+            </properties>
+        </profile>
+    </profiles>
+    <activeProfiles>
+        <activeProfile>gpg</activeProfile>
+    </activeProfiles>
 </settings>

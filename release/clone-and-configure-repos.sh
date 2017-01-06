@@ -40,6 +40,6 @@ git pull
 git submodule update --remote --merge --recursive
 
 # And also the location for publishing RC artifacts
-svn co --depth=immediates https://dist.apache.org/repos/dist/release/brooklyn ~/apache-dist-release-brooklyn
-svn co --depth=immediates https://dist.apache.org/repos/dist/dev/brooklyn ~/apache-dist-dev-brooklyn
+svn --non-interactive co --depth=immediates https://dist.apache.org/repos/dist/release/brooklyn ~/apache-dist-release-brooklyn
+svn --non-interactive co --depth=immediates https://dist.apache.org/repos/dist/dev/brooklyn ~/apache-dist-dev-brooklyn
 echo "export APACHE_DIST_SVN_DIR=$HOME/apache-dist-dev-brooklyn" >> ~/.profile
