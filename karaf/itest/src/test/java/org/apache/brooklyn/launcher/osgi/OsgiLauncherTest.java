@@ -76,7 +76,7 @@ public class OsgiLauncherTest {
 
     @Before
     public void setup() {
-        DeserializingClassRenamesProvider.reset();
+        DeserializingClassRenamesProvider.INSTANCE.reset();
     }
 
     @Configuration
@@ -109,7 +109,7 @@ public class OsgiLauncherTest {
 
     @Test
     public void testClassRenameConfig() throws IOException {
-        final Map<String, String> map = DeserializingClassRenamesProvider.loadDeserializingClassRenames();
+        final Map<String, String> map = DeserializingClassRenamesProvider.INSTANCE.loadDeserializingMapping();
         assertEquals(TEST_CLASS_RENAME_IN_CFG, map.get(TEST_CLASS_IN_CFG));
     }
 }
