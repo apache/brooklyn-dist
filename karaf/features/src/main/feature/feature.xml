@@ -55,7 +55,20 @@
         <bundle>mvn:javax.annotation/javax.annotation-api/${cxf.javax.annotation-api.version}</bundle>
     </feature>
 
+    <feature name="brooklyn-config" version="${project.version}">
+        <configfile finalname="${karaf.etc}/${groupId}.classrename.cfg" override="false">
+            mvn:${project.groupId}/brooklyn-dist-config/${project.version}/cfg/classrename
+        </configfile>
+        <configfile finalname="${karaf.etc}/${groupId}.core.catalog.bomscanner.cfg" override="false">
+            mvn:${project.groupId}/brooklyn-dist-config/${project.version}/cfg/core.catalog.bomscanner
+        </configfile>
+        <configfile finalname="${karaf.etc}/${groupId}.osgilauncher.cfg" override="false">
+            mvn:${project.groupId}/brooklyn-dist-config/${project.version}/cfg/osgilauncher
+        </configfile>
+    </feature>
+
     <feature name="brooklyn-headless" version="${project.version}" description="All Brooklyn bundles witht the exception of the launcher">
+        <feature prerequisite="true">brooklyn-config</feature>
         <feature prerequisite="true">brooklyn-standard-karaf</feature>
         <feature prerequisite="true">brooklyn-guava-optional-deps</feature>
         <feature>brooklyn-core</feature>
