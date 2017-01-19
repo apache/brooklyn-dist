@@ -173,15 +173,24 @@
                   <outputDirectory>${project.build.directory}/assembly/etc</outputDirectory>
                   <destFileName>${project.groupId}.core.catalog.bomscanner.cfg</destFileName>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>brooklyn-dist-config</artifactId>
-                  <version>${project.version}</version>
-                  <classifier>osgilauncher</classifier>
-                  <type>cfg</type>
-                  <outputDirectory>${project.build.directory}/assembly/etc</outputDirectory>
-                  <destFileName>${project.groupId}.osgilauncher.cfg</destFileName>
-                </artifactItem>
+                  <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>brooklyn-dist-config</artifactId>
+                      <version>${project.version}</version>
+                      <classifier>osgilauncher</classifier>
+                      <type>cfg</type>
+                      <outputDirectory>${project.build.directory}/assembly/etc</outputDirectory>
+                      <destFileName>${project.groupId}.osgilauncher.cfg</destFileName>
+                  </artifactItem>
+                  <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>brooklyn-dist-config</artifactId>
+                      <version>${project.version}</version>
+                      <classifier>rest.filter.cors</classifier>
+                      <type>cfg</type>
+                      <outputDirectory>${project.build.directory}/assembly/etc</outputDirectory>
+                      <destFileName>${project.groupId}.rest.filter.cors.cfg</destFileName>
+                  </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
