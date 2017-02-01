@@ -73,15 +73,15 @@
         <feature prerequisite="true">brooklyn-guava-optional-deps</feature>
         <feature>brooklyn-core</feature>
         <feature>brooklyn-locations-jclouds</feature>
-        <feature>brooklyn-rest-resources</feature>
         <feature>brooklyn-commands</feature>
         <feature>brooklyn-server-software-all</feature>
         <feature>brooklyn-library-all</feature>
+        <feature>brooklyn-rest-resources-prereqs</feature>
+        <feature>brooklyn-jsgui-prereqs</feature>
     </feature>
 
     <feature name="brooklyn-jsgui-prereqs" version="${project.version}" description="Brooklyn REST JavaScript Web GUI">
         <feature>pax-jetty</feature> <!-- jaas bundle -->
-        <bundle>mvn:org.apache.brooklyn/brooklyn-karaf-jetty-config/${project.version}</bundle>
         <feature>war</feature>
     </feature>
 
@@ -92,8 +92,10 @@
 
     <feature name="brooklyn-boot" version="${project.version}" description="Bundles to start on boot">
         <feature prerequisite="true">brooklyn-headless</feature>
-        <feature prerequisite="true">brooklyn-jsgui</feature>
+        <bundle>mvn:org.apache.brooklyn/brooklyn-karaf-jetty-config/${project.version}</bundle>
         <feature>brooklyn-osgi-launcher</feature>
+        <feature>brooklyn-jsgui</feature>
+        <feature>brooklyn-rest-resources</feature>
     </feature>
 
 </features>
