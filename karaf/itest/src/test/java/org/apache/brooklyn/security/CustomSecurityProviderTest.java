@@ -124,6 +124,7 @@ public class CustomSecurityProviderTest {
     private LoginContext doLogin(final String username, final String password) throws LoginException {
         assertRealmRegisteredEventually(WEBCONSOLE_REALM);
         LoginContext lc = new LoginContext(WEBCONSOLE_REALM, new CallbackHandler() {
+            @Override
             public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
                 for (int i = 0; i < callbacks.length; i++) {
                     Callback callback = callbacks[i];
