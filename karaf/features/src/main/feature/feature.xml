@@ -43,7 +43,7 @@
         <feature>package</feature>
         <feature>service</feature>
         <feature>system</feature>
-        <!-- load BouncyCastle early, to avoid "Refreshing bundles" later -->
+        <!-- load BouncyCastle early, to avoid refreshing of org.apache.sshd.core/0.14.0 later -->
         <bundle dependency="true">mvn:org.bouncycastle/bcprov-ext-jdk15on/${bouncycastle.version}</bundle>
         <bundle dependency="true">mvn:org.bouncycastle/bcpkix-jdk15on/${bouncycastle.version}</bundle>
     </feature>
