@@ -43,6 +43,9 @@
         <feature>package</feature>
         <feature>service</feature>
         <feature>system</feature>
+        <!-- load BouncyCastle early, to avoid "Refreshing bundles" later -->
+        <bundle dependency="true">mvn:org.bouncycastle/bcprov-ext-jdk15on/${bouncycastle.version}</bundle>
+        <bundle dependency="true">mvn:org.bouncycastle/bcpkix-jdk15on/${bouncycastle.version}</bundle>
     </feature>
 
     <feature name="brooklyn-startup-features" version="${project.version}" description="Bundles to add to startup.properties">
