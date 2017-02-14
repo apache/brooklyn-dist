@@ -175,8 +175,9 @@ mkdir -p ${src_staging_dir}
 # * sandbox (which hasn't been vetted so thoroughly)
 # * release (where this is running, and people who *have* the release don't need to make it)
 # * jars and friends (these are sometimes included for tests, but those are marked as skippable,
+# * cli/vendor - that's not source controlled and not removed by mvn clean so ignore it in case it's already there
 #     and apache convention does not allow them in source builds; see PR #365
-rsync -rtp --exclude .git\* --exclude brooklyn-docs/ --exclude brooklyn-library/sandbox/ --exclude brooklyn-dist/release/ --exclude '**/*.[ejw]ar' . ${staging_dir}/${release_name}-src
+rsync -rtp --exclude .git\* --exclude brooklyn-docs/ --exclude brooklyn-library/sandbox/ --exclude brooklyn-client/cli/vendor/ --exclude brooklyn-dist/release/ --exclude '**/*.[ejw]ar' . ${staging_dir}/${release_name}-src
 
 rm -rf ${artifact_dir}
 mkdir -p ${artifact_dir}
@@ -205,11 +206,19 @@ else
 fi
 
 # Re-pack the archive with the correct names
+# Classic release
 tar xzf ${src_staging_dir}/brooklyn-dist/dist/target/brooklyn-dist-${current_version}-dist.tar.gz -C ${bin_staging_dir}
 mv ${bin_staging_dir}/brooklyn-dist-${current_version} ${bin_staging_dir}/${release_name}-bin
 
 ( cd ${bin_staging_dir} && tar czf ${artifact_dir}/${artifact_name}-bin.tar.gz ${release_name}-bin )
 ( cd ${bin_staging_dir} && zip -qr ${artifact_dir}/${artifact_name}-bin.zip ${release_name}-bin )
+
+# Karaf release
+tar xzf ${src_staging_dir}/brooklyn-dist/karaf/apache-brooklyn/target/apache-brooklyn-${current_version}.tar.gz -C ${bin_staging_dir}
+mv ${bin_staging_dir}/apache-brooklyn-${current_version} ${bin_staging_dir}/${release_name}-karaf
+
+( cd ${bin_staging_dir} && tar czf ${artifact_dir}/${artifact_name}-karaf.tar.gz ${release_name}-karaf )
+( cd ${bin_staging_dir} && zip -qr ${artifact_dir}/${artifact_name}-karaf.zip ${release_name}-karaf )
 
 ###############################################################################
 # CLI release
@@ -245,7 +254,7 @@ mv ${bin_staging_dir}/brooklyn-vagrant-${current_version} ${bin_staging_dir}/${r
 ###############################################################################
 # RPM artifacts
 
-cp ${src_staging_dir}/brooklyn-dist/packaging/target/rpm/apache-brooklyn/RPMS/noarch/apache-brooklyn-${current_version}-1.noarch.rpm ${artifact_dir}/${release_name}-1.noarch.rpm
+cp ${src_staging_dir}/brooklyn-dist/rpm-packaging/target/rpm/apache-brooklyn/RPMS/noarch/apache-brooklyn-${current_version}-1.noarch.rpm ${artifact_dir}/${artifact_name}-1.noarch.rpm
 
 ###############################################################################
 # Signatures and checksums
@@ -267,9 +276,9 @@ which sha256sum >/dev/null || alias sha256sum='shasum -a 256' && shopt -s expand
 
 if [ -z "${dry_run}" -a ! -z "${APACHE_DIST_SVN_DIR}" ] ; then (
   cd ${APACHE_DIST_SVN_DIR}
-  [ -d ${artifact_name} ] && ( svn revert -R ${artifact_name}; svn rm -R ${artifact_name}; rm -rf ${artifact_name} )
+  [ -d ${artifact_name} ] && ( svn --non-interactive revert -R ${artifact_name}; svn --non-interactive rm --force ${artifact_name}; rm -rf ${artifact_name} )
   cp -r ${artifact_dir} ${artifact_name}
-  svn add ${artifact_name}
+  svn --non-interactive add ${artifact_name}
   )
   artifact_dir=${APACHE_DIST_SVN_DIR}/${artifact_name}
 fi

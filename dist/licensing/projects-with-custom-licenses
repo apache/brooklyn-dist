@@ -7,5 +7,5 @@
 ../../brooklyn-server/server-cli
 
 # client has "go" structure so license in a different place
-../../brooklyn-client release/license
+../../brooklyn-client/cli release/license
 

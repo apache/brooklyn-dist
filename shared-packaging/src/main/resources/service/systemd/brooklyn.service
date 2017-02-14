@@ -22,7 +22,7 @@ Documentation=https://brooklyn.apache.org/documentation/index.html
 [Service]
 Type=simple
 WorkingDirectory=/opt/brooklyn/
-Environment="JAVA_OPTS=-Dbrooklyn.location.localhost.address=127.0.0.1 -Dlogback.configurationFile=/etc/brooklyn/logback.xml -Xms256m -Xmx1g -XX:MaxPermSize=256m"
+Environment="JAVA_OPTS=-Dbrooklyn.location.localhost.address=127.0.0.1 -XX:SoftRefLRUPolicyMSPerMB=1 -Dlogback.configurationFile=/etc/brooklyn/logback.xml -Xms256m -Xmx1g -XX:MaxPermSize=256m"
 Environment="CLASSPATH=/opt/brooklyn/conf:/opt/brooklyn/lib/patch/*:/opt/brooklyn/lib/brooklyn/*:/opt/brooklyn/lib/dropins/*"
 ExecStart=/usr/bin/java $JAVA_OPTS -cp "$CLASSPATH" org.apache.brooklyn.cli.Main launch --noGlobalBrooklynProperties --localBrooklynProperties /etc/brooklyn/brooklyn.conf --persist auto
 Restart=always

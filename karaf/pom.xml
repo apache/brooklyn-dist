@@ -33,17 +33,11 @@
         <!-- if this depends (via inheritance from brooklyn-dist) on brooklyn-server/parent, the usual parent point,
              then karaf-itest has failures -->
         <artifactId>brooklyn-server</artifactId>
-        <version>0.10.0-SNAPSHOT</version>  <!-- BROOKLYN_VERSION -->
+        <version>0.11.0-SNAPSHOT</version>  <!-- BROOKLYN_VERSION -->
         <relativePath>../../brooklyn-server/pom.xml</relativePath>
     </parent>
 
     <properties>
-        <!-- TODO: duplicates in brooklyn-server/karaf/pom.xml -->
-        <karaf.version>4.0.4</karaf.version>
-        <logback.version>1.0.7</logback.version>
-        <org.osgi.core.version>6.0.0</org.osgi.core.version>
-        <geronimo-jta_1.1_spec.version>1.1.1</geronimo-jta_1.1_spec.version>
-
         <org.osgi.compendium.version>5.0.0</org.osgi.compendium.version>
         <lifecycle-mapping-plugin.version>1.0.0</lifecycle-mapping-plugin.version>
 
@@ -62,6 +56,7 @@
     </properties>
 
     <modules>
+        <module>config</module>
         <module>features</module>
         <module>apache-brooklyn</module>
         <module>itest</module>
@@ -153,7 +148,10 @@
                 <plugin>
                     <groupId>org.apache.rat</groupId>
                     <artifactId>apache-rat-plugin</artifactId>
+                    <!-- Overrides 0.11 from parent. Remove when parent catches up. -->
+                    <version>0.12</version>
                     <configuration>
+                        <consoleOutput>true</consoleOutput>
                         <excludes combine.children="append">
                             <!-- Exclude sandbox because not part of distribution: not in tgz, and not uploaded to maven-central -->
                             <exclude>sandbox/**</exclude>

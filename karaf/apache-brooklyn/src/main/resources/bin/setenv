@@ -24,7 +24,39 @@ if [ -z "${JAVA_MAX_PERM_MEM}" ] ; then
     export JAVA_MAX_PERM_MEM="256m"
 fi
 
+# OS specific support (must be 'true' or 'false').
+    cygwin=false;
+    darwin=false;
+    aix=false;
+    os400=false;
+    case "`uname`" in
+        CYGWIN*)
+            cygwin=true
+            ;;
+        Darwin*)
+            darwin=true
+            ;;
+        AIX*)
+            aix=true
+            ;;
+        OS400*)
+            os400=true
+            ;;
+    esac
+
 # abort if java is not installed
+if $cygwin ; then
+    [ -n "$JAVA" ] && JAVA=`cygpath --unix "$JAVA"`
+    [ -n "$JAVA_HOME" ] && JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+fi
+
+if [ "x$JAVA_HOME" = "x" ] && [ "$darwin" = "true" ]; then
+    JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
+fi
+if [ "x$JAVA" = "x" ] && [ -r /etc/gentoo-release ] ; then
+    JAVA_HOME=`java-config --jre-home`
+fi
+
 if [ "x$JAVA" = "x" ]; then
     if [ "x$JAVA_HOME" != "x" ]; then
         if [ ! -d "$JAVA_HOME" ]; then
@@ -45,3 +77,6 @@ fi
 
 # force resolution of localhost to be loopback
 export EXTRA_JAVA_OPTS="-Dbrooklyn.location.localhost.address=127.0.0.1 ${EXTRA_JAVA_OPTS}"
+
+# Increase garbage collection, see https://issues.apache.org/jira/browse/BROOKLYN-375
+export EXTRA_JAVA_OPTS="-XX:SoftRefLRUPolicyMSPerMB=1 ${EXTRA_JAVA_OPTS}"

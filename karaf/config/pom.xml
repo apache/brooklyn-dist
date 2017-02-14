@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>brooklyn-dist-karaf</artifactId>
+        <groupId>org.apache.brooklyn</groupId>
+        <version>0.11.0-SNAPSHOT</version> <!-- BROOKLYN_VERSION -->
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>brooklyn-dist-config</artifactId>
+
+    <name>Brooklyn Karaf Server Configuration</name>
+    <description>
+        Brooklyn Karaf Server Configuration
+    </description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-artifact</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>
+                                        ${project.basedir}/src/main/resources/org.apache.brooklyn.classrename.cfg
+                                    </file>
+                                    <type>cfg</type>
+                                    <classifier>classrename</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>
+                                        ${project.basedir}/src/main/resources/org.apache.brooklyn.core.catalog.bomscanner.cfg
+                                    </file>
+                                    <type>cfg</type>
+                                    <classifier>core.catalog.bomscanner</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>
+                                        ${project.basedir}/src/main/resources/org.apache.brooklyn.osgilauncher.cfg
+                                    </file>
+                                    <type>cfg</type>
+                                    <classifier>osgilauncher</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

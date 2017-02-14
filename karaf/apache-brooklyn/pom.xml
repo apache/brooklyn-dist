@@ -29,7 +29,7 @@
   <parent>
       <groupId>org.apache.brooklyn</groupId>
       <artifactId>brooklyn-dist-karaf</artifactId>
-      <version>0.10.0-SNAPSHOT</version>  <!-- BROOKLYN_VERSION -->
+      <version>0.11.0-SNAPSHOT</version>  <!-- BROOKLYN_VERSION -->
       <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -120,7 +120,7 @@
       <plugin>
         <groupId>org.apache.karaf.tooling</groupId>
         <artifactId>karaf-maven-plugin</artifactId>
-        <version>${karaf.version}</version>
+        <version>${karaf.plugin.version}</version>
         <extensions>true</extensions>
         <configuration>
           <installedFeatures>
@@ -135,6 +135,57 @@
             <bootFeature>brooklyn-boot</bootFeature>
           </bootFeatures>
         </configuration>
+      </plugin>
+      <!-- Exclude META-INF from dist; Disables https://github.com/apache/maven-pom/blob/43dd8d34421ae2dfda40b1adde404b52f3800735/asf/pom.xml#L285-L301 -->
+      <plugin>
+        <artifactId>maven-remote-resources-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>brooklyn-dist-config</artifactId>
+                  <version>${project.version}</version>
+                  <classifier>classrename</classifier>
+                  <type>cfg</type>
+                  <outputDirectory>${project.build.directory}/assembly/etc</outputDirectory>
+                  <destFileName>${project.groupId}.classrename.cfg</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>brooklyn-dist-config</artifactId>
+                  <version>${project.version}</version>
+                  <classifier>core.catalog.bomscanner</classifier>
+                  <type>cfg</type>
+                  <outputDirectory>${project.build.directory}/assembly/etc</outputDirectory>
+                  <destFileName>${project.groupId}.core.catalog.bomscanner.cfg</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>brooklyn-dist-config</artifactId>
+                  <version>${project.version}</version>
+                  <classifier>osgilauncher</classifier>
+                  <type>cfg</type>
+                  <outputDirectory>${project.build.directory}/assembly/etc</outputDirectory>
+                  <destFileName>${project.groupId}.osgilauncher.cfg</destFileName>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

@@ -25,14 +25,17 @@ import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfi
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.apache.brooklyn.KarafTestUtils;
 import org.apache.brooklyn.api.mgmt.ManagementContext;
+import org.apache.brooklyn.core.mgmt.persist.DeserializingClassRenamesProvider;
 import org.apache.brooklyn.test.Asserts;
 import org.apache.brooklyn.test.IntegrationTest;
 import org.apache.karaf.features.BootFinished;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -53,7 +56,8 @@ public class OsgiLauncherTest {
     private static final String TEST_KEY_RUNTIME = "test.key";
     private static final String TEST_VALUE_IN_CFG = "test.cfg";
     private static final String TEST_KEY_IN_CFG = "test.key.in.cfg";
-
+    private static final String TEST_CLASS_IN_CFG = "com.acme";
+    private static final String TEST_CLASS_RENAME_IN_CFG = "org.apache.brooklyn";
     @Inject
     @Filter(timeout = 120000)
     protected ManagementContext mgmt;
@@ -70,12 +74,18 @@ public class OsgiLauncherTest {
     @Filter(timeout = 120000)
     BootFinished bootFinished;
 
+    @Before
+    public void setup() {
+        DeserializingClassRenamesProvider.INSTANCE.reset();
+    }
+
     @Configuration
     public static Option[] configuration() throws Exception {
         return defaultOptionsWith(
                 editConfigurationFilePut("etc/org.apache.brooklyn.osgilauncher.cfg", "globalBrooklynPropertiesFile", ""),
                 editConfigurationFilePut("etc/org.apache.brooklyn.osgilauncher.cfg", "localBrooklynPropertiesFile", ""),
                 editConfigurationFilePut("etc/brooklyn.cfg", TEST_KEY_IN_CFG, TEST_VALUE_IN_CFG),
+                editConfigurationFilePut("etc/org.apache.brooklyn.class-rename.cfg", TEST_CLASS_IN_CFG, TEST_CLASS_RENAME_IN_CFG),
                 features(KarafTestUtils.brooklynFeaturesRepository(), "brooklyn-osgi-launcher")
                 // Uncomment this for remote debugging the tests on port 5005
                 // ,KarafDistributionOption.debugConfiguration()
@@ -95,5 +105,11 @@ public class OsgiLauncherTest {
                 assertEquals(TEST_VALUE_RUNTIME, mgmt.getConfig().getFirst(TEST_KEY_RUNTIME));
             }
         });
+    }
+
+    @Test
+    public void testClassRenameConfig() throws IOException {
+        final Map<String, String> map = DeserializingClassRenamesProvider.INSTANCE.loadDeserializingMapping();
+        assertEquals(TEST_CLASS_RENAME_IN_CFG, map.get(TEST_CLASS_IN_CFG));
     }
 }

@@ -1,0 +1,98 @@
+#!/bin/bash
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+# Always use on a separate merge-only repo!
+
+# Best used with a wrapper script in your PATH
+# #!/bin/bash
+# export USERNAME=<github username>
+# export PERSONAL_TOKEN=<github personal token from https://github.com/settings/tokens>
+# <absolute path to brooklyn-dist>/scripts/am $@
+
+set -e
+
+PR=$1
+: ${PR_REMOTE:=upstream}
+: ${APACHE_REMOTE:=apache}
+: ${CLOSES_MESSAGE:="Closes #"}
+
+# Includes a fallback for git versions earlier than 2.7.0
+REMOTE_URL=$(git remote get-url ${APACHE_REMOTE} || git remote show apache | grep "Push  URL");
+MODULE=${REMOTE_URL##*/}
+
+if [ -z "$PR" ]; then
+    echo "Usage: am <PR number>"
+    exit 1
+fi
+
+if ! git branch | grep -q "* master"; then
+    echo "Must be on master branch"
+    exit 1
+fi
+
+if [ -z "$USERNAME" ] || [ -z "$PERSONAL_TOKEN" ]; then
+    echo "Anonymous requests to Github are subject to rate limiting - 60 unauthenticated requests per hour per ip (https://developer.github.com/v3/#rate-limiting)"
+    echo "Pass USERNAME and PERSONAL_TOKEN environment variables to authenticate. PERSONAL_TOKEN can be created at https://github.com/settings/tokens"
+fi
+
+function get_pr_message {
+    local TMP_JSON=${TMPDIR:-/tmp}/pr-${PR}.$$.json
+    local URL=https://api.github.com/repos/apache/${MODULE}/pulls/$PR
+    if [ -n "$USERNAME" ] && [ -n "$PERSONAL_TOKEN" ]; then
+        AUTH="-u ${USERNAME}:${PERSONAL_TOKEN}"
+    fi
+    curl ${AUTH} --fail -sH "Accept: application/vnd.github.v3+json" -o ${TMP_JSON} ${URL}
+
+    if [ $? -ne 0 ]; then
+        echo "Couldn't fetch PR ${PR} details from ${URL}" >&2
+        cat ${TMP_JSON} >&2
+        exit 1
+    fi
+    
+    cat ${TMP_JSON} |
+    PYTHONIOENCODING=utf-8 python -c 'import json,sys; resp=json.load(sys.stdin); print resp["title"];print "";print resp["body"]'
+    
+    rm -f ${TMP_JSON}
+}
+
+PR_MESSAGE=$(get_pr_message)
+
+if [ -z "$MESSAGE" ]; then
+    MESSAGE="${CLOSES_MESSAGE//#/#${PR}}
+
+${PR_MESSAGE}"
+fi
+
+# Fetch fresh PR references
+git fetch ${PR_REMOTE}
+git fetch ${APACHE_REMOTE}
+# Makes sure we are on the latest upstream/master
+# TODO Warn or fail if there are extra local commits? Could be committed by mistake or just a previous PR merge.
+git merge ${APACHE_REMOTE}/master --ff-only
+
+echo
+echo "Merge commit message"
+echo "=================================="
+echo "$MESSAGE"
+echo "=================================="
+echo
+
+# Do the merge
+git merge --no-ff -m "${MESSAGE}" ${PR_REMOTE}/pr/${PR}
+
+echo "Type 'git push ${APACHE_REMOTE} master' to complete the merge."
