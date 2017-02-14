@@ -17,7 +17,7 @@
 # under the License.
 #
 
-BROOKLYN_VERSION=0.10.0-SNAPSHOT
+BROOKLYN_VERSION=0.11.0-SNAPSHOT
 
 default: all
 
@@ -44,7 +44,7 @@ all: prep image-only
 
 run:
         # BROOKLYN_VERSION_BELOW
-	docker run -d -p 8081:8081 brooklyncentral/brooklyn:0.10.0-SNAPSHOT --password S3CR3T > /tmp/brooklyn_container
+	docker run -d -p 8081:8081 brooklyncentral/brooklyn:${BROOKLYN_VERSION} --password S3CR3T > /tmp/brooklyn_container
 	docker logs -f `cat /tmp/brooklyn_container`
 
 run-shell:
