@@ -1,0 +1,184 @@
+#!/bin/bash
+
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+
+# This script facilitates setting up brooklyn.properties
+# and launching the brooklyn server or the br client as appropriate
+
+# some words/actions treated specially:
+
+# --help shows help on this tool
+# --username and --password set up brooklyn.properties
+# <id:cred@location> parsed as location and --application appended (if application set?)
+# <word> (not starting with -) passed as command to brooklyn along with everything that follows
+# anything else (blank or options starting -) passed as args to brooklyn launch
+
+function help() {
+  echo
+  # BROOKLYN_VERSION_BELOW
+  echo 'Apache Brooklyn 0.11.0-SNAPSHOT convenience launcher'${application:+" for ${application}"}
+  echo
+  echo 'Usage:  [OPTIONS] [--help | LOCATION | COMMAND] [ARGS]'
+  echo
+  echo 'The main argument can be any of:'
+  echo '  --help                                   display this help (or use `help` to show brooklyn help)'
+  if [ -n "$application" ] ; then
+    echo '  LOCATION                                 location to launch '${application:-}', in form ID:CRED@CLOUD'
+  else
+    echo '  LOCATION                                 location to launch APP (requires `--application APP`), in form ID:CRED@CLOUD'
+  fi
+  echo '  COMMAND                                  command to pass to `brooklyn`, default `launch`'
+  echo
+  echo 'If no main argument is specified, `brooklyn launch` is used to start Apache Brooklyn.'
+  echo 'ARGS are passed to the resulting `brooklyn` command. Other OPTIONS available are:'
+  echo '  [ --username USER ] --password PASS      set the default [username and] password'
+  echo '  [ --debug ]                              show additional debug info'
+  if [ -n "$application" ] ; then
+    echo '  [ --application APP ]                    override the default application to launch ('${application}')'
+  else
+    echo '  [ --application APP ]                    specify a default application to launch'
+  fi
+  echo
+}
+
+function make_brooklyn_properties() {
+  if [ -n "${brooklyn_properties}" ] ; then return ; fi
+  echo
+  echo Configuring brooklyn.properties...
+  export brooklyn_properties=~/.brooklyn/brooklyn.properties
+  mkdir -p `dirname ${brooklyn_properties}`
+  touch ${brooklyn_properties}
+  chmod 600 ${brooklyn_properties}
+}
+
+if [ -f brooklyn-docker-start.opts ] ; then
+  . ./brooklyn-docker-start.opts
+fi
+
+while [ -n "$1" ] ; do
+  case "$1" in
+
+    --help)
+      help
+      exit 0
+      ;;
+
+    --username | --password | --application)
+      if [ -z "$2" ] ; then
+        echo ERROR: $1 requires an argument following it
+        exit 255
+      fi
+
+      export ${1#--}=$2
+      shift 2
+      continue
+      ;;
+
+    --debug)
+      export ${1#--}=true
+      shift
+      continue
+      ;;
+
+    *:*@*)
+      if [ -z "$application" ] ; then
+        # environment does not support location syntax
+        break
+      fi
+
+      location=$1
+      shift
+      break
+      ;;
+
+    -*)
+      break
+      ;;
+
+    *)
+      command=$1
+      shift
+      break
+      ;;
+
+  esac
+done
+
+if [ -n "$debug" ] ; then
+  set -x   # echo all commands
+fi
+
+if [ -n "$password" ] ; then
+  make_brooklyn_properties
+  echo brooklyn.webconsole.security.users=${username:-brooklyn} >> ${brooklyn_properties}
+  echo brooklyn.webconsole.security.user.${username:-brooklyn}.password=${password} >> ${brooklyn_properties}
+  # and set up the config file for `br` so it works
+  echo '{"auth":{"http://localhost:8081":{"password":"'${password}'","username":"'${username:-brooklyn}'"}},"skipSslChecks":false,"target":"http://localhost:8081"}}' > ~/.brooklyn_cli
+
+  echo Created user ${username:-brooklyn} and given password
+
+elif [ -n "$username" ] ; then
+  echo ERROR: password must be specified if providing a username
+  exit 255
+fi
+
+
+if [ ! -f ~/.ssh/id_rsa ] ; then
+  echo
+  echo Creating ssh key to access remote machines...
+  mkdir -p ~/.ssh/
+  chmod 700 ~/.ssh/
+  if [ -n "$debug" ] ; then
+    ssh-keygen -f ~/.ssh/id_rsa -P ""
+  else
+    ssh-keygen -f ~/.ssh/id_rsa -P "" > ~/.ssh/id_rsa.log 2> ~/.ssh/id_rsa.log2
+  fi
+
+  cat ~/.ssh/id_rsa
+fi
+
+
+ARGS=(${command:-launch} $@)
+
+if [[ -n "$application" && -n "$location" ]] ; then 
+  echo
+  echo Launching blueprint...
+  creds=${location/@*/}
+  cat > initial.yaml << EOF
+name: $application
+
+services:
+- type: $application
+
+location:
+  ${location/*@/}:
+    identity: ${creds/:*/}
+    credential: ${creds/*:/}
+EOF
+  cat initial.yaml | sed 's/\(.*credential:\).*/\1 <suppressed>/'
+  ARGS+=(--app file://`pwd -P`/initial.yaml)
+fi
+
+# launch brooklyn
+echo
+echo Launching '`'brooklyn "${ARGS[@]}"'`'...
+
+. bin/brooklyn "${ARGS[@]}"
+
