@@ -296,6 +296,11 @@ This project includes the software: com.google.inject.extensions
   Version used: 3.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
+This project includes the software: com.hierynomus
+  Available at: https://github.com/hierynomus/sshj
+  Version used: 0.12.0
+  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
 This project includes the software: com.jamesmurty.utils
   Available at: https://github.com/jmurty/java-xmlbuilder
   Version used: 1.1
@@ -307,10 +312,12 @@ This project includes the software: com.jayway.jsonpath
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: com.jcraft
-  Available at: http://www.jcraft.com/jsch-agent-proxy/
-  Developed by: JCraft,Inc. (http://www.jcraft.com/)
-  Version used: 0.0.8
-  Used under the following license: The BSD 3-Clause (New BSD) License (http://www.jcraft.com/jsch-agent-proxy/LICENSE.txt)
+  Available at: http://www.jcraft.com/
+  Developed by: jcraft (http://www.jcraft.com/) JCraft,Inc. (http://www.jcraft.com/)
+  Version used: 1.1.3; 0.0.9
+  Used under the following licenses:
+    BSD License (http://www.jcraft.com/jzlib/LICENSE.txt)
+    The BSD 3-Clause (New BSD) License (http://www.jcraft.com/jsch-agent-proxy/LICENSE.txt)
 
 This project includes the software: com.maxmind.db
   Available at: http://dev.maxmind.com/
@@ -397,7 +404,7 @@ This project includes the software: Font Awesome (code)
 
 This project includes the software: Font Awesome (fonts)
   Available at: http://fontawesome.io/
-  Inclusive of: font-awesome/fonts/*
+  Inclusive of: font-awesome/fonts/* cluster.svg
   Version used: 4.5.0
   Used under the following license: SIL OFL 1.1 (http://scripts.sil.org/OFL)
   Copyright (c) Dave Gandy (2016)
@@ -580,17 +587,6 @@ This project includes the software: net.minidev
   Version used: 2.1.1; 1.0.2
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-This project includes the software: net.schmizz
-  Available at: http://github.com/shikhar/sshj
-  Version used: 0.8.1
-  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
-
-This project includes the software: org.99soft.guice
-  Available at: http://99soft.github.com/rocoto/
-  Developed by: 99 Software Foundation (http://www.99soft.org/)
-  Version used: 6.2
-  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
-
 This project includes the software: org.apache.commons
   Available at: http://commons.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
@@ -606,7 +602,7 @@ This project includes the software: org.apache.cxf
 This project includes the software: org.apache.felix
   Available at: http://felix.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 5.4.0
+  Version used: 5.6.1
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.httpcomponents
@@ -620,37 +616,37 @@ This project includes the software: org.apache.httpcomponents
 This project includes the software: org.apache.jclouds
   Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 1.9.3
+  Version used: 2.0.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.api
   Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 1.9.3
+  Version used: 2.0.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.common
   Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 1.9.3
+  Version used: 2.0.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.driver
   Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 1.9.3
+  Version used: 2.0.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.labs
   Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 1.9.3
+  Version used: 2.0.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.provider
   Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 1.9.3
+  Version used: 2.0.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.neethi
@@ -667,7 +663,7 @@ This project includes the software: org.apache.ws.xmlschema
 
 This project includes the software: org.bouncycastle
   Available at: http://www.bouncycastle.org/java.html
-  Version used: 1.49
+  Version used: 1.51
   Used under the following license: Bouncy Castle Licence (http://www.bouncycastle.org/licence.html)
 
 This project includes the software: org.codehaus.groovy
@@ -698,8 +694,9 @@ This project includes the software: org.eclipse.jetty.toolchain
 
 This project includes the software: org.freemarker
   Available at: http://freemarker.org/
-  Version used: 2.3.22
-  Used under the following license: Apache License, version 2.0 (http://freemarker.org/LICENSE.txt)
+  Developed by: Apache Software Foundation (http://apache.org)
+  Version used: 2.3.25-incubating
+  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.glassfish.external
   Version used: 1.0-b01-ea
@@ -750,7 +747,7 @@ This project includes the software: org.tukaani
 
 This project includes the software: org.yaml
   Available at: http://www.snakeyaml.org
-  Version used: 1.16
+  Version used: 1.17
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: RequireJS
@@ -793,6 +790,12 @@ This project includes the software: Swagger UI
   Version used: 2.1.4
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
   Copyright (c) SmartBear Software (2011-2015)
+
+This project includes the software: Tango Project Icons
+  Available at: https://commons.wikimedia.org/wiki/File:Network-server.svg
+  Inclusive of: server.svg
+  Used under the following license: Public Domain (https://en.wikipedia.org/wiki/en:public_domain)
+  Released into the public domain by the people from the Tango! project (The Tango! Desktop Project), via Wikimedia Commons
 
 This project includes the software: typeahead.js
   Available at: https://github.com/twitter/typeahead.js
