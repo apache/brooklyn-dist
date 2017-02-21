@@ -448,3 +448,11 @@
   notice: Copyright (c) Dave Gandy (2016)
   license: MIT
 
+- id: tango-project-icons
+  name: Tango Project Icons
+  url: https://commons.wikimedia.org/wiki/File:Network-server.svg
+  notice: Released into the public domain by the people from the Tango! project (The Tango! Desktop Project), via Wikimedia Commons
+  license:
+  - url: https://en.wikipedia.org/wiki/en:public_domain
+    name: Public Domain
+
