@@ -27,6 +27,7 @@
 set -e
 
 PR=$1
+BRANCH=${2:-master}
 : ${PR_REMOTE:=upstream}
 : ${APACHE_REMOTE:=apache}
 : ${CLOSES_MESSAGE:="Closes #"}
@@ -36,12 +37,13 @@ REMOTE_URL=$(git remote get-url ${APACHE_REMOTE} || git remote show apache | gre
 MODULE=${REMOTE_URL##*/}
 
 if [ -z "$PR" ]; then
-    echo "Usage: am <PR number>"
+    echo "Usage: am <PR number> [ branch-name ]"
+    echo "Supply branch-name if you are merging onto a branch that is not master"
     exit 1
 fi
 
-if ! git branch | grep -q "* master"; then
-    echo "Must be on master branch"
+if ! git branch | grep -q "* ${BRANCH}"; then
+    echo "Must be on ${BRANCH} branch"
     exit 1
 fi
 
@@ -81,9 +83,9 @@ fi
 # Fetch fresh PR references
 git fetch ${PR_REMOTE}
 git fetch ${APACHE_REMOTE}
-# Makes sure we are on the latest upstream/master
+# Makes sure we are on the latest upstream/${BRANCH}
 # TODO Warn or fail if there are extra local commits? Could be committed by mistake or just a previous PR merge.
-git merge ${APACHE_REMOTE}/master --ff-only
+git merge ${APACHE_REMOTE}/${BRANCH} --ff-only
 
 echo
 echo "Merge commit message"
@@ -95,4 +97,4 @@ echo
 # Do the merge
 git merge --no-ff -m "${MESSAGE}" ${PR_REMOTE}/pr/${PR}
 
-echo "Type 'git push ${APACHE_REMOTE} master' to complete the merge."
+echo "Type 'git push ${APACHE_REMOTE} ${BRANCH}' to complete the merge."
