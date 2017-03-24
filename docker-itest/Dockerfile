@@ -16,7 +16,7 @@
 # under the License.
 #
 
-FROM maven:3.3.9-jdk-7
+FROM maven:3.3-jdk-8
 MAINTAINER Svetoslav Neykov "svetoslav.neykov@cloudsoft.io"
 
 # For Alpine:
@@ -28,7 +28,7 @@ MAINTAINER Svetoslav Neykov "svetoslav.neykov@cloudsoft.io"
 # because of differences in the accepted arguments of the busybox provided tools.
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends net-tools ssh sudo wget && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends net-tools ssh sudo wget chef && \
     rm -rf /var/lib/apt/lists/*
 RUN mkdir /etc/skel/.m2 && \
     echo "<settings xmlns='http://maven.apache.org/SETTINGS/1.0.0'>" > /etc/skel/.m2/settings.xml && \
