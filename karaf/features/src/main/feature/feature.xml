@@ -68,6 +68,9 @@
         <configfile finalname="${karaf.etc}/${groupId}.osgilauncher.cfg" override="false">
             mvn:${project.groupId}/brooklyn-dist-config/${project.version}/cfg/osgilauncher
         </configfile>
+        <configfile finalname="${karaf.etc}/${groupId}.rest.filter.cors.cfg">
+            mvn:${project.groupId}/brooklyn-dist-config/${project.version}/cfg/rest.filter.cors
+        </configfile>
     </feature>
 
     <feature name="brooklyn-headless" version="${project.version}" description="All Brooklyn bundles witht the exception of the launcher">
