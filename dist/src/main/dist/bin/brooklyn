@@ -49,6 +49,9 @@ JAVA_OPTS="-Dbrooklyn.location.localhost.address=127.0.0.1 ${JAVA_OPTS}"
 # Increase garbage collection, see https://issues.apache.org/jira/browse/BROOKLYN-375
 JAVA_OPTS="-XX:SoftRefLRUPolicyMSPerMB=1 ${JAVA_OPTS}"
 
+# Set the TLS protocol versions
+JAVA_OPTS="-Dhttps.protocols=TLSv1.1,TLSv1.2 ${JAVA_OPTS}"
+
 # start Brooklyn
 echo $$ > "$ROOT/pid_java"
 if [[ -n "$JAVA_HOME" && -d "$JAVA_HOME" ]] ; then

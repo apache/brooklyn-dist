@@ -80,3 +80,6 @@ export EXTRA_JAVA_OPTS="-Dbrooklyn.location.localhost.address=127.0.0.1 ${EXTRA_
 
 # Increase garbage collection, see https://issues.apache.org/jira/browse/BROOKLYN-375
 export EXTRA_JAVA_OPTS="-XX:SoftRefLRUPolicyMSPerMB=1 ${EXTRA_JAVA_OPTS}"
+
+# Set the TLS protocol versions
+export EXTRA_JAVA_OPTS="-Dhttps.protocols=TLSv1.1,TLSv1.2 ${EXTRA_JAVA_OPTS}"
