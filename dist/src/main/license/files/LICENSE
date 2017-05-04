@@ -270,8 +270,10 @@ This project includes the software: com.fasterxml.jackson.module
 
 This project includes the software: com.google.code.findbugs
   Available at: http://findbugs.sourceforge.net/
-  Version used: 2.0.1
-  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  Version used: 2.0.1; 2.0.3
+  Used under the following licenses:
+    Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+    GNU Lesser General Public License (http://www.gnu.org/licenses/lgpl.html)
 
 This project includes the software: com.google.code.gson
   Available at: http://code.google.com/p/google-gson/
@@ -404,7 +406,7 @@ This project includes the software: Font Awesome (code)
 
 This project includes the software: Font Awesome (fonts)
   Available at: http://fontawesome.io/
-  Inclusive of: font-awesome/fonts/* cluster.svg
+  Inclusive of: font-awesome/fonts/*
   Version used: 4.5.0
   Used under the following license: SIL OFL 1.1 (http://scripts.sil.org/OFL)
   Copyright (c) Dave Gandy (2016)
@@ -434,12 +436,12 @@ This project includes the software: handlebars.js
 
 This project includes the software: io.airlift
   Available at: https://github.com/airlift/airline
-  Version used: 0.6
-  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  Version used: 0.7
+  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
 
 This project includes the software: io.cloudsoft.windows
   Available at: http://github.com/cloudsoft/winrm4j
-  Version used: 0.4.0
+  Version used: 0.5.0
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: io.swagger
@@ -596,7 +598,7 @@ This project includes the software: org.apache.commons
 This project includes the software: org.apache.cxf
   Available at: http://cxf.apache.org
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 3.1.4
+  Version used: 3.1.10
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.felix
@@ -608,7 +610,7 @@ This project includes the software: org.apache.felix
 This project includes the software: org.apache.httpcomponents
   Available at: http://hc.apache.org/httpcomponents-core-ga http://hc.apache.org/httpcomponents-asyncclient http://hc.apache.org/httpcomponents-client-ga
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 4.4.1; 4.1
+  Version used: 4.4.4; 4.1.2; 4.5.2
   Used under the following licenses:
     Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
     Apache License, version 2.0 (in-project reference: LICENSE.txt)
@@ -616,37 +618,37 @@ This project includes the software: org.apache.httpcomponents
 This project includes the software: org.apache.jclouds
   Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 2.0.0
+  Version used: 2.0.1
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.api
   Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 2.0.0
+  Version used: 2.0.1
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.common
   Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 2.0.0
+  Version used: 2.0.1
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.driver
   Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 2.0.0
+  Version used: 2.0.1
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.labs
   Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 2.0.0
+  Version used: 2.0.1
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.jclouds.provider
   Available at: http://jclouds.apache.org/
   Developed by: The Apache Software Foundation (http://www.apache.org/)
-  Version used: 2.0.0
+  Version used: 2.0.1
   Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.apache.neethi
@@ -702,6 +704,11 @@ This project includes the software: org.glassfish.external
   Version used: 1.0-b01-ea
   Used under the following license: Common Development and Distribution License (http://opensource.org/licenses/CDDL-1.0)
 
+This project includes the software: org.hamcrest
+  Available at: https://github.com/hamcrest/JavaHamcrest
+  Version used: 1.3
+  Used under the following license: The BSD 3-Clause (New BSD) License (http://www.opensource.org/licenses/bsd-license.php)
+
 This project includes the software: org.hibernate
   Available at: http://jtidy.sourceforge.net
   Version used: r8-20060801
@@ -744,6 +751,12 @@ This project includes the software: org.tukaani
   Available at: http://tukaani.org/xz/java.html
   Version used: 1.0
   Used under the following license: Public Domain
+
+This project includes the software: org.xmlunit
+  Available at: http://www.xmlunit.org/
+  Developed by: XMLUnit (http://www.xmlunit.org/)
+  Version used: 2.3.0
+  Used under the following license: Apache License, version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 This project includes the software: org.yaml
   Available at: http://www.snakeyaml.org
@@ -793,7 +806,7 @@ This project includes the software: Swagger UI
 
 This project includes the software: Tango Project Icons
   Available at: https://commons.wikimedia.org/wiki/File:Network-server.svg
-  Inclusive of: server.svg
+  Inclusive of: tango-project-icons
   Used under the following license: Public Domain (https://en.wikipedia.org/wiki/en:public_domain)
   Released into the public domain by the people from the Tango! project (The Tango! Desktop Project), via Wikimedia Commons
 
