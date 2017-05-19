@@ -28,8 +28,6 @@ WORKDIR /home/brooklyn
 # now install software brooklyn
 COPY target/files/ .
 RUN \
-  # remove option not relevan for java v8 \
-  sed -i.bk "s/ -XX:MaxPermSize=256m//" bin/brooklyn ; \
   # install br for global use \
   cp ./bin/br /usr/bin/br ; \
   # and fix perms (irritating that docker won't do this) \
