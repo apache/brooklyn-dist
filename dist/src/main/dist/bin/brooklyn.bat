@@ -65,7 +65,7 @@ IF NOT DEFINED JAVA_BIN (
 )
 
 REM use default memory settings, if not specified
-IF "%JAVA_OPTS%"=="" SET JAVA_OPTS=-Xms256m -Xmx500m -XX:MaxPermSize=256m
+IF "%JAVA_OPTS%"=="" SET JAVA_OPTS=-Xms256m -Xmx1g
 
 REM set up the classpath
 SET INITIAL_CLASSPATH=%BROOKLYN_HOME%conf;%BROOKLYN_HOME%lib\patch\*;%BROOKLYN_HOME%lib\brooklyn\*;%BROOKLYN_HOME%lib\dropins\*

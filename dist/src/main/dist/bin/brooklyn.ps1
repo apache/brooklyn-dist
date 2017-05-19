@@ -103,7 +103,7 @@ $javaargs = @()
 
 # add the user's java opts, or use default memory settings, if not specified
 if ( $env:JAVA_OPTS -eq $null ) {
-    $javaargs +="-Xms256m -Xmx1g -XX:MaxPermSize=256m"
+    $javaargs +="-Xms256m -Xmx1g"
 } else {
     $javaargs +=$env:JAVA_OPTS
 }

@@ -31,7 +31,7 @@ export ROOT BROOKLYN_HOME
 
 # use default memory settings, if not specified
 if [ -z "${JAVA_OPTS}" ] ; then
-    JAVA_OPTS="-Xms256m -Xmx1g -XX:MaxPermSize=256m"
+    JAVA_OPTS="-Xms256m -Xmx1g"
 fi
 
 # set up the classpath
