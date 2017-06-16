@@ -52,6 +52,11 @@
             <artifactId>brooklyn-locations-jclouds</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.brooklyn</groupId>
+            <artifactId>brooklyn-locations-container</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.brooklyn</groupId>
@@ -116,7 +121,6 @@
             <artifactId>brooklyn-test-framework</artifactId>
             <version>${project.version}</version>
         </dependency>
-
 
         <!-- bring in all jclouds-supported cloud providers -->
         <dependency>
