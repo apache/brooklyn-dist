@@ -35,7 +35,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.apache.brooklyn.core.entity.factory.ApplicationBuilder;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
@@ -176,14 +175,5 @@ public class BaseCliIntegrationTest {
         protected void assertConsoleErrorEmpty() {
             assertTrue(consoleError.isEmpty(), "Error present; error=" + consoleError);
         }
-    };
-
-    /** An empty application for testing. */
-    public static class TestApplication extends ApplicationBuilder {
-        @Override
-        protected void doBuild() {
-            // Empty, for testing
-        }
     }
-
 }
