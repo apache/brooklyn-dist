@@ -473,7 +473,6 @@
                   !io.cloudsoft.winrm4j.*,
                   !javax.inject.*,
                   !org.apache.felix.framework.*,
-                  !org.jclouds.googlecomputeengine.*,
                   !org.osgi.jmx,
                   !org.python.*,
                   !org.reflections.*,
