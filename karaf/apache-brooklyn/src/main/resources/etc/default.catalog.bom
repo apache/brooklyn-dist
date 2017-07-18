@@ -3,6 +3,7 @@
 # and templates to get started using Brooklyn
 
 brooklyn.catalog:
+  bundle: brooklyn-default-karaf-catalog
   version: "0.12.0-SNAPSHOT" # BROOKLYN_VERSION
   include: classpath://library-catalog-classes.bom
 
