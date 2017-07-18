@@ -39,13 +39,6 @@
                                 </artifact>
                                 <artifact>
                                     <file>
-                                        ${project.basedir}/src/main/resources/org.apache.brooklyn.core.catalog.bomscanner.cfg
-                                    </file>
-                                    <type>cfg</type>
-                                    <classifier>core.catalog.bomscanner</classifier>
-                                </artifact>
-                                <artifact>
-                                    <file>
                                         ${project.basedir}/src/main/resources/org.apache.brooklyn.osgilauncher.cfg
                                     </file>
                                     <type>cfg</type>
