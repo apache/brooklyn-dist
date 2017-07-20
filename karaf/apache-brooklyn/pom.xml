@@ -168,15 +168,6 @@
                   <groupId>${project.groupId}</groupId>
                   <artifactId>brooklyn-dist-config</artifactId>
                   <version>${project.version}</version>
-                  <classifier>core.catalog.bomscanner</classifier>
-                  <type>cfg</type>
-                  <outputDirectory>${project.build.directory}/assembly/etc</outputDirectory>
-                  <destFileName>${project.groupId}.core.catalog.bomscanner.cfg</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>brooklyn-dist-config</artifactId>
-                  <version>${project.version}</version>
                   <classifier>osgilauncher</classifier>
                   <type>cfg</type>
                   <outputDirectory>${project.build.directory}/assembly/etc</outputDirectory>
