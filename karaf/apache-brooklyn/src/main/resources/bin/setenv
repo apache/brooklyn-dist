@@ -75,6 +75,10 @@ if [ "x$JAVA" = "x" ]; then
     fi
 fi
 
+if [ -z "${BROOKLYN_PERSISTENCE_DIR}" ] ; then
+    export BROOKLYN_PERSISTENCE_DIR="~/.brooklyn/brooklyn-persisted-state"
+fi
+
 # force resolution of localhost to be loopback
 export EXTRA_JAVA_OPTS="-Dbrooklyn.location.localhost.address=127.0.0.1 ${EXTRA_JAVA_OPTS}"
 
@@ -83,3 +87,6 @@ export EXTRA_JAVA_OPTS="-XX:SoftRefLRUPolicyMSPerMB=1 ${EXTRA_JAVA_OPTS}"
 
 # Set the TLS protocol versions
 export EXTRA_JAVA_OPTS="-Dhttps.protocols=TLSv1.1,TLSv1.2 ${EXTRA_JAVA_OPTS}"
+
+# Set the persistence directory
+export EXTRA_JAVA_OPTS="-Dbrooklyn.persistence.dir=${BROOKLYN_PERSISTENCE_DIR} ${EXTRA_JAVA_OPTS}"

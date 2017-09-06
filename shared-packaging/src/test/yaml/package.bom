@@ -79,8 +79,8 @@ brooklyn.catalog:
             sudo iptables -I INPUT -p tcp -m tcp --dport 8081 -j ACCEPT
             sudo service iptables save
           fi
-          sudo yum -y install java-1.7.0-openjdk.x86_64
           sudo yum -y install brooklyn-package.rpm
+          sudo systemctl start brooklyn
 
   - id: yum-upstart-brooklyn
     item:
@@ -95,9 +95,8 @@ brooklyn.catalog:
             sudo iptables -I INPUT -p tcp -m tcp --dport 8081 -j ACCEPT
             sudo service iptables save
           fi
-          sudo yum -y install java-1.7.0-openjdk.x86_64
           sudo yum -y install brooklyn-package.rpm
-
+          sudo initctl start brooklyn
 
 ### Tests ###
   - id: test-is-up
@@ -119,7 +118,7 @@ brooklyn.catalog:
       type: org.apache.brooklyn.test.framework.SimpleShellCommandTest
       name: Check process has started
       # The brackets prevent grep from matching its own process
-      command: ps ax | grep "[o]rg.apache.brooklyn.cli.Main"
+      command: ps ax | grep "[/]opt/brooklyn/bin/karaf"
       assertStatus:
         equals: 0
       assertOut:
@@ -131,7 +130,7 @@ brooklyn.catalog:
       type: org.apache.brooklyn.test.framework.SimpleShellCommandTest
       name: Check process is not started
       # The brackets prevent grep from matching its own process
-      command: ps ax | grep "[o]rg.apache.brooklyn.cli.Main"
+      command: ps ax | grep "[/]opt/brooklyn/bin/karaf"
       assertStatus:
         equals: 1
       assertOut:
@@ -143,7 +142,7 @@ brooklyn.catalog:
       type: org.apache.brooklyn.test.framework.SimpleShellCommandTest
       name: Check user the process is running under
       # The brackets prevent grep from matching its own process
-      command: ps -fu brooklyn | grep "[o]rg.apache.brooklyn.cli.Main"
+      command: ps -fu brooklyn | grep "[/]opt/brooklyn/bin/karaf"
       assertStatus:
         equals: 0
       assertOut:
@@ -166,24 +165,25 @@ brooklyn.catalog:
       type: org.apache.brooklyn.test.framework.SimpleShellCommandTest
       name: Check paths permissions
       command: |
-        [ "$(stat -c "%A %U %G" /opt/brooklyn)" = "drwxr-xr-x brooklyn brooklyn" ] && \
-        [ "$(stat -c "%A %U %G" /var/lib/brooklyn)" = "drwxr-xr-x brooklyn brooklyn" ] && \
-        [ "$(stat -c "%A %U %G" /var/log/brooklyn)" = "drwx------ brooklyn brooklyn" ] && \
-        [ "$(stat -c "%A %U %G" /etc/systemd/system/multi-user.target.wants)" = "drwxr-xr-x root root" ] && \
-        [ "$(sudo stat -c "%A %U %G" /etc/systemd/system/multi-user.target.wants/brooklyn.service)" = "-rw-r--r-- root root" ] && \
-        [ "$(stat -c "%A %U %G" /etc/init)" = "drwxr-xr-x root root" ] && \
-        [ "$(stat -c "%A %U %G" /etc/init/brooklyn.conf)" = "-rw-r--r-- root root" ] && \
-        [ "$(stat -c "%A %U %G" /etc/brooklyn)" = "drwxr-xr-x brooklyn brooklyn" ] && \
-        [ "$(sudo stat -c "%A %U %G" /etc/brooklyn/brooklyn.conf)" = "-rw------- brooklyn brooklyn" ] && \
-        [ "$(stat -c "%A %U %G" /etc/brooklyn/logback.xml)" = "-rw-r--r-- brooklyn brooklyn" ] && \
-        ! find /opt/brooklyn | xargs stat -c "%A %U %G" | grep -v "drwxr-xr-x brooklyn brooklyn\|-rw-r--r-- brooklyn brooklyn"
+        BROOKLYN_DIRECTORIES="/opt/brooklyn/ /etc/brooklyn/ /var/lib/brooklyn/ /var/log/brooklyn/"
+        [ "$(sudo stat -c "%A %U %G" /opt/brooklyn)" = "lrwxrwxrwx brooklyn brooklyn" ]
+        [ "$(sudo stat -c "%A %U %G" /etc/init)" = "drwxr-xr-x root root" ]
+        [ "$(sudo stat -c "%A %U %G" /lib/systemd/system/)" = "drwxr-xr-x root root" ]
+        [ "$(sudo stat -c "%A %U %G" /etc/init/brooklyn.conf)" = "-rw-rw-r-- root root" ]
+        [ "$(sudo stat -c "%A %U %G" /lib/systemd/system/brooklyn.service)" = "-rw-rw-r-- root root" ]
+        if hash systemctl ; then
+          [ "$(sudo stat -c "%A %U %G" /etc/systemd/system/multi-user.target.wants/brooklyn.service)" = "-rwxr----- root root" ]
+        fi
+        ! sudo ls -d /opt/brooklyn-* | xargs stat -c "%F %a %U %G" | grep -v -E "^directory\s740\sbrooklyn\sbrooklyn$"
+        ! sudo find ${BROOKLYN_DIRECTORIES} -type f | xargs sudo stat -c "%a %U %G" | grep -v -E "^[6,7][0,4,6][0]\sbrooklyn\sbrooklyn"
+        ! sudo find ${BROOKLYN_DIRECTORIES} -type d | xargs sudo stat -c "%a %U %G" | grep -v -E "^[6,7][0,1,4][0-1]\sbrooklyn\sbrooklyn"
       assertStatus:
         equals: 0
   - id: test-log-files-exist
     item:
       type: org.apache.brooklyn.test.framework.SimpleShellCommandTest
       name: Check log files created at expected location
-      command: sudo ls /var/log/brooklyn/brooklyn.{debug,info}.log | wc -l
+      command: sudo ls /opt/brooklyn/data/log/brooklyn.{debug,info}.log | wc -l
       assertOut:
         equals: "2"
   - id: test-healthy
@@ -228,8 +228,8 @@ brooklyn.catalog:
   - id: packaging-asserts
     item:
       type: org.apache.brooklyn.test.framework.TestCase
-      targetId: brooklyn
       brooklyn.config:
+        targetId: brooklyn
         timeout: 1m
       brooklyn.children:
       - type: test-is-up
@@ -262,8 +262,12 @@ brooklyn.catalog:
         name: 13. Restart machine
       - type: test-is-not-up
         name: 14. Check not running while restarting
+      - type: test-is-up
+        name: 15. Wait for machine to fully restart
+        brooklyn.config:
+          timeout: 10m
       - type: test-healthy
-        name: 15. Check healthy
+        name: 16. Check healthy
 ### Combined tests with target entity - system specific ###
   - id: test-yum-upstart-brooklyn
     item:

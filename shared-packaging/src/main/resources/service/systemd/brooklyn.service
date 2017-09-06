@@ -22,12 +22,16 @@ Documentation=https://brooklyn.apache.org/documentation/index.html
 [Service]
 Type=simple
 WorkingDirectory=/opt/brooklyn/
-Environment="JAVA_OPTS=-Dbrooklyn.location.localhost.address=127.0.0.1 -XX:SoftRefLRUPolicyMSPerMB=1 -Dlogback.configurationFile=/etc/brooklyn/logback.xml -Xms256m -Xmx1g"
-Environment="CLASSPATH=/opt/brooklyn/conf:/opt/brooklyn/lib/patch/*:/opt/brooklyn/lib/brooklyn/*:/opt/brooklyn/lib/dropins/*"
-ExecStart=/usr/bin/java $JAVA_OPTS -cp "$CLASSPATH" org.apache.brooklyn.cli.Main launch --noGlobalBrooklynProperties --localBrooklynProperties /etc/brooklyn/brooklyn.conf --persist auto
+Environment="EXTRA_JAVA_OPTS=-Dbrooklyn.location.localhost.address=127.0.0.1 -XX:SoftRefLRUPolicyMSPerMB=1 -Xms256m -Xmx1g"
+Environment="KARAF_HOME=/opt/brooklyn"
+Environment="KARAF_ETC=/etc/brooklyn"
+Environment="KARAF_REDIRECT=/dev/null"
+Environment="BROOKLYN_PERSISTENCE_DIR=/var/lib/brooklyn"
+ExecStart=/opt/brooklyn/bin/karaf server  >> "$KARAF_REDIRECT" 2>&1
 Restart=always
 User=brooklyn
 Group=brooklyn
+UMask=0066
 
 [Install]
 WantedBy=multi-user.target

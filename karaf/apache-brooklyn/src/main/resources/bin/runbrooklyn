@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -17,6 +17,23 @@
 # specific language governing permissions and limitations
 # under the License.
 
-if which systemctl >> /dev/null 2>&1; then
-    systemctl daemon-reload
-fi
+# This script is a convenience wrapper for use to avoid problems on Centos 6
+# Upstart is too old on CentOS 6, at least v1.4 required to use setuid, setgid.
+# This script does the setuid and handles termination via signals.
+
+trap terminate_all SIGTERM
+trap kill_all SIGKILL
+
+function terminate_all () {
+  pkill -SIGTERM -g ${PGROUP}
+  kill -s SIGTERM ${KARAF}
+}
+function kill_all () {
+  pkill -SIGKILL -g ${PGROUP}
+  kill -s SIGKILL ${KARAF}
+}
+
+su -c "/opt/brooklyn/bin/karaf server  >> /dev/null 2>&1" brooklyn & KARAF=$!
+sleep 1 # gives time for process structure to be established
+PGROUP=$(pgrep -P $KARAF)
+wait
