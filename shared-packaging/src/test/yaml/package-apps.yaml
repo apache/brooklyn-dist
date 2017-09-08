@@ -23,9 +23,9 @@ services:
     byon:
       hosts: ["172.28.128.3"]
       # privateKeyFile: ~/.ssh/<private key>
-      user: vagrant
+      user: ubuntu
   brooklyn.config:
-    package.file:  ~/.m2/repository/org/apache/brooklyn/deb-packaging/0.12.0-SNAPSHOT/deb-packaging-0.12.0-SNAPSHOT.deb # BROOKLYN_VERSION
+    package.file:  ~/.m2/repository/org/apache/brooklyn/deb-packaging/0.12.0-SNAPSHOT/deb-packaging-0.12.0-SNAPSHOT-all.deb # BROOKLYN_VERSION
 
 ---
 
@@ -38,7 +38,7 @@ services:
       # privateKeyFile: ~/.ssh/<private key>
       user: vagrant
   brooklyn.config:
-    package.file: ~/.m2/repository/org/apache/brooklyn/deb-packaging/0.12.0-SNAPSHOT/deb-packaging-0.12.0-SNAPSHOT.deb # BROOKLYN_VERSION
+    package.file: ~/.m2/repository/org/apache/brooklyn/deb-packaging/0.12.0-SNAPSHOT/deb-packaging-0.12.0-SNAPSHOT-all.deb # BROOKLYN_VERSION
 
 ---
 

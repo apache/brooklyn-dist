@@ -26,6 +26,14 @@
         Brooklyn DEB Package for Debian and Ubuntu operating systems
     </description>
 
+    <properties>
+        <brooklyn.directory.permission.default>740</brooklyn.directory.permission.default>
+        <brooklyn.directory.permission.root>740</brooklyn.directory.permission.root>
+        <brooklyn.file.permission.default>740</brooklyn.file.permission.default>
+        <brooklyn.file.permission.bin>740</brooklyn.file.permission.bin>
+        <brooklyn.file.permission.global>664</brooklyn.file.permission.global>
+    </properties>
+
     <parent>
         <groupId>org.apache.brooklyn</groupId>
         <artifactId>brooklyn-dist-root</artifactId>
@@ -36,8 +44,9 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.brooklyn</groupId>
-            <artifactId>brooklyn-dist</artifactId>
+            <artifactId>apache-brooklyn</artifactId>
             <version>${project.version}</version>
+            <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.apache.brooklyn</groupId>
@@ -58,23 +67,22 @@
                             <goal>unpack</goal>
                         </goals>
                         <configuration>
-                          <artifactItems>
-                            <artifactItem>
-                              <groupId>org.apache.brooklyn</groupId>
-                              <artifactId>brooklyn-dist</artifactId>
-                              <version>${project.version}</version>
-                              <classifier>dist</classifier>
-                              <type>tar.gz</type>
-                              <outputDirectory>${project.build.directory}/deps</outputDirectory>
-                            </artifactItem>
-                            <artifactItem>
-                              <groupId>org.apache.brooklyn</groupId>
-                              <artifactId>shared-packaging</artifactId>
-                              <version>${project.version}</version>
-                              <type>jar</type>
-                              <outputDirectory>${project.build.directory}/deps/shared-packaging</outputDirectory>
-                            </artifactItem>
-                          </artifactItems>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.brooklyn</groupId>
+                                    <artifactId>apache-brooklyn</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                    <outputDirectory>${project.build.directory}/deps</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.brooklyn</groupId>
+                                    <artifactId>shared-packaging</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jar</type>
+                                    <outputDirectory>${project.build.directory}/deps/shared-packaging</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
                         </configuration>
                     </execution>
                 </executions>
@@ -92,17 +100,111 @@
                         <configuration>
                             <verbose>false</verbose>
                             <skipPOMs>false</skipPOMs>
-                            <deb>${project.build.directory}/apache-brooklyn_${project.version}_all.deb</deb>
+                            <!-- Try to follow the deb package naming convention, restricted by the maven artifact naming -->
+                            <classifier>all</classifier>
+                            <deb>${project.build.directory}/apache-brooklyn-${project.version}-all.deb</deb>
                             <controlDir>${basedir}/deb/control</controlDir>
                             <dataSet>
                                 <data>
-                                    <src>${project.build.directory}/deps/brooklyn-dist-${project.version}</src>
+                                    <src>${project.build.directory}/deps/apache-brooklyn-${project.version}/bin</src>
                                     <type>directory</type>
                                     <mapper>
                                         <type>perm</type>
-                                        <prefix>/opt/brooklyn</prefix>
+                                        <prefix>/opt/brooklyn-${project.version}/bin</prefix>
                                         <user>brooklyn</user>
                                         <group>brooklyn</group>
+                                        <filemode>${brooklyn.file.permission.bin}</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${project.build.directory}/deps/apache-brooklyn-${project.version}/catalog</src>
+                                    <type>directory</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>/opt/brooklyn-${project.version}/catalog</prefix>
+                                        <user>brooklyn</user>
+                                        <group>brooklyn</group>
+                                        <filemode>${brooklyn.file.permission.default}</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${project.build.directory}/deps/apache-brooklyn-${project.version}/data</src>
+                                    <type>directory</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>/opt/brooklyn-${project.version}/data</prefix>
+                                        <user>brooklyn</user>
+                                        <group>brooklyn</group>
+                                        <filemode>${brooklyn.file.permission.default}</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${project.build.directory}/deps/apache-brooklyn-${project.version}/deploy</src>
+                                    <type>directory</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>/opt/brooklyn-${project.version}/deploy</prefix>
+                                        <user>brooklyn</user>
+                                        <group>brooklyn</group>
+                                        <filemode>${brooklyn.file.permission.default}</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${project.build.directory}/deps/apache-brooklyn-${project.version}/etc</src>
+                                    <type>directory</type>
+                                    <conffile>true</conffile>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>/etc/brooklyn</prefix>
+                                        <user>brooklyn</user>
+                                        <group>brooklyn</group>
+                                        <filemode>${brooklyn.file.permission.default}</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${project.build.directory}/deps/apache-brooklyn-${project.version}/lib</src>
+                                    <type>directory</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>/opt/brooklyn-${project.version}/lib</prefix>
+                                        <user>brooklyn</user>
+                                        <group>brooklyn</group>
+                                        <filemode>${brooklyn.file.permission.default}</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${project.build.directory}/deps/apache-brooklyn-${project.version}/system</src>
+                                    <type>directory</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>/opt/brooklyn-${project.version}/system</prefix>
+                                        <user>brooklyn</user>
+                                        <group>brooklyn</group>
+                                        <filemode>${brooklyn.file.permission.default}</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <type>template</type>
+                                    <paths>
+                                        <path>/opt/brooklyn-${project.version}/data/log</path>
+                                    </paths>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <user>brooklyn</user>
+                                        <group>brooklyn</group>
+                                        <filemode>${brooklyn.file.permission.default}</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <type>template</type>
+                                    <paths>
+                                        <path>/var/lib/brooklyn</path>
+                                    </paths>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <user>brooklyn</user>
+                                        <group>brooklyn</group>
+                                        <filemode>${brooklyn.file.permission.default}</filemode>
                                     </mapper>
                                 </data>
                                 <data>
@@ -111,7 +213,16 @@
                                     <mapper>
                                         <type>perm</type>
                                         <prefix>/etc/init</prefix>
-                                        <filemode>644</filemode>
+                                        <filemode>${brooklyn.file.permission.global}</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${project.build.directory}/deps/shared-packaging/service/systemd/brooklyn.service</src>
+                                    <type>file</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>/lib/systemd/system</prefix>
+                                        <filemode>${brooklyn.file.permission.global}</filemode>
                                     </mapper>
                                 </data>
                                 <data>
@@ -121,56 +232,26 @@
                                     <mapper>
                                         <type>perm</type>
                                         <prefix>/etc/systemd/system/multi-user.target.wants</prefix>
-                                        <filemode>644</filemode>
+                                        <filemode>${brooklyn.file.permission.global}</filemode>
                                     </mapper>
                                 </data>
                                 <data>
-                                    <type>template</type>
-                                    <paths>
-                                        <path>etc/brooklyn</path>
-                                        <path>var/lib/brooklyn</path>
-                                    </paths>
-                                    <mapper>
-                                        <type>perm</type>
-                                        <user>brooklyn</user>
-                                        <group>brooklyn</group>
-                                    </mapper>
+                                    <type>link</type>
+                                    <linkName>/opt/brooklyn</linkName>
+                                    <linkTarget>/opt/brooklyn-${project.version}</linkTarget>
+                                    <symlink>true</symlink>
                                 </data>
                                 <data>
-                                    <type>template</type>
-                                    <paths>
-                                        <path>var/log/brooklyn</path>
-                                    </paths>
-                                    <mapper>
-                                        <type>perm</type>
-                                        <user>brooklyn</user>
-                                        <group>brooklyn</group>
-                                        <filemode>700</filemode>
-                                    </mapper>
+                                    <type>link</type>
+                                    <linkName>/opt/brooklyn-${project.version}/etc</linkName>
+                                    <linkTarget>/etc/brooklyn</linkTarget>
+                                    <symlink>true</symlink>
                                 </data>
                                 <data>
-                                    <src>${project.build.directory}/deps/shared-packaging/conf/brooklyn.conf</src>
-                                    <type>file</type>
-                                    <conffile>true</conffile>
-                                    <mapper>
-                                        <type>perm</type>
-                                        <prefix>/etc/brooklyn</prefix>
-                                        <user>brooklyn</user>
-                                        <group>brooklyn</group>
-                                        <filemode>600</filemode>
-                                    </mapper>
-                                </data>
-                                <data>
-                                    <src>${project.build.directory}/deps/shared-packaging/conf/logback.xml</src>
-                                    <type>file</type>
-                                    <conffile>true</conffile>
-                                    <mapper>
-                                        <type>perm</type>
-                                        <prefix>/etc/brooklyn</prefix>
-                                        <user>brooklyn</user>
-                                        <group>brooklyn</group>
-                                        <filemode>644</filemode>
-                                    </mapper>
+                                    <type>link</type>
+                                    <linkName>/var/log/brooklyn</linkName>
+                                    <linkTarget>/opt/brooklyn-${project.version}/data/log</linkTarget>
+                                    <symlink>true</symlink>
                                 </data>
                             </dataSet>
                         </configuration>

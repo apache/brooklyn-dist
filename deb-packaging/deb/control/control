@@ -19,6 +19,6 @@ Version: [[version]]
 Section: misc
 Priority: optional
 Architecture: all
-Depends: default-jre-headless (>= 1.7)
+Depends: java8-runtime
 Maintainer: Aleksandr Vasilev <aleksandr.vasilev@cloudsoftcorp.com>
 Description: Apache Brooklyn is a framework for modeling, monitoring, and managing applications through autonomic blueprints.
