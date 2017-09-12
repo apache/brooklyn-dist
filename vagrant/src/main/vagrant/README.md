@@ -13,7 +13,7 @@
 
 2. You may proceed to use the `Vagrantfile` as normal; `vagrant up`, `vagrant destroy` etc.
 
-##### Install a locally built `-dist.tar.gz`
+##### Install a locally built RPM package
 
 1. Set the `BROOKLYN_VERSION:` environment variable in `servers.yaml` to your current `-SNAPSHOT` version. For example:
 
@@ -30,12 +30,12 @@
    ```
 
 
-3. Copy your locally built `apache-brooklyn-<version>.tar.gz` archive to the same directory as the Vagrantfile (this directory is mounted in the Vagrant VM at `/vagrant/`).
+3. Copy your locally built `apache-brooklyn-<version>.noarch.rpm` archive to the same directory as the Vagrantfile (this directory is mounted in the Vagrant VM at `/vagrant/`).
 
    For example to copy a locally built `0.12.0-SNAPSHOT` dist:
 
    ```
-   cp ~/.m2/repository/org/apache/brooklyn/apache-brooklyn/0.12.0-SNAPSHOT/apache-brooklyn-0.12.0-SNAPSHOT.tar.gz .
+   cp ~/.m2/repository/org/apache/brooklyn/rpm-packaging/0.12.0-SNAPSHOT/rpm-packaging-0.12.0-SNAPSHOT-noarch.rpm ./apache-brooklyn-0.12.0-SNAPSHOT.noarch.rpm
    ```
 
 4. You may proceed to use the `Vagrantfile` as normal; `vagrant up`, `vagrant destroy` etc.

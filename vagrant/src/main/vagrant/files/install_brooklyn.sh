@@ -21,7 +21,7 @@
 
 BROOKLYN_VERSION=""
 INSTALL_FROM_LOCAL_DIST="false"
-TMP_ARCHIVE_NAME=apache-brooklyn.tar.gz
+TMP_ARCHIVE_NAME=apache-brooklyn.rpm
 
 do_help() {
   echo "./install.sh -v <Brooklyn Version> [-l <install from local file: true|false>]"
@@ -48,45 +48,53 @@ fi
 if [ ! "${INSTALL_FROM_LOCAL_DIST}" == "true" ]; then
   if [ ! -z "${BROOKLYN_VERSION##*-SNAPSHOT}" ] ; then
     # url for official release versions
-    BROOKLYN_URL="https://www.apache.org/dyn/closer.lua?action=download&filename=brooklyn/apache-brooklyn-${BROOKLYN_VERSION}/apache-brooklyn-${BROOKLYN_VERSION}-bin.tar.gz"
-    BROOKLYN_DIR="apache-brooklyn-${BROOKLYN_VERSION}-bin"
+    BROOKLYN_URL="https://www.apache.org/dyn/closer.lua?action=download&filename=brooklyn/apache-brooklyn-${BROOKLYN_VERSION}/apache-brooklyn-${BROOKLYN_VERSION}.noarch.rpm"
   else
     # url for community-managed snapshots
-    BROOKLYN_URL="https://repository.apache.org/service/local/artifact/maven/redirect?r=snapshots&g=org.apache.brooklyn&a=apache-brooklyn&v=${BROOKLYN_VERSION}&e=tar.gz"
-    BROOKLYN_DIR="apache-brooklyn-${BROOKLYN_VERSION}"
+    BROOKLYN_URL="https://repository.apache.org/service/local/artifact/maven/redirect?r=snapshots&g=org.apache.brooklyn&a=rpm-packaging&v=${BROOKLYN_VERSION}&c=noarch&e=rpm"
   fi
 else
-  echo "Installing from a local -dist archive [ /vagrant/apache-brooklyn-${BROOKLYN_VERSION}.tar.gz]"
+  echo "Installing from a local -dist archive [ /vagrant/apache-brooklyn-${BROOKLYN_VERSION}.noarch.rpm]"
   # url to install from mounted /vagrant dir
-  BROOKLYN_URL="file:///vagrant/apache-brooklyn-${BROOKLYN_VERSION}.tar.gz"
-  BROOKLYN_DIR="apache-brooklyn-${BROOKLYN_VERSION}"
+  BROOKLYN_URL="file:///vagrant/apache-brooklyn-${BROOKLYN_VERSION}.noarch.rpm"
 
   # ensure local file exists
-  if [ ! -f /vagrant/apache-brooklyn-${BROOKLYN_VERSION}.tar.gz ]; then
-    echo "Error: file not found /vagrant/apache-brooklyn-${BROOKLYN_VERSION}.tar.gz"
+  if [ ! -f /vagrant/apache-brooklyn-${BROOKLYN_VERSION}.noarch.rpm ]; then
+    echo "Error: file not found /vagrant/apache-brooklyn-${BROOKLYN_VERSION}.noarch.rpm"
     exit 1
   fi
 fi
 
-echo "Installing Apache Brooklyn version ${BROOKLYN_VERSION} from [${BROOKLYN_URL}]"
-
 echo "Downloading Brooklyn release archive"
 curl --fail --silent --show-error --location --output ${TMP_ARCHIVE_NAME} "${BROOKLYN_URL}"
-echo "Extracting Brooklyn release archive"
-tar zxf ${TMP_ARCHIVE_NAME}
 
-echo "Creating Brooklyn dirs and symlinks"
-ln -s ${BROOKLYN_DIR} apache-brooklyn
-sudo mkdir -p /var/log/brooklyn
-sudo chown -R vagrant:vagrant /var/log/brooklyn
-mkdir -p /home/vagrant/.brooklyn
+echo "Restarting Syslog"
+sudo systemctl restart rsyslog
 
-echo "Copying default vagrant Brooklyn properties file"
-cp /vagrant/files/brooklyn.properties /home/vagrant/.brooklyn/
-chmod 600 /home/vagrant/.brooklyn/brooklyn.properties
+echo "Updating Yum"
+sudo yum -y update
 
-echo "Installing JRE"
-sudo sh -c 'yum -y install java-1.8.0-openjdk-headless'
+echo "Install Java"
+sudo yum install -y java-1.8.0-openjdk-headless
 
-echo "Copying Brooklyn systemd service unit file"
-sudo cp /vagrant/files/brooklyn.service /etc/systemd/system/brooklyn.service
+echo "Install Apache Brooklyn version ${BROOKLYN_VERSION} from [${BROOKLYN_URL}]"
+sudo yum -y install ${TMP_ARCHIVE_NAME}
+
+echo "Configure catalog"
+sudo cp /vagrant/files/vagrant-catalog.bom /opt/brooklyn/catalog/vagrant-catalog.bom
+sudo chown brooklyn:brooklyn /opt/brooklyn/catalog/vagrant-catalog.bom
+sudo chmod 740 /opt/brooklyn/catalog/vagrant-catalog.bom
+echo '  - file:catalog/vagrant-catalog.bom' | sudo tee -a /etc/brooklyn/default.catalog.bom
+
+echo "Starting Apache Brooklyn..."
+sudo systemctl start brooklyn
+
+echo "Waiting for Apache Brooklyn to start..."
+sleep 10
+
+while ! (sudo grep "BundleEvent STARTED - org.apache.brooklyn.karaf-init" /var/log/brooklyn/brooklyn.debug.log) > /dev/null ; do
+  sleep 10
+  echo ".... waiting for Apache Brooklyn to start at `date`"
+done
+
+echo "Apache Brooklyn started!"
