@@ -26,6 +26,14 @@
         Brooklyn RPM Package for Centos 7 and RHEL 7 operating systems
     </description>
 
+    <properties>
+        <brooklyn.directory.permission.default>740</brooklyn.directory.permission.default>
+        <brooklyn.directory.permission.root>740</brooklyn.directory.permission.root>
+        <brooklyn.file.permission.default>740</brooklyn.file.permission.default>
+        <brooklyn.file.permission.bin>740</brooklyn.file.permission.bin>
+        <brooklyn.file.permission.global>664</brooklyn.file.permission.global>
+    </properties>
+
     <parent>
         <groupId>org.apache.brooklyn</groupId>
         <artifactId>brooklyn-dist-root</artifactId>
@@ -36,8 +44,9 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.brooklyn</groupId>
-            <artifactId>brooklyn-dist</artifactId>
+            <artifactId>apache-brooklyn</artifactId>
             <version>${project.version}</version>
+            <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.apache.brooklyn</groupId>
@@ -58,23 +67,22 @@
                             <goal>unpack</goal>
                         </goals>
                         <configuration>
-                          <artifactItems>
-                            <artifactItem>
-                              <groupId>org.apache.brooklyn</groupId>
-                              <artifactId>brooklyn-dist</artifactId>
-                              <version>${project.version}</version>
-                              <classifier>dist</classifier>
-                              <type>tar.gz</type>
-                              <outputDirectory>${project.build.directory}/deps</outputDirectory>
-                            </artifactItem>
-                            <artifactItem>
-                              <groupId>org.apache.brooklyn</groupId>
-                              <artifactId>shared-packaging</artifactId>
-                              <version>${project.version}</version>
-                              <type>jar</type>
-                              <outputDirectory>${project.build.directory}/deps/shared-packaging</outputDirectory>
-                            </artifactItem>
-                          </artifactItems>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.brooklyn</groupId>
+                                    <artifactId>apache-brooklyn</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                    <outputDirectory>${project.build.directory}/deps</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.brooklyn</groupId>
+                                    <artifactId>shared-packaging</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jar</type>
+                                    <outputDirectory>${project.build.directory}/deps/shared-packaging</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
                         </configuration>
                     </execution>
                 </executions>
@@ -97,66 +105,90 @@
                     <group>Applications/Internet</group>
                     <changelogFile><!--TODO--></changelogFile>
                     <needarch>noarch</needarch>
+                    <classifier>noarch</classifier>
                     <targetOS>Linux</targetOS>
                     <requires>
-                        <require>java</require>
+                        <require>java-1.8.0</require>
                     </requires>
                     <defineStatements>
                         <defineStatement>_binaries_in_noarch_packages_terminate_build 0</defineStatement>
                     </defineStatements>
-                    <defaultDirmode>755</defaultDirmode>
-                    <defaultFilemode>644</defaultFilemode>
+                    <defaultDirmode>${brooklyn.directory.permission.default}</defaultDirmode>
+                    <defaultFilemode>${brooklyn.file.permission.default}</defaultFilemode>
                     <defaultGroupname>brooklyn</defaultGroupname>
                     <defaultUsername>brooklyn</defaultUsername>
                     <mappings>
                         <mapping>
-                            <directory>/etc/brooklyn</directory>
-                            <configuration>true</configuration>
+                            <directory>/opt/brooklyn-${project.version}</directory>
                         </mapping>
                         <mapping>
-                            <directory>/etc/brooklyn</directory>
-                            <configuration>true</configuration>
-                            <filemode>600</filemode>
-                            <username>brooklyn</username>
-                            <groupname>brooklyn</groupname>
+                            <directory>/opt/brooklyn-${project.version}/bin</directory>
+                            <filemode>${brooklyn.file.permission.bin}</filemode>
                             <sources>
                                 <source>
-                                    <location>${project.build.directory}/deps/shared-packaging/conf/brooklyn.conf</location>
+                                    <location>${project.build.directory}/deps/apache-brooklyn-${project.version}/bin</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/opt/brooklyn-${project.version}/catalog</directory>
+                            <sources>
+                                <source>
+                                    <location>${project.build.directory}/deps/apache-brooklyn-${project.version}/catalog</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/opt/brooklyn-${project.version}/data</directory>
+                            <directoryIncluded>true</directoryIncluded>
+                            <recurseDirectories>true</recurseDirectories>
+                            <sources>
+                                <source>
+                                    <location>${project.build.directory}/deps/apache-brooklyn-${project.version}/data</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/opt/brooklyn-${project.version}/data/log</directory>
+                        </mapping>
+                        <mapping>
+                            <directory>/opt/brooklyn-${project.version}/deploy</directory>
+                            <sources>
+                                <source>
+                                    <location>${project.build.directory}/deps/apache-brooklyn-${project.version}/deploy</location>
                                 </source>
                             </sources>
                         </mapping>
                         <mapping>
                             <directory>/etc/brooklyn</directory>
-                            <configuration>true</configuration>
+                            <configuration>noreplace</configuration>
+                            <filemode>${brooklyn.file.permission.default}</filemode>
                             <sources>
                                 <source>
-                                    <location>${project.build.directory}/deps/shared-packaging/conf/logback.xml</location>
+                                    <location>${project.build.directory}/deps/apache-brooklyn-${project.version}/etc</location>
                                 </source>
                             </sources>
                         </mapping>
                         <mapping>
-                            <directory>/opt/brooklyn</directory>
+                            <directory>/opt/brooklyn-${project.version}/lib</directory>
                             <sources>
                                 <source>
-                                    <location>${project.build.directory}/deps/brooklyn-dist-${project.version}</location>
+                                    <location>${project.build.directory}/deps/apache-brooklyn-${project.version}/lib</location>
                                 </source>
                             </sources>
                         </mapping>
                         <mapping>
-                            <directory>/var/lib/brooklyn</directory>
-                            <configuration>true</configuration>
+                            <directory>/opt/brooklyn-${project.version}/system</directory>
+                            <sources>
+                                <source>
+                                    <location>${project.build.directory}/deps/apache-brooklyn-${project.version}/system</location>
+                                </source>
+                            </sources>
                         </mapping>
                         <mapping>
-                            <directory>/var/log/brooklyn</directory>
-                            <configuration>true</configuration>
-                            <filemode>700</filemode>
-                            <username>brooklyn</username>
-                            <groupname>brooklyn</groupname>
-                        </mapping>
-                        <mapping>
-                            <directory>/etc/systemd/system/multi-user.target.wants</directory>
+                            <directory>/lib/systemd/system</directory>
                             <directoryIncluded>false</directoryIncluded>
-                            <filemode>644</filemode>
+                            <filemode>${brooklyn.file.permission.global}</filemode>
                             <username>root</username>
                             <groupname>root</groupname>
                             <sources>
@@ -168,13 +200,55 @@
                         <mapping>
                             <directory>/etc/init</directory>
                             <directoryIncluded>false</directoryIncluded>
-                            <filemode>644</filemode>
+                            <filemode>${brooklyn.file.permission.global}</filemode>
                             <username>root</username>
                             <groupname>root</groupname>
                             <sources>
                                 <source>
                                     <location>${project.build.directory}/deps/shared-packaging/service/upstart/rpm/</location>
                                 </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/etc/systemd/system/multi-user.target.wants</directory>
+                            <directoryIncluded>false</directoryIncluded>
+                            <filemode>${brooklyn.file.permission.global}</filemode>
+                            <username>root</username>
+                            <groupname>root</groupname>
+                            <sources>
+                                <source>
+                                    <location>${project.build.directory}/deps/shared-packaging/service/systemd</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/var/lib/brooklyn</directory>
+                            <filemode>${brooklyn.file.permission.default}</filemode>
+                        </mapping>
+                        <mapping>
+                            <directory>/opt/brooklyn</directory>
+                            <sources>
+                                <softlinkSource>
+                                    <location>/opt/brooklyn-${project.version}</location>
+                                </softlinkSource>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/var/log/brooklyn</directory>
+                            <sources>
+                                <softlinkSource>
+                                    <location>/opt/brooklyn-${project.version}/data/log</location>
+                                </softlinkSource>
+                            </sources>
+                        </mapping>
+                        <!-- There is a bug in karaf 4.1.2 that ignores the KARAF_ETC envvar. The workaround is to softlink to the etc folder -->
+                        <!-- Until it is resolved: https://issues.apache.org/jira/browse/KARAF-5352 -->
+                        <mapping>
+                            <directory>/opt/brooklyn-${project.version}/etc</directory>
+                            <sources>
+                                <softlinkSource>
+                                    <location>/etc/brooklyn</location>
+                                </softlinkSource>
                             </sources>
                         </mapping>
                     </mappings>
