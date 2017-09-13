@@ -22,7 +22,7 @@ Documentation=https://brooklyn.apache.org/documentation/index.html
 [Service]
 Type=simple
 WorkingDirectory=/opt/brooklyn/
-Environment="EXTRA_JAVA_OPTS=-Dbrooklyn.location.localhost.address=127.0.0.1 -XX:SoftRefLRUPolicyMSPerMB=1 -Xms256m -Xmx1g"
+Environment="EXTRA_JAVA_OPTS=-Dbrooklyn.location.localhost.address=127.0.0.1 -XX:SoftRefLRUPolicyMSPerMB=1 -Xms256m -Xmx2g"
 Environment="KARAF_HOME=/opt/brooklyn"
 Environment="KARAF_ETC=/etc/brooklyn"
 Environment="KARAF_REDIRECT=/dev/null"
