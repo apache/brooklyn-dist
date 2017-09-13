@@ -208,17 +208,17 @@ fi
 # Re-pack the archive with the correct names
 # Classic release
 tar xzf ${src_staging_dir}/brooklyn-dist/dist/target/brooklyn-dist-${current_version}-dist.tar.gz -C ${bin_staging_dir}
-mv ${bin_staging_dir}/brooklyn-dist-${current_version} ${bin_staging_dir}/${release_name}-bin
+mv ${bin_staging_dir}/brooklyn-dist-${current_version} ${bin_staging_dir}/${release_name}-classic
 
-( cd ${bin_staging_dir} && tar czf ${artifact_dir}/${artifact_name}-bin.tar.gz ${release_name}-bin )
-( cd ${bin_staging_dir} && zip -qr ${artifact_dir}/${artifact_name}-bin.zip ${release_name}-bin )
+( cd ${bin_staging_dir} && tar czf ${artifact_dir}/${artifact_name}-classic.tar.gz ${release_name}-classic )
+( cd ${bin_staging_dir} && zip -qr ${artifact_dir}/${artifact_name}-classic.zip ${release_name}-classic )
 
 # Karaf release
 tar xzf ${src_staging_dir}/brooklyn-dist/karaf/apache-brooklyn/target/apache-brooklyn-${current_version}.tar.gz -C ${bin_staging_dir}
-mv ${bin_staging_dir}/apache-brooklyn-${current_version} ${bin_staging_dir}/${release_name}-karaf
+mv ${bin_staging_dir}/apache-brooklyn-${current_version} ${bin_staging_dir}/${release_name}-bin
 
-( cd ${bin_staging_dir} && tar czf ${artifact_dir}/${artifact_name}-karaf.tar.gz ${release_name}-karaf )
-( cd ${bin_staging_dir} && zip -qr ${artifact_dir}/${artifact_name}-karaf.zip ${release_name}-karaf )
+( cd ${bin_staging_dir} && tar czf ${artifact_dir}/${artifact_name}-bin.tar.gz ${release_name}-bin )
+( cd ${bin_staging_dir} && zip -qr ${artifact_dir}/${artifact_name}-bin.zip ${release_name}-bin )
 
 ###############################################################################
 # CLI release
