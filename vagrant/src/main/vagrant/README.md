@@ -30,12 +30,12 @@
    ```
 
 
-3. Copy your locally built `-dist.tar.gz` archive to the same directory as the Vagrantfile (this directory is mounted in the Vagrant VM at `/vagrant/`).
+3. Copy your locally built `apache-brooklyn-<version>.tar.gz` archive to the same directory as the Vagrantfile (this directory is mounted in the Vagrant VM at `/vagrant/`).
 
-   For example to copy a locally built `0.9.0-SNAPSHOT` dist:
+   For example to copy a locally built `0.12.0-SNAPSHOT` dist:
 
    ```
-   cp ~/.m2/repository/org/apache/brooklyn/brooklyn-dist/0.9.0-SNAPSHOT/brooklyn-dist-0.9.0-SNAPSHOT-dist.tar.gz .
+   cp ~/.m2/repository/org/apache/brooklyn/apache-brooklyn/0.12.0-SNAPSHOT/apache-brooklyn-0.12.0-SNAPSHOT.tar.gz .
    ```
 
 4. You may proceed to use the `Vagrantfile` as normal; `vagrant up`, `vagrant destroy` etc.
