@@ -49,21 +49,21 @@ if [ ! "${INSTALL_FROM_LOCAL_DIST}" == "true" ]; then
   if [ ! -z "${BROOKLYN_VERSION##*-SNAPSHOT}" ] ; then
     # url for official release versions
     BROOKLYN_URL="https://www.apache.org/dyn/closer.lua?action=download&filename=brooklyn/apache-brooklyn-${BROOKLYN_VERSION}/apache-brooklyn-${BROOKLYN_VERSION}-bin.tar.gz"
-    BROOKLYN_DIR="apache-brooklyn-${BROOKLYN_VERSION}-bin"
+    BROOKLYN_DIR="apache-brooklyn-${BROOKLYN_VERSION}"
   else
     # url for community-managed snapshots
-    BROOKLYN_URL="https://repository.apache.org/service/local/artifact/maven/redirect?r=snapshots&g=org.apache.brooklyn&a=brooklyn-dist&v=${BROOKLYN_VERSION}&c=dist&e=tar.gz"
-    BROOKLYN_DIR="brooklyn-dist-${BROOKLYN_VERSION}"
+    BROOKLYN_URL="https://repository.apache.org/service/local/artifact/maven/redirect?r=snapshots&g=org.apache.brooklyn&a=apache-brooklyn&v=${BROOKLYN_VERSION}&e=tar.gz"
+    BROOKLYN_DIR="apache-brooklyn-${BROOKLYN_VERSION}"
   fi
 else
-  echo "Installing from a local -dist archive [ /vagrant/brooklyn-dist-${BROOKLYN_VERSION}-dist.tar.gz]"
+  echo "Installing from a local -dist archive [ /vagrant/apache-brooklyn-${BROOKLYN_VERSION}.tar.gz]"
   # url to install from mounted /vagrant dir
-  BROOKLYN_URL="file:///vagrant/brooklyn-dist-${BROOKLYN_VERSION}-dist.tar.gz"
-  BROOKLYN_DIR="brooklyn-dist-${BROOKLYN_VERSION}"
+  BROOKLYN_URL="file:///vagrant/apache-brooklyn-${BROOKLYN_VERSION}.tar.gz"
+  BROOKLYN_DIR="apache-brooklyn-${BROOKLYN_VERSION}"
 
   # ensure local file exists
-  if [ ! -f /vagrant/brooklyn-dist-${BROOKLYN_VERSION}-dist.tar.gz ]; then
-    echo "Error: file not found /vagrant/brooklyn-dist-${BROOKLYN_VERSION}-dist.tar.gz"
+  if [ ! -f /vagrant/apache-brooklyn-${BROOKLYN_VERSION}.tar.gz ]; then
+    echo "Error: file not found /vagrant/apache-brooklyn-${BROOKLYN_VERSION}.tar.gz"
     exit 1
   fi
 fi

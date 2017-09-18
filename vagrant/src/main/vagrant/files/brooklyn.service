@@ -16,17 +16,23 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-
 [Unit]
-Description=Apache Brooklyn service
-Documentation=http://brooklyn.apache.org/documentation/index.html
+Description=Apache Brooklyn Service
+Documentation=https://brooklyn.apache.org/documentation/index.html
 
 [Service]
-ExecStart=/home/vagrant/apache-brooklyn/bin/brooklyn launch --persist auto --persistenceDir /vagrant/brooklyn-persisted-state --catalogAdd /vagrant/files/vagrant-catalog.bom
-WorkingDirectory=/home/vagrant/apache-brooklyn
-Restart=on-abort
+Type=simple
+WorkingDirectory=/home/vagrant/apache-brooklyn/
+Environment="EXTRA_JAVA_OPTS=-Dbrooklyn.location.localhost.address=127.0.0.1 -XX:SoftRefLRUPolicyMSPerMB=1 -Xms256m -Xmx2g"
+Environment="KARAF_HOME=/home/vagrant/apache-brooklyn/"
+Environment="KARAF_ETC=/home/vagrant/apache-brooklyn/etc/"
+Environment="KARAF_REDIRECT=/dev/null"
+Environment="BROOKLYN_PERSISTENCE_DIR=/vagrant/brooklyn-persisted-state"
+ExecStart=/home/vagrant/apache-brooklyn/bin/karaf server  >> "$KARAF_REDIRECT" 2>&1
+Restart=always
 User=vagrant
 Group=vagrant
+UMask=0066
 
 [Install]
 WantedBy=multi-user.target
