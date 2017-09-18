@@ -8,7 +8,7 @@
 
    ```
    env:
-     BROOKLYN_VERSION: 0.12.0-SNAPSHOT
+     BROOKLYN_VERSION: 0.13.0-SNAPSHOT
    ```
 
 2. You may proceed to use the `Vagrantfile` as normal; `vagrant up`, `vagrant destroy` etc.
@@ -19,7 +19,7 @@
 
    ```
    env:
-     BROOKLYN_VERSION: 0.12.0-SNAPSHOT
+     BROOKLYN_VERSION: 0.13.0-SNAPSHOT
    ```
 
 2. Set the `INSTALL_FROM_LOCAL_DIST:` environment variable in `servers.yaml` to `true`. For example:

@@ -33,7 +33,7 @@
 function help() {
   echo
   # BROOKLYN_VERSION_BELOW
-  echo 'Apache Brooklyn 0.12.0-SNAPSHOT convenience launcher'${application:+" for ${application}"}
+  echo 'Apache Brooklyn 0.13.0-SNAPSHOT convenience launcher'${application:+" for ${application}"}
   echo
   echo 'Usage:  [OPTIONS] [--help | LOCATION | COMMAND] [ARGS]'
   echo

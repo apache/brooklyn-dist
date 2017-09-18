@@ -3,7 +3,7 @@
 # and templates to get started using Brooklyn
 
 brooklyn.catalog:
-  version: "0.12.0-SNAPSHOT" # BROOKLYN_VERSION
+  version: "0.13.0-SNAPSHOT" # BROOKLYN_VERSION
   include: classpath://library-catalog-classes.bom
 
   items:
