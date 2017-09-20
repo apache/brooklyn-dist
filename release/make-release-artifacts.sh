@@ -226,14 +226,20 @@ set +x
 echo "Make CLI artifacts"
 set -x
 
+# copy in each of the br tools
+mkdir ${bin_staging_dir}/${release_name}-client-cli-linux
+mkdir ${bin_staging_dir}/${release_name}-client-cli-windows
+mkdir ${bin_staging_dir}/${release_name}-client-cli-macosx
+cp ${src_staging_dir}/brooklyn-client/cli/target/bin/linux.386/br ${bin_staging_dir}/${release_name}-client-cli-linux
+cp ${src_staging_dir}/brooklyn-client/cli/target/bin/windows.386/br.exe ${bin_staging_dir}/${release_name}-client-cli-windows
+cp ${src_staging_dir}/brooklyn-client/cli/target/bin/darwin.amd64/br ${bin_staging_dir}/${release_name}-client-cli-macosx
+
+# copy in the LICENSE, README and NOTICE
 for p in linux windows macosx; do
-    mkdir ${bin_staging_dir}/${release_name}-client-cli-${p}
-    rsync -a ${bin_staging_dir}/${release_name}-bin/bin/brooklyn-client-cli/ ${bin_staging_dir}/${release_name}-client-cli-${p} --exclude '*.386' --exclude '*.amd64'
-done
-cp ${bin_staging_dir}/${release_name}-bin/bin/brooklyn-client-cli/linux.386/br ${bin_staging_dir}/${release_name}-client-cli-linux
-cp ${bin_staging_dir}/${release_name}-bin/bin/brooklyn-client-cli/windows.386/br.exe ${bin_staging_dir}/${release_name}-client-cli-windows
-cp ${bin_staging_dir}/${release_name}-bin/bin/brooklyn-client-cli/darwin.amd64/br ${bin_staging_dir}/${release_name}-client-cli-macosx
-for p in linux windows macosx; do
+    cp ${src_staging_dir}/brooklyn-client/cli/release/files/README ${bin_staging_dir}/${release_name}-client-cli-${p}
+    cp ${src_staging_dir}/LICENSE ${bin_staging_dir}/${release_name}-client-cli-${p}
+    cp ${src_staging_dir}/NOTICE ${bin_staging_dir}/${release_name}-client-cli-${p}
+
     ( cd ${bin_staging_dir} && tar czf ${artifact_dir}/${artifact_name}-client-cli-${p}.tar.gz ${release_name}-client-cli-${p} )
     ( cd ${bin_staging_dir} && zip -qr ${artifact_dir}/${artifact_name}-client-cli-${p}.zip ${release_name}-client-cli-${p} )
 done
@@ -254,7 +260,12 @@ mv ${bin_staging_dir}/brooklyn-vagrant-${current_version} ${bin_staging_dir}/${r
 ###############################################################################
 # RPM artifacts
 
-cp ${src_staging_dir}/brooklyn-dist/rpm-packaging/target/rpm/apache-brooklyn/RPMS/noarch/apache-brooklyn-${current_version}-1.noarch.rpm ${artifact_dir}/${artifact_name}-1.noarch.rpm
+cp ${src_staging_dir}/brooklyn-dist/rpm-packaging/target/rpm/apache-brooklyn-noarch/RPMS/noarch/apache-brooklyn-${current_version}-1.noarch.rpm ${artifact_dir}/${artifact_name}-1.noarch.rpm
+
+###############################################################################
+# deb artifacts
+
+cp ${src_staging_dir}/brooklyn-dist/deb-packaging/target/apache-brooklyn-${current_version}-all.deb ${artifact_dir}/${artifact_name}.deb
 
 ###############################################################################
 # Signatures and checksums
@@ -264,7 +275,7 @@ cp ${src_staging_dir}/brooklyn-dist/rpm-packaging/target/rpm/apache-brooklyn/RPM
 which sha256sum >/dev/null || alias sha256sum='shasum -a 256' && shopt -s expand_aliases
 
 ( cd ${artifact_dir} &&
-    for a in *.tar.gz *.zip *.rpm; do
+    for a in *.tar.gz *.zip *.rpm *.deb; do
         md5sum -b ${a} > ${a}.md5
         sha1sum -b ${a} > ${a}.sha1
         sha256sum -b ${a} > ${a}.sha256
