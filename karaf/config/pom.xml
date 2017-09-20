@@ -45,6 +45,27 @@
                                     <type>cfg</type>
                                     <classifier>osgilauncher</classifier>
                                 </artifact>
+                                <artifact>
+                                    <file>
+                                        ${project.basedir}/src/main/resources/catalog/catalog.bom
+                                    </file>
+                                    <type>bom</type>
+                                    <classifier>catalog</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>
+                                        ${project.basedir}/src/main/resources/catalog/catalog-core.bom
+                                    </file>
+                                    <type>bom</type>
+                                    <classifier>catalog-core</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>
+                                        ${project.basedir}/src/main/resources/catalog/catalog-templates.bom
+                                    </file>
+                                    <type>bom</type>
+                                    <classifier>catalog-templates</classifier>
+                                </artifact>
                             </artifacts>
                         </configuration>
                     </execution>
