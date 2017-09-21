@@ -184,6 +184,28 @@
                                     </mapper>
                                 </data>
                                 <data>
+                                    <src>${project.build.directory}/deps/apache-brooklyn-${project.version}/LICENSE</src>
+                                    <type>file</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>/opt/brooklyn-${project.version}</prefix>
+                                        <user>brooklyn</user>
+                                        <group>brooklyn</group>
+                                        <filemode>${brooklyn.file.permission.global}</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${project.build.directory}/deps/apache-brooklyn-${project.version}/NOTICE</src>
+                                    <type>file</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>/opt/brooklyn-${project.version}</prefix>
+                                        <user>brooklyn</user>
+                                        <group>brooklyn</group>
+                                        <filemode>${brooklyn.file.permission.global}</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
                                     <type>template</type>
                                     <paths>
                                         <path>/opt/brooklyn-${project.version}/data/log</path>

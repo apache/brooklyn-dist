@@ -186,6 +186,22 @@
                             </sources>
                         </mapping>
                         <mapping>
+                            <directory>/opt/brooklyn-${project.version}</directory>
+                            <sources>
+                                <source>
+                                    <location>${project.build.directory}/deps/apache-brooklyn-${project.version}/LICENSE</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/opt/brooklyn-${project.version}</directory>
+                            <sources>
+                                <source>
+                                    <location>${project.build.directory}/deps/apache-brooklyn-${project.version}/NOTICE</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
                             <directory>/lib/systemd/system</directory>
                             <directoryIncluded>false</directoryIncluded>
                             <filemode>${brooklyn.file.permission.global}</filemode>
