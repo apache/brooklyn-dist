@@ -20,71 +20,83 @@
 set -e
 
 if [ "$#" -ne 1 ]; then
-  echo "Usage: $0 0.10.0-rc3"
+  echo "Usage: $0 0.13.0" # BROOKYLN_VERSION
   exit 1
 fi
 
-command -v svn >/dev/null 2>&1 || { echo >&2 "svn required but is not installed.  Aborting."; exit 1; }
-command -v md5sum >/dev/null 2>&1 || { echo >&2 "md5sum required but is not installed. On macOS install with 'brew install md5sha1sum'. Aborting."; exit 1; }
-command -v shasum >/dev/null 2>&1 || { echo >&2 "shasum required but is not installed. On macOS install with 'brew install md5sha1sum'. Aborting."; exit 1; }
-command -v gpg2 >/dev/null 2>&1 || { echo >&2 "gpg2 required but is not installed. On macOS install with 'brew install gnupg2'. Aborting."; exit 1; }
+command -v svn >/dev/null 2>&1 || { echo >&2 "[x] svn required but is not installed. Aborting."; exit 1; }
+command -v md5sum >/dev/null 2>&1 || { echo >&2 "[x] md5sum required but is not installed. On macOS install with 'brew install md5sum'. Aborting."; exit 1; }
+command -v shasum >/dev/null 2>&1 || { echo >&2 "[x] shasum required but is not installed. On macOS install with 'brew install shasum'. Aborting."; exit 1; }
+command -v gpg >/dev/null 2>&1 || { echo >&2 "[x] gpg required but is not installed. On macOS install with 'brew install gpg'. Aborting."; exit 1; }
+command -v rpm >/dev/null 2>&1 || { echo >&2 "[x] rpm required but is not installed. On macOS install with 'brew install rpm'. Aborting."; exit 1; }
 
 RELEASE=$1
 DOWNLOAD_ROOT=https://dist.apache.org/repos/dist/dev/brooklyn/apache-brooklyn-$RELEASE/
 DOWNLOADS_FOLDER=apache-brooklyn-$RELEASE
 
-mkdir ${DOWNLOADS_FOLDER}
-cd ${DOWNLOADS_FOLDER}
+mkdir -p ${DOWNLOADS_FOLDER}
+pushd ${DOWNLOADS_FOLDER}
 
 echo
-echo "======================"
-echo "= Importing PGP keys ="
-echo "======================"
+echo "==============================================================================="
+echo "= Importing PGP keys ...                                                      ="
+echo "==============================================================================="
 echo
-echo "Downloading KEYS from https://dist.apache.org/repos/dist/release/brooklyn/KEYS"
-curl -s https://dist.apache.org/repos/dist/release/brooklyn/KEYS | gpg --import
+
+KEYS_URL=https://dist.apache.org/repos/dist/release/brooklyn/KEYS
+curl $KEYS_URL | gpg --import && \
+echo "[✓] GPG keys downloaded from $KEYS_URL" \
+  || { echo "[x] Failed to import GPG keys from $KEY_URLS"; exit 1; }
 
 echo
-echo "============================="
-echo "= Downloading release files ="
-echo "============================="
+echo "==============================================================================="
+echo "= Downloading release artifacts ...                                           ="
+echo "==============================================================================="
 echo
-echo "Downloading from staging URL $DOWNLOAD_ROOT"
+
 curl -s $DOWNLOAD_ROOT | \
   grep href | grep -v '\.\.' | \
   sed -e 's@.*href="@'$DOWNLOAD_ROOT'@' | \
   sed -e 's@">.*@@' | \
-  xargs -n 1 curl -O
+  xargs -n 1 curl -O && \
+  echo "[✓] Artifacts downloaded from $DOWNLOAD_ROOT" \
+    || { echo "[x] Failed to download artifacts from staging URL $DOWNLOAD_ROOT"; exit 1; }
 
 echo
-echo "========================================================"
-echo "= Compare downloaded files listing to SVN staging repo ="
-echo "========================================================"
+echo "==============================================================================="
+echo "= Comparing downloaded files listing to SVN staging repo ...                  ="
+echo "==============================================================================="
 echo
+
 # TODO --trust-server-cert because fails on OS X due to untrusted issuer Issuer: Symantec Class 3 Secure Server CA - G4, Symantec Trust Network, Symantec Corporation, US
-diff <(svn --non-interactive --trust-server-cert ls https://dist.apache.org/repos/dist/dev/brooklyn/apache-brooklyn-$RELEASE | sort) \
-  <(ls -1 * | sort)
-echo "OK"
+diff <(svn --non-interactive --trust-server-cert ls $DOWNLOAD_ROOT | sort) \
+  <(ls -1 * | sort) && \
+  echo "[✓] No differences detected" \
+    || { echo "[x] Unexpected differences between dist and SVN file listing. Aborting."; exit 1; }
 
 echo
-echo "==================================================="
-echo "= Check signatures and hashes of downloaded files ="
-echo "==================================================="
+echo "==============================================================================="
+echo "= Checking signatures and hashes of artifacts ...                             ="
+echo "==============================================================================="
 echo
-for artifact in $(find * -type f ! \( -name '*.asc' -o -name '*.md5' -o -name '*.sha1' -o -name '*.sha256' \) ); do
-  md5sum -c ${artifact}.md5 && \
-  shasum -a1 -c ${artifact}.sha1 && \
-  shasum -a256 -c ${artifact}.sha256 && \
-  gpg2 --verify ${artifact}.asc ${artifact} \
-    || { echo "Invalid signature for $artifact. Aborting!"; exit 1; }
+
+for ARTIFACT in $(find * -type f ! \( -name '*.asc' -o -name '*.md5' -o -name '*.sha1' -o -name '*.sha256' \) ); do
+  md5sum -c ${ARTIFACT}.md5 && \
+  shasum -a1 -c ${ARTIFACT}.sha1 && \
+  shasum -a256 -c ${ARTIFACT}.sha256 && \
+  gpg --verify ${ARTIFACT}.asc ${ARTIFACT} && \
+  echo "[✓] Signatures verified for $ARTIFACT" \
+    || { echo "[x] Invalid signature for $ARTIFACT. Aborting."; exit 1; }
 done
 
 echo
-echo "=================================================="
-echo "= Check for LICENSE and NOTICE files in archives ="
-echo "=================================================="
+echo "==============================================================================="
+echo "= Checking LICENSE and NOTICE files in artifacts ...                          ="
+echo "==============================================================================="
 echo
-for ARCHIVE in $(find * -type f ! \( -name '*.asc' -o -name '*.md5' -o -name '*.sha1' -o -name '*.sha256' \) ); do
+
+GA_RELEASE=${RELEASE%%-rc?}
+for ARCHIVE in $(ls *.{tar.gz,zip,rpm}); do
   REL_ARCHIVE=${ARCHIVE/-rc?}
   case $ARCHIVE in
     *.tar.gz)
@@ -97,7 +109,7 @@ for ARCHIVE in $(find * -type f ! \( -name '*.asc' -o -name '*.md5' -o -name '*.
       ;;
     *.rpm)
       LIST="rpm -qlp"
-      PREFIX="/opt/brooklyn"
+      PREFIX="/opt/brooklyn-${GA_RELEASE}"
       ;;
     *)
       echo "Unrecognized file type $ARCHIVE. Aborting!"
@@ -105,41 +117,49 @@ for ARCHIVE in $(find * -type f ! \( -name '*.asc' -o -name '*.md5' -o -name '*.
       ;;
   esac
   $LIST $ARCHIVE | grep "$PREFIX/NOTICE" && \
-  $LIST $ARCHIVE | grep "$PREFIX/LICENSE" \
-    || { echo "Missing LICENSE or NOTICE in $ARCHIVE. Aborting!"; exit 1; } 
+  $LIST $ARCHIVE | grep "$PREFIX/LICENSE" && \
+  echo "[✓] Files LICENSE and NOTICE present in $ARCHIVE" \
+    || { echo "[x] Missing LICENSE or NOTICE in $ARCHIVE. Aborting!"; exit 1; }
 done
 
 echo
-echo "========================="
-echo "= Extract source folder ="
-echo "========================="
+echo "==============================================================================="
+echo "= Extracting sources ...                                                      ="
+echo "==============================================================================="
 echo
-tar -zxf apache-brooklyn-$RELEASE-src.tar.gz
-GA_RELEASE=${RELEASE%%-rc?}
+
+SOURCE_ARCHIVE=apache-brooklyn-$RELEASE-src.tar.gz
 SOURCE_RELEASE_FOLDER=apache-brooklyn-${GA_RELEASE}-src
-echo "OK"
+tar -zxf apache-brooklyn-$RELEASE-src.tar.gz && \
+echo "[✓] Extraction successful of $SOURCE_ARCHIVE to $SOURCE_RELEASE_FOLDER" \
+  || { echo "[x] Failed to extract sources from $SOURCE_ARCHIVE to $SOURCE_RELEASE_FOLDER. Aborting!"; exit 1; }
 
 echo
-echo "======================================="
-echo "= Checkout repository at release tags ="
-echo "======================================="
+echo "==============================================================================="
+echo "= Checking out git repository at release tags ...                             ="
+echo "==============================================================================="
 echo
-git clone git://git.apache.org/brooklyn.git repository
-cd repository
-git submodule init
-git submodule update --remote --merge --recursive
-git checkout rel/apache-brooklyn-$RELEASE 
-git submodule foreach git checkout rel/apache-brooklyn-$RELEASE
-cd ..
+
+GIT_FOLDER=repository
+git clone git://git.apache.org/brooklyn.git $GIT_FOLDER && \
+pushd $GIT_FOLDER && \
+    git submodule init && \
+    git submodule update --remote --merge --recursive && \
+    git checkout rel/apache-brooklyn-$RELEASE && \
+    git submodule foreach git checkout rel/apache-brooklyn-$RELEASE && \
+popd && \
+echo "[✓] Git clone successful" \
+  || { echo "[x] Failed to clone git repository. Aborting!"; exit 1; }
 
 echo
-echo "========================================"
-echo "= Compare repository to source release ="
-echo "========================================"
+echo "==============================================================================="
+echo "= Comparing git repository to sources                                         ="
+echo "==============================================================================="
 echo
-diff -qr ${SOURCE_RELEASE_FOLDER} repository/ || true
+
+diff -qr $SOURCE_RELEASE_FOLDER $GIT_FOLDER/ || true
 SOURCE_DIFF_CNT=$(
-  diff -qr ${SOURCE_RELEASE_FOLDER} repository/ \
+  diff -qr $SOURCE_RELEASE_FOLDER $GIT_FOLDER/ \
     -x '*.git' -x '*.gitattributes' -x '*.gitignore' \
     -x '*.gitmodules' -x 'release' -x 'brooklyn-docs' \
     -x 'sandbox' | \
@@ -147,23 +167,23 @@ SOURCE_DIFF_CNT=$(
   grep -v 'hello-world.*\.war' | \
   wc -c)
 
-[ ${SOURCE_DIFF_CNT} -eq 0 ] || { echo "Unexpected differences between source distribution and repository. Aborting!"; exit 1; }
-echo
-echo "Didn't find unexpected differences."
+[ $SOURCE_DIFF_CNT -eq 0 ] || { echo "[x] Unexpected differences between source distribution and git repository. Aborting."; exit 1; }
+echo "[✓] No differences detected"
 
 echo
-echo "======================"
-echo "= Build from sources ="
-echo "======================"
+echo "==============================================================================="
+echo "= Building from sources ...                                                   ="
+echo "==============================================================================="
 echo
-cd ${SOURCE_RELEASE_FOLDER};
-mvn -Dmaven.repo.local=../maven-sandbox-repo clean install
-cd ..;
 
-echo
-echo "Do a clean extract of source repo for next steps."
-rm -rf ${SOURCE_RELEASE_FOLDER};
-tar -zxf apache-brooklyn-$RELEASE-src.tar.gz
+MAVEN_REPO=m2
+mkdir -p $MAVEN_REPO
+pushd $SOURCE_RELEASE_FOLDER
+  mvn -Dmaven.repo.local=$MAVEN_REPO clean install && \
+  echo "[✓] Build from sources successful" \
+    || { echo "[x] Failed to build from sources. Aborting!"; exit 1; }
+popd
+
 echo
 echo "-------------------------------------------"
 echo
@@ -198,3 +218,5 @@ echo "[ ] I follow this project’s commits list."
 # * Add maven repository checks (generate archetype project and build it?; should happen in a container not to pollute local repo)
 # * Run binary distribution and do basic sanity checks (using br; using maven plugin?)
 # * --trust-server-cert is against the spirit of the "verify" step - can we fix it another way?
+
+popd
