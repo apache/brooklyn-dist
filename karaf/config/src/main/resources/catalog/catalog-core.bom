@@ -18,6 +18,6 @@
 brooklyn.catalog:
   version: "0.13.0-SNAPSHOT" # BROOKLYN_VERSION
 
-  items:
-  - classpath://org.apache.brooklyn.karaf-init:0.13.0-SNAPSHOT:catalog.bom # BROOKLYN_VERSION
-  - classpath://org.apache.brooklyn.library-catalog:0.13.0-SNAPSHOT:catalog.bom # BROOKLYN_VERSION
+  brooklyn.libraries:
+  - mvn:org.apache.brooklyn/brooklyn-karaf-init/0.13.0-SNAPSHOT # BROOKLYN_VERSION
+  - mvn:org.apache.brooklyn/brooklyn-library-catalog/0.13.0-SNAPSHOT # BROOKLYN_VERSION
