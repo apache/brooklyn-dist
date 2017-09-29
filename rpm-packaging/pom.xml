@@ -132,11 +132,6 @@
                         </mapping>
                         <mapping>
                             <directory>/opt/brooklyn-${project.version}/catalog</directory>
-                            <sources>
-                                <source>
-                                    <location>${project.build.directory}/deps/apache-brooklyn-${project.version}/catalog</location>
-                                </source>
-                            </sources>
                         </mapping>
                         <mapping>
                             <directory>/opt/brooklyn-${project.version}/data</directory>

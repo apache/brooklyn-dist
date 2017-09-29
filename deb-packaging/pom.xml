@@ -117,11 +117,12 @@
                                     </mapper>
                                 </data>
                                 <data>
-                                    <src>${project.build.directory}/deps/apache-brooklyn-${project.version}/catalog</src>
-                                    <type>directory</type>
+                                    <type>template</type>
+                                    <paths>
+                                        <path>/opt/brooklyn-${project.version}/catalog</path>
+                                    </paths>
                                     <mapper>
                                         <type>perm</type>
-                                        <prefix>/opt/brooklyn-${project.version}/catalog</prefix>
                                         <user>brooklyn</user>
                                         <group>brooklyn</group>
                                         <filemode>${brooklyn.file.permission.default}</filemode>
