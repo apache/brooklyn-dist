@@ -60,8 +60,10 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
   config.vm.provision "file", source: "~/.gnupg/gpg.conf", destination: ".gnupg/gpg.conf"
-  config.vm.provision "file", source: "~/.gnupg/pubring.gpg", destination: ".gnupg/pubring.gpg"
-  config.vm.provision "file", source: "~/.gnupg/secring.gpg", destination: ".gnupg/secring.gpg"
+
+  # Uncomment these lines if you would like to include your local gnupg keys
+  #config.vm.provision "file", source: "~/.gnupg/pubring.gpg", destination: ".gnupg/pubring.gpg"
+  #config.vm.provision "file", source: "~/.gnupg/secring.gpg", destination: ".gnupg/secring.gpg"
   config.vm.provision "file", source: "gpg-agent.conf", destination: ".gnupg/gpg-agent.conf"
   config.vm.provision "file", source: "settings.xml", destination: ".m2/settings.xml"
 
@@ -76,7 +78,7 @@ Vagrant.configure(2) do |config|
     apt-get install -y default-jdk git subversion xmlstarlet zip unzip language-pack-en \
                        vim-nox gnupg2 gnupg-agent pinentry-curses golang rpm mmv haveged
     mkdir -p /opt
-    MAVEN_VERSION=3.3.39
+    MAVEN_VERSION=3.3.3
     curl http://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz | tar xz -C /opt
     ln -s /opt/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/local/bin
     mkdir -p /work
