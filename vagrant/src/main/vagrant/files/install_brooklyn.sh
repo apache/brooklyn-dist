@@ -49,7 +49,7 @@ if [ ! "${INSTALL_FROM_LOCAL_DIST}" == "true" ]; then
   if [ ! -z "${BROOKLYN_VERSION##*-SNAPSHOT}" ] ; then
     # url for official release versions
     BROOKLYN_URL="https://www.apache.org/dyn/closer.lua?action=download&filename=brooklyn/apache-brooklyn-${BROOKLYN_VERSION}/apache-brooklyn-${BROOKLYN_VERSION}-bin.tar.gz"
-    BROOKLYN_DIR="apache-brooklyn-${BROOKLYN_VERSION}"
+    BROOKLYN_DIR="apache-brooklyn-${BROOKLYN_VERSION}-bin"
   else
     # url for community-managed snapshots
     BROOKLYN_URL="https://repository.apache.org/service/local/artifact/maven/redirect?r=snapshots&g=org.apache.brooklyn&a=apache-brooklyn&v=${BROOKLYN_VERSION}&e=tar.gz"
