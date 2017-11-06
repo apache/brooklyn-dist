@@ -19,45 +19,6 @@ brooklyn.catalog:
   version: "1.0.0-SNAPSHOT" # BROOKLYN_VERSION
 
   items:
-  - id: server
-    itemType: entity
-    description: |
-      Provision a server, with customizable provisioning.properties and credentials installed,
-      but no other special software process or scripts executed.
-    item:
-      type: org.apache.brooklyn.entity.software.base.EmptySoftwareProcess
-      name: Server
-
-  - id: vanilla-bash-server
-    itemType: entity
-    description: |
-      Provision a server, with customizable provisioning.properties and credentials installed,
-      but no other special software process or scripts executed.
-      The script should be supplied in "launch.command" as per docs on
-      org.apache.brooklyn.entity.software.base.VanillaSoftwareProcess.
-    item:
-      type: org.apache.brooklyn.entity.software.base.VanillaSoftwareProcess
-      name: Server with Launch Script (bash)
-
-  - id: load-balancer
-    itemType: entity
-    description: |
-      Create a load balancer which will point at members in the group entity
-      referred to by the config key "serverPool".
-      The sensor advertising the port can be configured with the "member.sensor.portNumber" config key,
-      defaulting to `http.port`; all member entities which have published "service.up" will then be picked up.
-    item:
-      type: org.apache.brooklyn.entity.proxy.nginx.NginxController
-      name: Load Balancer (nginx)
-
-  - id: cluster
-    itemType: entity
-    description: |
-      Create a cluster of entities, resizable, with starting size "initialSize",
-      and using a spec supplied in the "memberSpec" key.
-    item:
-      type: org.apache.brooklyn.entity.group.DynamicCluster
-
   - id: 1-server-template
     itemType: template
     name: "Template 1: Server"
