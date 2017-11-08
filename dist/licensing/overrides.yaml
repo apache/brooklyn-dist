@@ -434,7 +434,7 @@
   name: Font Awesome (fonts)
   version: 4.5.0
   url: http://fontawesome.io/
-  files: "font-awesome/fonts/*"
+  files: "font-awesome/fonts/* cluster.svg"
   notice: Copyright (c) Dave Gandy (2016)
   license:
   - url: "http://scripts.sil.org/OFL"
@@ -455,4 +455,14 @@
   license:
   - url: https://en.wikipedia.org/wiki/en:public_domain
     name: Public Domain
+
+- id: noun-project-icons
+  name: The Noun Project (icons)
+  url: https://thenounproject.com/
+  notice: Includes icons by Evan Shuster, Sarah Joy, Jack Zwanenburg
+  files: "service-restarter.png, autoscaler.png, and others"
+  license:
+  - url: https://creativecommons.org/licenses/by/3.0/us/legalcode
+    name: Creative Commons Public License, Attribution 3.0
+
 
