@@ -47,14 +47,12 @@ servers:
        autocorrect: true
     shell:
       env:
-        BROOKLYN_VERSION: "1.0.0-SNAPSHOT"
+        BROOKLYN_VERSION: "1.0.0-SNAPSHOT"  # BROOKLYN_VERSION
         INSTALL_FROM_LOCAL_DIST: false
       cmd:
         - ssh-keygen -t rsa -N "" -f $HOME/.ssh/id_rsa
         - chmod a+x /vagrant/files/install_brooklyn.sh      
         - /vagrant/files/install_brooklyn.sh -v ${BROOKLYN_VERSION} -l ${INSTALL_FROM_LOCAL_DIST}
-        - sudo systemctl start brooklyn
-        - sudo systemctl enable brooklyn
   - name: byon1
     box: bento/centos-7.3
     ram: 512
