@@ -77,7 +77,7 @@
                         <exclude>licensing/projects-with-custom-licenses</exclude>
                         <exclude>licensing/extras-files</exclude>
                     </excludes>
-                  </configuration>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -112,11 +112,11 @@
                             <descriptors>
                                 <descriptor>src/main/config/build-distribution.xml</descriptor>
                             </descriptors>
-                          <!-- finalName affects name in `target/` but we cannot influence name when it is attached/installed,
-                               so `apache-` prefix would be lost there. to keep it consistent this is commented out, 
-                               but would be nice to have if there is a way!
-                            <finalName>apache-brooklyn-${project.version}</finalName>
-                          -->
+                            <!-- finalName affects name in `target/` but we cannot influence name when it is attached/installed,
+                                 so `apache-` prefix would be lost there. to keep it consistent this is commented out,
+                                 but would be nice to have if there is a way!
+                              <finalName>apache-brooklyn-${project.version}</finalName>
+                            -->
                             <formats>
                                 <format>tar.gz</format>
                                 <format>zip</format>
@@ -124,6 +124,26 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <repository>apache/brooklyn</repository>
+                    <tag>${project.version}</tag>
+                    <buildArgs>
+                        <DIST_TAR_GZ>target/${project.build.finalName}-dist.tar.gz</DIST_TAR_GZ>
+                    </buildArgs>
+                </configuration>
             </plugin>
         </plugins>
     </build>
