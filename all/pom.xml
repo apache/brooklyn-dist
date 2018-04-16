@@ -51,13 +51,6 @@
             <groupId>org.apache.brooklyn</groupId>
             <artifactId>brooklyn-locations-jclouds</artifactId>
             <version>${project.version}</version>
-            <!-- io.fabric8:kubernetes-client and jclouds require different versions -->
-            <exclusions>
-                <exclusion>
-                    <groupId>com.squareup.okio</groupId>
-                    <artifactId>okio</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.brooklyn</groupId>
@@ -134,43 +127,11 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!-- bring in all jclouds-supported cloud providers -->
+        <dependency>
+            <groupId>${jclouds.groupId}</groupId>
+            <artifactId>jclouds-allcompute</artifactId>
+        </dependency>
     </dependencies>
-
-    <build>
-        <!-- Required by microbean-helm - see https://github.com/grpc/grpc-java/blob/master/SECURITY.md#openssl-statically-linked-netty-tcnative-boringssl-static -->
-        <extensions>
-            <!-- Use os-maven-plugin to initialize the "os.detected" properties -->
-            <extension>
-                <groupId>kr.motd.maven</groupId>
-                <artifactId>os-maven-plugin</artifactId>
-                <version>1.5.0.Final</version>
-            </extension>
-        </extensions>
-        <plugins>
-            <!-- Use Ant to configure the appropriate "tcnative.classifier" property -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <configuration>
-                            <exportAntProperties>true</exportAntProperties>
-                            <target>
-                                <condition property="tcnative.classifier"
-                                           value="${os.detected.classifier}-fedora"
-                                           else="${os.detected.classifier}">
-                                    <isset property="os.detected.release.fedora"/>
-                                </condition>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
