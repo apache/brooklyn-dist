@@ -23,6 +23,10 @@ fi
 if [ -z "${JAVA_MAX_PERM_MEM}" ] ; then
     export JAVA_MAX_PERM_MEM="256m"
 fi
+# use the default DNS TTL, if not specified
+if [ -z "${DNS_TTL}" ] ; then
+    export DNS_TTL="60"
+fi
 
 # OS specific support (must be 'true' or 'false').
     cygwin=false;
@@ -84,6 +88,12 @@ export EXTRA_JAVA_OPTS="-Dbrooklyn.location.localhost.address=127.0.0.1 ${EXTRA_
 
 # Increase garbage collection, see https://issues.apache.org/jira/browse/BROOKLYN-375
 export EXTRA_JAVA_OPTS="-XX:SoftRefLRUPolicyMSPerMB=1 ${EXTRA_JAVA_OPTS}"
+
+# Set the DNS TTL for the JVM
+# By default, java does not refresh DNS records, ever. This is due to the default value of networkaddress.cache.ttl set to -1, i.e. cache forever.
+# However, networkaddress.cache.ttl is not a system property, but a security property. It cannot be updated through from the JVM.
+# But, using the old system property sun.net.inetaddr.ttl has the desirable effect (see: https://stackoverflow.com/a/17219327)
+export EXTRA_JAVA_OPTS="-Dsun.net.inetaddr.ttl=${DNS_TTL} ${EXTRA_JAVA_OPTS}"
 
 # Set the TLS protocol versions
 export EXTRA_JAVA_OPTS="-Dhttps.protocols=TLSv1.1,TLSv1.2 ${EXTRA_JAVA_OPTS}"
