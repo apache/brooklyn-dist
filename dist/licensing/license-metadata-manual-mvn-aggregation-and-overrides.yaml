@@ -1,0 +1,184 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+
+
+# overrides file for org.heneveld.license-audit-maven-plugin
+# expands/corrects detail needed for generating license notices
+
+
+# super-projects to suppress notices for sub-projects
+
+- id: org.apache.brooklyn
+  url: http://brooklyn.apache.org/
+  license: Apache-2.0
+  internal: true
+
+# poms we aggregate
+
+- id: org.apache.jclouds
+  name: Apache jclouds
+- id: com.fasterxml.jackson
+  name: Jackson FasterXML
+- id: com.google.inject
+  name: Google Guice
+- id: ch.qos.logback
+  name: Logback Logging Framework
+- id: org.apache.cxf
+  name: Apache CXF
+- id: org.eclipse.jetty:9.3.14.v20161028
+  name: Jetty Server
+- id: org.slf4j
+  name: Simple Logging Framework for Java
+
+# license overrides and attribution required
+
+- license: CDDL-1.1
+  ids:
+  - com.sun.xml.bind
+  - javax.annotation.javax.annotation-api
+  - javax.ws.rs.javax.ws.rs-api
+  - javax.servlet.javax.servlet-api
+- ids: 
+  - javax.annotation.jsr250-api
+  - org.jboss.spec.javax.annotation.jboss-annotations-api_1.2_spec:1.0.0.Final
+  - org.jboss.spec.javax.ws.rs.jboss-jaxrs-api_2.0_spec:1.0.0.Final
+  license: CDDL-1.0
+- id: wsdl4j:*:*
+  license: CPL-1.0
+- id: com.thoughtworks.xstream
+  license: BSD-3-Clause
+  # no attribution in advertised URL    
+- id: org.codehaus.woodstox.stax2-api
+  license: BSD-2-Clause
+  # no attribution in advertised URL
+- id: org.ow2.asm
+  license: BSD-3-Clause
+  notice: Copyright (c) 2000-2011 INRIA, France Telecom
+- id: org.bouncycastle
+  license: MIT
+  copyright_by: The Legion of the Bouncy Castle Inc. (http://www.bouncycastle.org)
+- id: com.jcraft:0.0.9
+  name: JCraft jsch ssh library
+  license: BSD-3-Clause
+  copyright_by: Copyright (c) 2011-2012 Atsuhiko Yamanaka, JCraft,Inc.
+- id: com.jcraft.jzlib
+  license: BSD-3-Clause
+  copyright_by: Copyright (c) 2000-2011 ymnk, JCraft,Inc. All rights reserved.
+- id: com.squareup.okhttp:okhttp:*
+  copyright_by: Square, Inc.
+- id: com.squareup.okio:okio:*
+  copyright_by: Square, Inc.
+- id: com.wordnik:swagger-core_2.9.1:*
+  copyright_by: SmartBear Software
+- id: com.wordnik:swagger-jaxrs_2.9.1:*
+  copyright_by: SmartBear Software
+- id: org.javassist:javassist
+  copyright_by: Shigeru Chiba
+- id: org.mongodb:mongo-java-driver
+  copyright_by: MongoDB, Inc
+- id: org.reflections:0.9.9-RC1
+  license: { name: WTF Public License }
+- id: org.jline
+  copyright_by: 2002-2018, the original author or authors.
+  license:
+    name: BSD-3-Clause
+    comment: 
+      License text incorrectly links to BSD-2-Clause http://www.opensource.org/licenses/bsd-license.php
+      but text is of the three clause with clause 3 changed to reference JLine instead of the copyright
+      holder (and copyright is attributed to the original authors).
+  notice: >
+    Neither the name of JLine nor the names of its contributors
+    may be used to endorse or promote products derived from this
+    software without specific prior written permission.
+- id: antlr
+  license: BSD-3-Clause
+  notice: Copyright (c) 2012 Terence Parr and Sam Harwell
+- ids:
+  - org.ops4j.pax.logging
+  - org.ops4j.pax.url
+  license: Apache-2.0
+- id: org.eclipse.platform.org.eclipse.osgi
+  license: EPL-1.0
+- id: com.google.code.findbugs.annotations
+  license: LGPL-3.0
+- id: com.google.code.findbugs
+  license: Apache-2.0
+- ids:
+  - org.hibernate:5.2.6.Final
+  - org.hibernate.common.hibernate-commons-annotations:5.0.1.Final
+  - org.jboss.spec.javax.interceptor.jboss-interceptors-api_1.1_spec
+  license: LGPL-2.1
+- id: dk.brics.automaton
+  license: BSD-2-Clause
+  
+# poms with missing and incorrect data
+
+- id: org.hibernate:jtidy:r8-20060801
+  license:
+  - url: "https://sourceforge.net/p/jtidy/code/HEAD/tree/trunk/jtidy/LICENSE.txt"
+    name: Java HTML Tidy License
+    comment: Original link http://svn.sourceforge.net/viewvc/*checkout*/jtidy/trunk/jtidy/LICENSE.txt?revision=95 is no longer valid
+
+- id: dom4j:dom4j:1.6.1
+  url: https://dom4j.github.io/
+  license:
+  - name: DOM4J MetaStuff BSD style license (3-clause)
+    url: https://github.com/dom4j/dom4j/blob/master/LICENSE
+    comment: Original link http://dom4j.sourceforge.net/dom4j-1.6.1/license.html is no longer valid
+
+- id: org.python:jython-standalone:2.7-b3
+  copyright_by: Jython Developers
+  license:
+  - url: http://www.jython.org/license.html
+    name: Jython Software License
+    comment: Original link http://www.jython.org/Project/license.html is no longer valid
+
+- id: xpp3:xpp3_min:*
+  copyright_by: Extreme! Lab, Indiana University
+  license:
+  - url: https://github.com/apache/openmeetings/blob/a95714ce3f7e587d13d3d0bb3b4f570be15c67a5/LICENSE#L1361
+    name: "Indiana University Extreme! Lab Software License, vesion 1.1.1"
+    comment: |
+      The license applies to the Xpp3 classes (all classes below the org.xmlpull package with exception of classes directly in package org.xmlpull.v1);
+      original link http://www.extreme.indiana.edu/viewcvs/~checkout~/XPP3/java/LICENSE.txt is no longer valid
+  ## as we pull in xmlpull separately we do not use this, and having a single above simplifies the automation:
+  #  - url: http://creativecommons.org/licenses/publicdomain
+  #    name: Public Domain
+  #    comment: "The license applies to the XmlPull API (all classes directly in the org.xmlpull.v1 package)"
+
+- id: org.codehaus.jettison:jettison
+  url: https://github.com/codehaus/jettison
+  license: Apache-2.0
+- id: org.apache.sshd.sshd-core
+  license: Apache-2.0
+- id: org.glassfish.external:opendmk_jmxremote_optional_jar
+  url: https://opendmk.java.net/
+  license: CDDL-1.1
+- id: javax.validation:validation-api
+  url: http://beanvalidation.org/
+- id: org.apache.httpcomponents:httpclient:*
+  url: http://hc.apache.org/httpcomponents-client-ga
+- id: javax.annotation:jsr250-api:*
+  url: https://jcp.org/en/jsr/detail?id=250
+- id: javax.ws.rs:jsr311-api:*
+  url: https://jsr311.java.net/
+- id: com.thoughtworks.xstream:*:*
+  url: http://x-stream.github.io/
+- id: com.fasterxml.jackson:*:*
+  url: http://wiki.fasterxml.com/JacksonHome
