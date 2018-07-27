@@ -33,6 +33,17 @@
     <description>Defines Karaf features for Karaf runtime</description>
     <packaging>feature</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.brooklyn.ui</groupId>
+            <artifactId>brooklyn-ui-features</artifactId>
+            <version>${project.version}</version>
+            <classifier>features</classifier>
+            <type>xml</type>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

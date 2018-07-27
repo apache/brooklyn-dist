@@ -21,6 +21,8 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:noNamespaceSchemaLocation="http://karaf.apache.org/xmlns/features/v1.4.0">
 
+    <repository>mvn:${project.groupId}.ui/brooklyn-ui-features/${project.version}/xml/features</repository>
+
     <feature name="brooklyn-standard-karaf" version="${project.version}" description="Karaf standard feature with RMI excluded">
         <feature>wrap</feature>
         <feature>aries-blueprint</feature>
@@ -100,7 +102,7 @@
 
     <feature name="brooklyn-jsgui" version="${project.version}" description="Brooklyn REST JavaScript Web GUI">
         <feature>brooklyn-jsgui-prereqs</feature>
-        <bundle>mvn:org.apache.brooklyn/brooklyn-jsgui/${project.version}/war</bundle>
+        <feature>brooklyn-ui</feature>
     </feature>
 
     <feature name="brooklyn-boot" version="${project.version}" description="Bundles to start on boot">
