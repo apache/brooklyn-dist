@@ -15,9 +15,11 @@ Then in the `brooklyn-dist/dist/licensing` folder execute:
 This will generate updated LICENSE and NOTICE files everywhere that is needed. 
 Compare the differences across all projects just to be sure and commit them.
 
-* Check that the `license-inclusions-*` files in the various projects are up-to-date.
-  This may need manual verification for Go and JS contents (see glide.yaml for Go and package.json for JS).
-  
+For non-Java project changes there are extra steps.  Go, JS, jpegs, fonts, etc may require
+special attention.  Some automation is available (particularly for modern JS code) in:
+
+    ./update-brooklyn-license-metadata.sh
+
 
 # Detailed Usage
 

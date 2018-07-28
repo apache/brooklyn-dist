@@ -114,7 +114,10 @@ make_for() {
 }
 
 
-# build licenses for all the projects
+# build all the projects
+
+make_for $ROOT_DIR/brooklyn-ui/ui-modules/home . binary-additional
+exit
 
 # include deps in files pulled in to Go CLI binary builds
 make_for $ROOT_DIR/brooklyn-client/cli/ release/license/files binary-primary
@@ -123,14 +126,7 @@ make_for $ROOT_DIR/brooklyn-client/cli/ . binary-additional
 # Server CLI has embedded JS; gets custom files in sub-project root, also included in JAR
 make_for $ROOT_DIR/brooklyn-server/server-cli/ . binary-additional
 
-# UI gets files at root
-make_for $ROOT_DIR/brooklyn-ui/ . binary-additional
-# for UI also do for each standalone module
-for x in $(ls $ROOT_DIR/brooklyn-ui/ui-modules/*/package.json) ; do
-  make_for ${x%package.json} . binary-additional
-  # and in modules which make a WAR/JAR files we embed binaries
-  if [ -d ${x%package.json}/src/main/webapp ] ; then make_for ${x%package.json} src/main/webapp/WEB-INF/classes/META-INF/ binary-primary ; fi
-done
+# UI gets files at root, also included in WAR
 
 # main projects have their binaries included at root
 make_for $ROOT_DIR/brooklyn-server/ . binary-additional
@@ -148,4 +144,3 @@ cp $OUT/{NOTICE,LICENSE} $PROJ/../karaf/apache-brooklyn/src/main/resources/
 
 # finally in root project list everything
 make_for $ROOT_DIR/brooklyn-dist/dist ../.. binary-additional $ROOT_DIR
-
