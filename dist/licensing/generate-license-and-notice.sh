@@ -131,7 +131,8 @@ TEMP_MVN_OUT=`pwd -P`/temp.license-maven-output.log
 echo > $TEMP_METADATA_FILE
 if [ ! -z "$LIBRARIES" ] ; then
   echo Using metadata libraries $(find "${LIBRARIES[@]}" -name "license-metadata-*")
-  for x in $(find "${LIBRARIES[@]}" -name "license-metadata-*") ; do
+  # sort by filename first, then by path, with later ones alpha being the ones that are ultimately used
+  for x in $(find "${LIBRARIES[@]}" -name "license-metadata-*" | sed 's/\(.*\/\)\(.*\)/\2 --- \1\2/' | sort | sed 's/.* --- //') ; do
     cat $x >> $TEMP_METADATA_FILE
   done
 fi
@@ -179,19 +180,22 @@ cat ${TEMP_LICENSES_}1 | while read x ; do echo $x ; done | sort | uniq > ${TEMP
 MISSING=()
 
 if [ -s ${TEMP_LICENSES_}2 ] ; then
-  echo Adding ${LICENSES[$I]} to $LICENSE_FILE and `cat ${TEMP_LICENSES_}2 | wc -l` licenses
+  echo Adding ${LICENSES[$I]} to $LICENSE_FILE and `cat ${TEMP_LICENSES_}2 | wc -l` licenses:`cat ${TEMP_LICENSES_}2 | sed 's/^/ /' | paste -sd ';' -`
   cat ${LICENSES[${#LICENSES[@]}-1]} >> $LICENSE_FILE
-  
+  LICENSE_TEXT_PATHS=$(find ${LIBRARIES[@]} -name license-text) 
+
   while read x ; do
   
     echo "  "$x": |" >> $LICENSE_FILE
     
     unset FOUND
-    for lp in $(find ${LIBRARIES[@]} -name license-text) ; do
+    for lp in ${LICENSE_TEXT_PATHS} ; do
       if [ -f "$lp/$x" ] ; then
+       if [ -z "$FOUND" ]; then
         cat "$lp/$x" | sed "s/^/    /" >> $LICENSE_FILE
         echo "" >> $LICENSE_FILE
         FOUND=true
+       fi
       fi
     done
     if [ -z "$FOUND" ]; then
