@@ -16,8 +16,8 @@
 # under the License.
 #
 brooklyn.catalog:
-  version: "1.0.0-SNAPSHOT" # BROOKLYN_VERSION
+  version: "1.0.0-M1" # BROOKLYN_VERSION
 
   brooklyn.libraries:
-  - mvn:org.apache.brooklyn/brooklyn-karaf-init/1.0.0-SNAPSHOT # BROOKLYN_VERSION
-  - mvn:org.apache.brooklyn/brooklyn-library-catalog/1.0.0-SNAPSHOT # BROOKLYN_VERSION
+  - mvn:org.apache.brooklyn/brooklyn-karaf-init/1.0.0-M1 # BROOKLYN_VERSION
+  - mvn:org.apache.brooklyn/brooklyn-library-catalog/1.0.0-M1 # BROOKLYN_VERSION

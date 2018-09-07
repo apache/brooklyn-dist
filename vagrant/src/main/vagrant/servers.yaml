@@ -47,7 +47,7 @@ servers:
        autocorrect: true
     shell:
       env:
-        BROOKLYN_VERSION: "1.0.0-SNAPSHOT"  # BROOKLYN_VERSION
+        BROOKLYN_VERSION: "1.0.0-M1"  # BROOKLYN_VERSION
         INSTALL_FROM_LOCAL_DIST: false
       cmd:
         - ssh-keygen -t rsa -N "" -f $HOME/.ssh/id_rsa

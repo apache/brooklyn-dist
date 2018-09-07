@@ -32,7 +32,7 @@ To test a build:
 
     pushd /tmp
     rm -rf brooklyn-sample
-    export BV=1.0.0-SNAPSHOT    # BROOKLYN_VERSION
+    export BV=1.0.0-M1    # BROOKLYN_VERSION
     
     mvn archetype:generate                                  \
                                                             \
