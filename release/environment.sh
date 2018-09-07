@@ -53,7 +53,7 @@ END
 # Argument parsing
 rc_suffix=
 OPTIND=1
-while getopts "h?v:r:c:" opt; do
+while getopts "h?v:r:c:d:" opt; do
     case "$opt" in
         h|\?)
             show_help
