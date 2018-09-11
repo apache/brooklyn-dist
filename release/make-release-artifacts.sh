@@ -275,8 +275,6 @@ which sha256sum >/dev/null || alias sha256sum='shasum -a 256' && shopt -s expand
 
 ( cd ${artifact_dir} &&
     for a in *.tar.gz *.zip *.rpm *.deb; do
-        md5sum -b ${a} > ${a}.md5
-        sha1sum -b ${a} > ${a}.sha1
         sha256sum -b ${a} > ${a}.sha256
         gpg2 --armor --output ${a}.asc --detach-sig ${a}
     done
