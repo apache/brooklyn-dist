@@ -199,9 +199,9 @@ mkdir -p ${bin_staging_dir}
 
 # Perform the build
 if [ -z "${dry_run}" ]; then
-    ( cd ${src_staging_dir} && mvn deploy -Papache-release -DskipTests )
+    ( cd ${src_staging_dir} && mvn deploy -Papache-release -DskipTests -DscmBranch="${current_version}" -DbuildNumber=release )
 else
-    ( cd ${src_staging_dir} && mvn install -Papache-release -DskipTests )
+    ( cd ${src_staging_dir} && mvn install -Papache-release -DskipTests -DscmBranch="${current_version}" -DbuildNumber=release )
 fi
 
 # Re-pack the archive with the correct names
