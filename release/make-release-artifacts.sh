@@ -259,7 +259,7 @@ mv ${bin_staging_dir}/brooklyn-vagrant-${current_version} ${bin_staging_dir}/${r
 ###############################################################################
 # RPM artifacts
 
-cp ${src_staging_dir}/brooklyn-dist/rpm-packaging/target/rpm/apache-brooklyn-noarch/RPMS/noarch/apache-brooklyn-${current_version}-1.noarch.rpm ${artifact_dir}/${artifact_name}-1.noarch.rpm
+cp ${src_staging_dir}/brooklyn-dist/rpm-packaging/target/rpm/apache-brooklyn-noarch/RPMS/noarch/apache-brooklyn-${current_version}_1.noarch.rpm ${artifact_dir}/${artifact_name}_1.noarch.rpm
 
 ###############################################################################
 # deb artifacts
