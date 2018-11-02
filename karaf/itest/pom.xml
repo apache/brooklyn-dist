@@ -252,6 +252,7 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
                     <groups>${includedTestGroups}</groups>
                     <excludedGroups>${excludedTestGroups}</excludedGroups>
                     <systemPropertyVariables>
