@@ -165,6 +165,9 @@
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.18.1</version>
+          <configuration>
+            <useSystemClassLoader>false</useSystemClassLoader>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.felix</groupId>
@@ -314,6 +317,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <argLine>-Xms256m -Xmx512m</argLine>
+          <useSystemClassLoader>false</useSystemClassLoader>
           <properties>
             <property>
               <name>listener</name>
