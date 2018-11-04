@@ -22,7 +22,7 @@ docker build -t brooklyn:dist .
 Then run the build:
 
 ```bash
-docker run -i --rm --name brooklyn-dist -v ${HOME}/.m2:/root/.m2 -v ${PWD}:/usr/build -w /usr/build brooklyn:dist mvn clean install
+docker run -i --rm --name brooklyn-dist -v /var/run/docker.sock:/var/run/docker.sock -v ${HOME}/.m2:/root/.m2 -v ${PWD}:/usr/build -w /usr/build brooklyn:dist mvn clean install
 ```
 
 ### Using maven
