@@ -27,7 +27,7 @@ ENV EXTRA_JAVA_OPTS="-XX:SoftRefLRUPolicyMSPerMB=1 -Djava.security.egd=file:/dev
 
 RUN apk --no-cache add bash ; \
     mkdir brooklyn ; \
-    tar xvzf brooklyn.tar.gz -C /brooklyn --strip-components 1 ;
+    tar xzf brooklyn.tar.gz -C /brooklyn --strip-components 1 ;
 
-ENTRYPOINT ["/brooklyn/bin/brooklyn"]
-CMD ["launch"]
+ENTRYPOINT ["/brooklyn/bin/karaf"]
+CMD ["server"]
