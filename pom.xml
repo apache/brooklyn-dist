@@ -123,6 +123,7 @@
         <module>vagrant</module>
         <module>archetypes/quickstart</module>
         <module>shared-packaging</module>
+        <module>docker-image</module>
     </modules>
 
     <build>
