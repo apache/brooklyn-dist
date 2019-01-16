@@ -20,21 +20,12 @@ package org.apache.brooklyn.security;
 
 import static org.apache.brooklyn.KarafTestUtils.defaultOptionsWith;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.callback.NameCallback;
-import javax.security.auth.callback.PasswordCallback;
-import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.security.auth.login.AppConfigurationEntry;
-import javax.security.auth.login.FailedLoginException;
-import javax.security.auth.login.LoginContext;
-import javax.security.auth.login.LoginException;
 
 import org.apache.brooklyn.api.mgmt.ManagementContext;
 import org.apache.brooklyn.core.internal.BrooklynProperties;
@@ -69,7 +60,6 @@ import org.ops4j.pax.exam.util.Filter;
 @Category(IntegrationTest.class)
 public class StockSecurityProviderTest {
 
-    private static final String WEBCONSOLE_REALM = "webconsole";
     private static final String USER = "admin";
     private static final String PASSWORD = "password";
 
@@ -88,6 +78,13 @@ public class StockSecurityProviderTest {
     @Configuration
     public static Option[] configuration() throws Exception {
         return defaultOptionsWith(
+            editConfigurationFilePut("etc/brooklyn.cfg", 
+                BrooklynWebConfig.SECURITY_PROVIDER_CLASSNAME.getName(), ExplicitUsersSecurityProvider.class.getCanonicalName()),
+            editConfigurationFilePut("etc/brooklyn.cfg", 
+                BrooklynWebConfig.SECURITY_PROVIDER_CLASSNAME.getName()+".users", USER),
+            editConfigurationFilePut("etc/brooklyn.cfg", 
+                BrooklynWebConfig.SECURITY_PROVIDER_CLASSNAME.getName()+".user."+USER, PASSWORD)
+
             // Uncomment this for remote debugging the tests on port 5005
             // KarafDistributionOption.debugConfiguration()
         );
@@ -99,28 +96,17 @@ public class StockSecurityProviderTest {
         addUser(USER, PASSWORD);
     }
 
-    @Test(expected = FailedLoginException.class)
-    public void checkLoginFails() throws LoginException {
-        doLogin("invalid", "auth");
-    }
-
-    @Test
-    public void checkLoginSucceeds() throws LoginException {
-        LoginContext lc = doLogin(USER, PASSWORD);
-        assertNotNull(lc.getSubject());
-    }
-
     @Test
     public void checkRestSecurityFails() throws IOException {
-        checkRestSecurity(null, null, HttpStatus.SC_UNAUTHORIZED);
+        checkSecurity(null, null, HttpStatus.SC_UNAUTHORIZED);
     }
 
     @Test
     public void checkRestSecuritySucceeds() throws IOException {
-        checkRestSecurity(USER, PASSWORD, HttpStatus.SC_OK);
+        checkSecurity(USER, PASSWORD, HttpStatus.SC_OK);
     }
 
-    private void checkRestSecurity(String username, String password, final int code) throws IOException {
+    static void checkSecurity(String username, String password, final int code) throws IOException {
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         if (username != null && password != null) {
             credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
@@ -130,17 +116,21 @@ public class StockSecurityProviderTest {
             Asserts.succeedsEventually(new Callable<Void>() {
                 @Override
                 public Void call() throws Exception {
-                    assertResponseEquals(client, code);
+                    assertResponseEquals(urlBase()+"/v1/server/ha/state", client, code);
+                    assertResponseEquals(urlBase()+"/", client, code);
+                    assertResponseEquals(urlBase()+"/brooklyn-ui-catalog", client, code);
                     return null;
                 }
             });
         }
     }
 
-    private void assertResponseEquals(CloseableHttpClient httpclient, int code) throws IOException, ClientProtocolException {
-        // TODO get this dynamically (from CXF service?)
-        // TODO port is static, should make it dynamic
-        HttpGet httpGet = new HttpGet("http://localhost:8081/v1/server/ha/state");
+    // TODO get this dynamically (from CXF service?)
+    // TODO port is static, should make it dynamic
+    private static String urlBase() { return "http://localhost:8081"; }
+    
+    private static void assertResponseEquals(String url, CloseableHttpClient httpclient, int code) throws IOException, ClientProtocolException {
+        HttpGet httpGet = new HttpGet(url);
         try (CloseableHttpResponse response = httpclient.execute(httpGet)) {
             assertEquals(code, response.getStatusLine().getStatusCode());
         }
@@ -154,39 +144,6 @@ public class StockSecurityProviderTest {
         brooklynProperties.put(BrooklynWebConfig.SECURITY_PROVIDER_CLASSNAME.getName(), ExplicitUsersSecurityProvider.class.getCanonicalName());
         brooklynProperties.put(BrooklynWebConfig.USERS.getName(), username);
         brooklynProperties.put(BrooklynWebConfig.PASSWORD_FOR_USER(username), password);
-    }
-
-    private LoginContext doLogin(final String username, final String password) throws LoginException {
-        assertRealmRegisteredEventually(WEBCONSOLE_REALM);
-        LoginContext lc = new LoginContext(WEBCONSOLE_REALM, new CallbackHandler() {
-            @Override
-            public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-                for (int i = 0; i < callbacks.length; i++) {
-                    Callback callback = callbacks[i];
-                    if (callback instanceof PasswordCallback) {
-                        PasswordCallback passwordCallback = (PasswordCallback)callback;
-                        passwordCallback.setPassword(password.toCharArray());
-                    } else if (callback instanceof NameCallback) {
-                        NameCallback nameCallback = (NameCallback)callback;
-                        nameCallback.setName(username);
-                    }
-                }
-            }
-        });
-        lc.login();
-        return lc;
-    }
-
-    private void assertRealmRegisteredEventually(final String userPassRealm) {
-        // Need to wait a bit for the realm to get registered, any OSGi way to do this?
-        Asserts.succeedsEventually(new Runnable() {
-            @Override
-            public void run() {
-                javax.security.auth.login.Configuration initialConfig = javax.security.auth.login.Configuration.getConfiguration();
-                AppConfigurationEntry[] realm = initialConfig.getAppConfigurationEntry(userPassRealm);
-                assertNotNull(realm);
-            }
-        });
     }
 
 }

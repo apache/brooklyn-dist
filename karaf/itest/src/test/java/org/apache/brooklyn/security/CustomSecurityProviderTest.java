@@ -19,32 +19,19 @@
 package org.apache.brooklyn.security;
 
 import static org.apache.brooklyn.KarafTestUtils.defaultOptionsWith;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
 import static org.ops4j.pax.exam.CoreOptions.streamBundle;
+import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
 
 import java.io.IOException;
 
 import javax.inject.Inject;
-import javax.security.auth.Subject;
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.callback.NameCallback;
-import javax.security.auth.callback.PasswordCallback;
-import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.security.auth.login.AppConfigurationEntry;
-import javax.security.auth.login.FailedLoginException;
-import javax.security.auth.login.LoginContext;
-import javax.security.auth.login.LoginException;
 
 import org.apache.brooklyn.api.mgmt.ManagementContext;
-import org.apache.brooklyn.core.internal.BrooklynProperties;
 import org.apache.brooklyn.rest.BrooklynWebConfig;
-import org.apache.brooklyn.rest.security.jaas.BrooklynLoginModule;
-import org.apache.brooklyn.test.Asserts;
 import org.apache.brooklyn.test.IntegrationTest;
+import org.apache.brooklyn.util.text.Identifiers;
+import org.apache.http.HttpStatus;
 import org.apache.karaf.features.BootFinished;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -57,13 +44,13 @@ import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.tinybundles.core.TinyBundles;
 import org.osgi.framework.Constants;
 
-import com.google.common.collect.ImmutableSet;
-
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
 @Category(IntegrationTest.class)
 public class CustomSecurityProviderTest {
-    private static final String WEBCONSOLE_REALM = "webconsole";
+    
+    private static final String NEW_SECURITY_TEST_BUNDLE = "org.apache.brooklyn.test.security";
+    private static final String NEW_SECURITY_TEST_BUNDLE_VERSION = "1.0.0";
 
     /**
      * To make sure the tests run only when the boot features are fully
@@ -82,76 +69,36 @@ public class CustomSecurityProviderTest {
         return defaultOptionsWith(
             streamBundle(TinyBundles.bundle()
                 .add(CustomSecurityProvider.class)
-                .add("OSGI-INF/blueprint/security.xml", CustomSecurityProviderTest.class.getResource("/custom-security-bp.xml"))
                 .set(Constants.BUNDLE_MANIFESTVERSION, "2") // defaults to 1 which doesn't work
-                .set(Constants.BUNDLE_SYMBOLICNAME, "org.apache.brooklyn.test.security")
-                .set(Constants.BUNDLE_VERSION, "1.0.0")
+                .set(Constants.BUNDLE_SYMBOLICNAME, NEW_SECURITY_TEST_BUNDLE)
+                .set(Constants.BUNDLE_VERSION, NEW_SECURITY_TEST_BUNDLE_VERSION)
                 .set(Constants.DYNAMICIMPORT_PACKAGE, "*")
                 .set(Constants.EXPORT_PACKAGE, CustomSecurityProvider.class.getPackage().getName())
-                .build())
+                .build()),
+            editConfigurationFilePut("etc/brooklyn.cfg", 
+                BrooklynWebConfig.SECURITY_PROVIDER_CLASSNAME.getName(), CustomSecurityProvider.class.getCanonicalName()),
+            editConfigurationFilePut("etc/brooklyn.cfg", 
+                BrooklynWebConfig.SECURITY_PROVIDER_BUNDLE.getName(), NEW_SECURITY_TEST_BUNDLE),
+            editConfigurationFilePut("etc/brooklyn.cfg", 
+                BrooklynWebConfig.SECURITY_PROVIDER_BUNDLE_VERSION.getName(), NEW_SECURITY_TEST_BUNDLE_VERSION)
             // Uncomment this for remote debugging the tests on port 5005
             // ,KarafDistributionOption.debugConfiguration()
         );
     }
 
-    @Before
-    public void setUp() {
-        // Works only before initializing the security provider (i.e. before first use)
-        // TODO Dirty hack to inject the needed properties. Improve once managementContext is configurable.
-        // Alternatively re-register a test managementContext service (how?)
-        BrooklynProperties brooklynProperties = (BrooklynProperties)managementContext.getConfig();
-        brooklynProperties.put(BrooklynWebConfig.SECURITY_PROVIDER_CLASSNAME.getName(), CustomSecurityProvider.class.getCanonicalName());
-    }
-
-    @Test(expected = FailedLoginException.class)
-    public void checkLoginFails() throws LoginException {
-        assertRealmRegisteredEventually(WEBCONSOLE_REALM);
-        doLogin("invalid", "auth");
+    @Test
+    public void checkRestSecurityNoUserFails() throws IOException {
+        StockSecurityProviderTest.checkSecurity(null, null, HttpStatus.SC_UNAUTHORIZED);
     }
 
     @Test
-    public void checkLoginSucceeds() throws LoginException {
-        assertRealmRegisteredEventually(WEBCONSOLE_REALM);
-        String user = "custom";
-        LoginContext lc = doLogin(user, "password");
-        Subject subject = lc.getSubject();
-        assertNotNull(subject);
-        assertEquals(subject.getPrincipals(), ImmutableSet.of(
-                new BrooklynLoginModule.UserPrincipal(user),
-                new BrooklynLoginModule.RolePrincipal("users")));
+    public void checkRestSecurityWrongUserFails() throws IOException {
+        StockSecurityProviderTest.checkSecurity("admin", "password", HttpStatus.SC_UNAUTHORIZED);
     }
 
-    private LoginContext doLogin(final String username, final String password) throws LoginException {
-        assertRealmRegisteredEventually(WEBCONSOLE_REALM);
-        LoginContext lc = new LoginContext(WEBCONSOLE_REALM, new CallbackHandler() {
-            @Override
-            public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-                for (int i = 0; i < callbacks.length; i++) {
-                    Callback callback = callbacks[i];
-                    if (callback instanceof PasswordCallback) {
-                        PasswordCallback passwordCallback = (PasswordCallback)callback;
-                        passwordCallback.setPassword(password.toCharArray());
-                    } else if (callback instanceof NameCallback) {
-                        NameCallback nameCallback = (NameCallback)callback;
-                        nameCallback.setName(username);
-                    }
-                }
-            }
-        });
-        lc.login();
-        return lc;
-    }
-
-    private void assertRealmRegisteredEventually(final String userPassRealm) {
-        // Need to wait a bit for the realm to get registered, any OSGi way to do this?
-        Asserts.succeedsEventually(new Runnable() {
-            @Override
-            public void run() {
-                javax.security.auth.login.Configuration initialConfig = javax.security.auth.login.Configuration.getConfiguration();
-                AppConfigurationEntry[] realm = initialConfig.getAppConfigurationEntry(userPassRealm);
-                assertNotNull(realm);
-            }
-        });
+    @Test
+    public void checkRestSecuritySucceeds() throws IOException {
+        StockSecurityProviderTest.checkSecurity(CustomSecurityProvider.USER, "any-password-"+Identifiers.makeRandomId(2), HttpStatus.SC_OK);
     }
 
 }

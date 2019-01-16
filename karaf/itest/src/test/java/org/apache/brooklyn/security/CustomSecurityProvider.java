@@ -24,10 +24,17 @@ import org.apache.brooklyn.rest.security.provider.AbstractSecurityProvider;
 import org.apache.brooklyn.rest.security.provider.SecurityProvider;
 
 public class CustomSecurityProvider extends AbstractSecurityProvider implements SecurityProvider {
+    
+    static final String USER = "custom";
 
     @Override
     public boolean authenticate(HttpSession session, String user, String password) {
-        return "custom".equals(user);
+        return USER.equals(user);
+    }
+
+    @Override
+    public boolean requiresUserPass() {
+        return true;
     }
 
 }

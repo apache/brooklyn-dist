@@ -20,7 +20,7 @@ package org.apache.brooklyn.launcher.osgi;
 
 import static org.apache.brooklyn.KarafTestUtils.defaultOptionsWith;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 
@@ -46,12 +46,16 @@ import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.service.cm.ConfigurationAdmin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
 @Category(IntegrationTest.class)
 public class OsgiLauncherTest {
 
+    private static final Logger log = LoggerFactory.getLogger(OsgiLauncherTest.class);
+    
     private static final String TEST_VALUE_RUNTIME = "test.value";
     private static final String TEST_KEY_RUNTIME = "test.key";
     private static final String TEST_VALUE_IN_CFG = "test.cfg";
@@ -94,11 +98,12 @@ public class OsgiLauncherTest {
 
     @Test
     public void testConfig() throws IOException {
-        assertFalse(mgmt.getConfig().getAllConfig().containsKey(TEST_KEY_RUNTIME));
+        assertNull(mgmt.getConfig().getFirst(TEST_KEY_RUNTIME));
         org.osgi.service.cm.Configuration config = configAdmin.getConfiguration("brooklyn", null);
         assertEquals(config.getProperties().get(TEST_KEY_IN_CFG), TEST_VALUE_IN_CFG);
         config.getProperties().put(TEST_KEY_RUNTIME, TEST_VALUE_RUNTIME);
         config.update();
+        log.info("Waiting for Brooklyn mgmt "+mgmt+" to see updated value...");
         Asserts.succeedsEventually(new Runnable() {
             @Override
             public void run() {
