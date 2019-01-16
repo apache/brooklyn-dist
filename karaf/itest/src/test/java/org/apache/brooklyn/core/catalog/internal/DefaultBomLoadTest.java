@@ -19,8 +19,14 @@
 package org.apache.brooklyn.core.catalog.internal;
 
 
-import org.apache.brooklyn.api.catalog.CatalogItem;
+import static org.apache.brooklyn.KarafTestUtils.defaultOptionsWith;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import javax.inject.Inject;
+
 import org.apache.brooklyn.api.mgmt.ManagementContext;
+import org.apache.brooklyn.api.typereg.RegisteredType;
 import org.apache.brooklyn.core.BrooklynVersion;
 import org.apache.brooklyn.test.IntegrationTest;
 import org.apache.karaf.features.BootFinished;
@@ -33,12 +39,6 @@ import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerMethod;
 import org.ops4j.pax.exam.util.Filter;
-
-import javax.inject.Inject;
-
-import static org.apache.brooklyn.KarafTestUtils.defaultOptionsWith;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)
@@ -69,9 +69,8 @@ public class DefaultBomLoadTest {
     @Test
     @Category(IntegrationTest.class)
     public void shouldHaveLoadedDefaultCatalogBom() throws Exception {
-        final CatalogItem<?, ?> catalogItem = managementContext.getCatalog()
-            .getCatalogItem("server-template", BrooklynVersion.get());  // from brooklyn-software-base catalog.bom
-        assertNotNull(catalogItem);
-        assertEquals("Template: Server", catalogItem.getDisplayName());
+        RegisteredType item = managementContext.getTypeRegistry().get("server-template", BrooklynVersion.get());
+        assertNotNull(item);
+        assertEquals("Template: Server", item.getDisplayName());
     }
 }
