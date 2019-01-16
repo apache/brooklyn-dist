@@ -36,9 +36,33 @@
     </parent>
 
     <dependencies>
+        <!-- this is ordered in a special way so that where nested dependencies bring in different versions
+             our preferred versions are first and maven does the right thing; mvn's strategy is a bit odd,
+             where the same dep is pulled in at different depths it seems to prefer the shallower one,
+             reverting to sequence here in cases of ties.  including this as a dependency should mean
+             maven projects see the same versions we include via osgi, at least that is the intention! -->
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.brooklyn</groupId>
+            <artifactId>brooklyn-launcher</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.brooklyn</groupId>
+            <artifactId>brooklyn-cli</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.brooklyn.camp</groupId>
+            <artifactId>camp-server</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -106,18 +130,6 @@
         <dependency>
             <groupId>org.apache.brooklyn</groupId>
             <artifactId>brooklyn-catalog-aliases</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.brooklyn</groupId>
-            <artifactId>brooklyn-launcher</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.brooklyn</groupId>
-            <artifactId>brooklyn-cli</artifactId>
             <version>${project.version}</version>
         </dependency>
 
