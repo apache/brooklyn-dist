@@ -18,6 +18,9 @@
  */
 package org.apache.brooklyn.security;
 
+import java.util.function.Supplier;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.brooklyn.rest.security.provider.AbstractSecurityProvider;
@@ -28,7 +31,7 @@ public class CustomSecurityProvider extends AbstractSecurityProvider implements 
     static final String USER = "custom";
 
     @Override
-    public boolean authenticate(HttpSession session, String user, String password) {
+    public boolean authenticate(HttpServletRequest request, Supplier<HttpSession> sessionSupplierOnSuccess, String user, String pass) throws SecurityProviderDeniedAuthentication {
         return USER.equals(user);
     }
 
