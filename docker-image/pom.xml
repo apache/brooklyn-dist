@@ -24,7 +24,7 @@
 
   <artifactId>karaf-docker-image</artifactId>
   <packaging>pom</packaging>
-  <name>Brooklyn Karaf Distribution Docker Image</name>
+  <name>Brooklyn Docker Image</name>
 
   <parent>
       <groupId>org.apache.brooklyn</groupId>
@@ -42,63 +42,53 @@
     </dependency>
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>docker</id>
-      <activation>
-        <property>
-          <name>docker</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>copy-distro</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>copy</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.apache.brooklyn</groupId>
-                      <artifactId>apache-brooklyn</artifactId>
-                      <type>tar.gz</type>
-                      <outputDirectory>${project.build.directory}</outputDirectory>
-                      <destFileName>apache-brooklyn-${project.version}.tar.gz</destFileName>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>com.spotify</groupId>
-            <artifactId>dockerfile-maven-plugin</artifactId>
-            <version>${dockerfile-maven-plugin.version}</version>
-            <executions>
-              <execution>
-                <id>default</id>
-                <goals>
-                  <goal>build</goal>
-                </goals>
-              </execution>
-            </executions>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-distro</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
             <configuration>
-              <repository>apache/brooklyn</repository>
-              <tag>${project.version}</tag>
-              <buildArgs>
-                <DIST_TAR_GZ>target/apache-brooklyn-${project.version}.tar.gz</DIST_TAR_GZ>
-              </buildArgs>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.brooklyn</groupId>
+                  <artifactId>apache-brooklyn</artifactId>
+                  <type>tar.gz</type>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                  <destFileName>apache-brooklyn-${project.version}.tar.gz</destFileName>
+                </artifactItem>
+              </artifactItems>
             </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <version>${dockerfile-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>default</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <repository>apache/brooklyn</repository>
+          <tag>${project.version}</tag>
+          <buildArgs>
+            <DIST_TAR_GZ>target/apache-brooklyn-${project.version}.tar.gz</DIST_TAR_GZ>
+          </buildArgs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
 

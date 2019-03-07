@@ -128,10 +128,10 @@
 
     <profiles>
         <profile>
-            <id>go-client</id>
+            <id>client</id>
             <activation>
                 <property>
-                    <name>!no-go-client</name>
+                    <name>client</name>
                 </property>
             </activation>
             <build>
