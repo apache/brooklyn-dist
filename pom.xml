@@ -89,11 +89,11 @@
 
     <profiles>
         <profile>
-            <!-- skip the RPM build by setting -Dno-rpm - useful if RPM tool is not available -->
-            <id>rpm-module</id>
+            <!-- Include the RPM build by setting -Drpm -->
+            <id>rpm</id>
             <activation>
                 <property>
-                    <name>!no-rpm</name>
+                    <name>rpm</name>
                 </property>
             </activation>
             <modules>
@@ -101,19 +101,30 @@
             </modules>
         </profile>
         <profile>
-            <!-- skip the DEB build by setting -Dno-deb - useful if Debian tools are not available -->
-            <id>deb-module</id>
+            <!-- Include the DEB build by setting -Ddeb -->
+            <id>deb</id>
             <activation>
                 <property>
-                    <name>!no-deb</name>
+                    <name>deb</name>
                 </property>
             </activation>
             <modules>
                 <module>deb-packaging</module>
             </modules>
         </profile>
+        <profile>
+            <!-- Include the Docker build by setting -Ddocker -->
+            <id>docker</id>
+            <activation>
+                <property>
+                    <name>docker</name>
+                </property>
+            </activation>
+            <modules>
+                <module>docker-image</module>
+            </modules>
+        </profile>
     </profiles>
-
 
     <modules>
         <module>downstream-parent</module>
@@ -123,7 +134,6 @@
         <module>vagrant</module>
         <module>archetypes/quickstart</module>
         <module>shared-packaging</module>
-        <module>docker-image</module>
     </modules>
 
     <build>
@@ -135,6 +145,7 @@
                     <excludes combine.children="append">
                         <exclude>scripts/README.md</exclude>
                         <exclude>docker/README.md</exclude>
+                        <exclude>docker-image/README.md</exclude>
                     </excludes>
                 </configuration>
             </plugin>
