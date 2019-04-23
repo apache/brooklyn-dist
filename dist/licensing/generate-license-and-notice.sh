@@ -27,6 +27,7 @@ Usage:  generate-license-and-notice.sh [-o <output-dir>] [-s <suffix>]
           [ [--notice <header-file>]
             [--notice-compute-with-flags <flags>]* ]+
           [--libraries <search-dir> [<seach-dir>]+]
+          [--keep-metadata-file <filename>]
 
 Generates LICENSE and NOTICE files based on dependencies.
 
@@ -91,6 +92,13 @@ while [ ! -z "$*" ] ; do
     continue
   fi
 
+  if [ "$1" == "--keep-metadata-file" ] ; then
+    shift
+    KEEP_METADATA_FILE=$1
+    shift
+    continue
+  fi
+
   usage
   echo Unexpected argument: $1
   exit 1 
@@ -130,9 +138,9 @@ TEMP_MVN_OUT=`pwd -P`/temp.license-maven-output.log
 
 echo > $TEMP_METADATA_FILE
 if [ ! -z "$LIBRARIES" ] ; then
-  echo Using metadata libraries $(find "${LIBRARIES[@]}" -name "license-metadata-*")
+  echo Using metadata libraries from "${LIBRARIES[@]}": $(find -L "${LIBRARIES[@]}" -name "license-metadata-*")
   # sort by filename first, then by path, with later ones alpha being the ones that are ultimately used
-  for x in $(find "${LIBRARIES[@]}" -name "license-metadata-*" | sed 's/\(.*\/\)\(.*\)/\2 --- \1\2/' | sort | sed 's/.* --- //') ; do
+  for x in $(find -L "${LIBRARIES[@]}" -name "license-metadata-*" | sed 's/\(.*\/\)\(.*\)/\2 --- \1\2/' | sort | sed 's/.* --- //') ; do
     cat $x >> $TEMP_METADATA_FILE
   done
 fi
@@ -182,7 +190,7 @@ MISSING=()
 if [ -s ${TEMP_LICENSES_}2 ] ; then
   echo Adding ${LICENSES[$I]} to $LICENSE_FILE and `cat ${TEMP_LICENSES_}2 | wc -l` licenses:`cat ${TEMP_LICENSES_}2 | sed 's/^/ /' | paste -sd ';' -`
   cat ${LICENSES[${#LICENSES[@]}-1]} >> $LICENSE_FILE
-  LICENSE_TEXT_PATHS=$(find ${LIBRARIES[@]} -name license-text) 
+  LICENSE_TEXT_PATHS=$(find -L ${LIBRARIES[@]} -name license-text) 
 
   while read x ; do
   
@@ -218,6 +226,10 @@ fi
 
 cp $NOTICE_FILE $NOTICE_FILE.tmp
 grep -v "License URL:" $NOTICE_FILE.tmp > $NOTICE_FILE
+
+if [ ! -z "$KEEP_METADATA_FILE" ] ; then
+  cp $TEMP_METADATA_FILE $KEEP_METADATA_FILE
+fi
 
 rm -f $NOTICE_FILE.tmp $TEMP_METADATA_FILE $TEMP_NOTICE_DATA_FILE $TEMP_MVN_OUT ${TEMP_LICENSES_}*
 
