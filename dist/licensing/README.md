@@ -91,31 +91,6 @@ If so:
 3. Add the reference to the project in `generate-all.sh` 
 
 
-# Reports
-
-In the usage/dist/ project of Brooklyn
-
-To see a tree of license info:
-
-    mvn org.heneveld.maven:license-audit-maven-plugin:report \
-        -Dformat=summary \
-        -DlicensesPreferred=ASL2,ASL,EPL1,BSD-2-Clause,BSD-3-Clause,CDDL1.1,CDDL1,CDDL \
-        -DoverridesFile=licensing/overrides.yaml \
-        -DextrasFiles=`cat licensing/extras-files`
-
-## CSV License Report
-
-If you need to generate a CSV report of license usage, e.g. for use in a spreadsheet:
-
-    mvn org.heneveld.maven:license-audit-maven-plugin:report \
-        -Dformat=csv \
-        -DlistDependencyIdOnly=true \
-        -DsuppressExcludedDependencies=true \
-        -DlicensesPreferred=ASL2,ASL,EPL1,BSD-2-Clause,BSD-3-Clause,CDDL1.1,CDDL1,CDDL \
-        -DoverridesFile=licensing/overrides.yaml \
-        -DextrasFiles=`cat licensing/extras-files` \
-        -DoutputFile=dependencies-licenses.csv
-
 ## Other Tools
 
 The command `mvn project-info-reports:dependencies` is a different tool for checking mvn dependencies;
