@@ -41,7 +41,7 @@ else
   ssh-keygen -t rsa -N "mypassphrase" -f ~/.ssh/id_rsa_with_passphrase
   cat ~/.ssh/id_rsa_with_passphrase.pub >> ~/.ssh/authorized_keys
 
-  cd /build
+  cd /usr/build
   echo "Available entropy in container: $(cat /proc/sys/kernel/random/entropy_avail)"
   exec $@
 fi

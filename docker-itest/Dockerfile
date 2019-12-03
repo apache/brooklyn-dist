@@ -16,8 +16,7 @@
 # under the License.
 #
 
-FROM maven:3.3-jdk-8
-MAINTAINER Svetoslav Neykov "svetoslav.neykov@cloudsoft.io"
+FROM maven:3.5.2-jdk-8
 
 # For Alpine:
 # FROM maven:3.3.9-jdk-8-alpine
@@ -27,12 +26,37 @@ MAINTAINER Svetoslav Neykov "svetoslav.neykov@cloudsoft.io"
 # making it on par with the full debian image. Also some tests fail
 # because of differences in the accepted arguments of the busybox provided tools.
 
+# Install the non-headless JRE as some tests requires them
+RUN apt-get update && apt-get install -y openjdk-8-jre
+
+# Install necessary binaries to build brooklyn
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends net-tools ssh sudo wget chef && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
+    git-core \
+    procps \
+    golang-go \
+    rpm \
+    dpkg \
+    libpng-dev \
+    make \
+    automake \
+    autoconf \
+    libtool \
+    dpkg \
+    pkg-config \
+    nasm \
+    gcc \
+    net-tools \
+    ssh \
+    sudo \
+    wget \
+    chef && \
     rm -rf /var/lib/apt/lists/*
+
+# Prepare container for IT tests
 RUN mkdir /etc/skel/.m2 && \
     echo "<settings xmlns='http://maven.apache.org/SETTINGS/1.0.0'>" > /etc/skel/.m2/settings.xml && \
-    echo "  <localRepository>/maven-repo</localRepository>" >> /etc/skel/.m2/settings.xml && \
+    echo "  <localRepository>/var/maven</localRepository>" >> /etc/skel/.m2/settings.xml && \
     echo "</settings>" >> /etc/skel/.m2/settings.xml && \
     : The following are integration tests requirements && \
     echo "127.0.0.1 localhost1 localhost2 localhost3 localhost4" >> /etc/hosts && \
@@ -49,8 +73,19 @@ RUN mkdir /etc/skel/.m2 && \
 # We need them the same so that the mounted /build volume is accessible from inside the container.
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-VOLUME /build
-VOLUME /maven-repo
+# Make sure the /.config && /.npm (for UI module builds) is writable for all users
+RUN mkdir -p /.config && chmod -R 777 /.config
+RUN mkdir -p /.npm && chmod -R 777 /.npm
+
+# Make sure the /var/tmp (for RPM build) is writable for all users
+RUN mkdir -p /var/tmp/ && chmod -R 777 /var/tmp/
+
+# Make sure the /var/maven is writable for all users
+RUN mkdir -p /var/maven/.m2/ && chmod -R 777 /var/maven/
+ENV MAVEN_CONFIG=/var/maven/.m2
+
+VOLUME /usr/build
+VOLUME /var/maven
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["mvn -B clean install -PIntegration"]
+CMD ["mvn -B clean test -PIntegration"]

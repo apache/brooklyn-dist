@@ -38,12 +38,10 @@ node(label: 'ubuntu') {
             }
 
             stage('Run tests') {
-                environmentDockerImage.inside('-i --name brooklyn-${DOCKER_TAG} --mount type=bind,source="${HOME}/.m2/settings.xml",target=/var/maven/.m2/settings.xml,readonly -v ${WORKSPACE}:/usr/build -w /usr/build') {
-                    sh 'mvn clean install -Duser.home=/var/maven -Duser.name=jenkins'
+                environmentDockerImage.inside('-i --name brooklyn-${DOCKER_TAG} -v ${WORKSPACE}/.m2:/var/maven/.m2 --mount type=bind,source="${HOME}/.m2/settings.xml",target=/var/maven/.m2/settings.xml,readonly -v ${WORKSPACE}:/usr/build -w /usr/build') {
+                    sh 'mvn clean test -PIntegration -Duser.home=/var/maven -Duser.name=jenkins'
                 }
             }
-
-            // We don't care to deploy artifact as each git submodule build do that already
         }
     }
 
@@ -60,16 +58,13 @@ node(label: 'ubuntu') {
         ])
     }
 
-    // Conditional stage, when not building a PR
-    if (env.CHANGE_ID == null) {
-        stage('Send notifications') {
-            // Send email notifications
-            step([
-                $class: 'Mailer',
-                notifyEveryUnstableBuild: true,
-                recipients: 'dev@brooklyn.apache.org',
-                sendToIndividuals: false
-            ])
-        }
+    stage('Send notifications') {
+        // Send email notifications
+        step([
+            $class: 'Mailer',
+            notifyEveryUnstableBuild: true,
+            recipients: 'dev@brooklyn.apache.org',
+            sendToIndividuals: false
+        ])
     }
 }
