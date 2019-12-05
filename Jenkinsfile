@@ -18,6 +18,12 @@
  */
 
 node(label: 'ubuntu') {
+    properties([
+        pipelineTriggers([
+            issueCommentTrigger('.*test this please.*')
+        ])
+    ])
+
     catchError {
         def environmentDockerImage
 
