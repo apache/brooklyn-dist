@@ -25,7 +25,6 @@ if [ "$#" -ne 1 ]; then
 fi
 
 command -v svn >/dev/null 2>&1 || { echo >&2 "[x] svn required but is not installed. Aborting."; exit 1; }
-command -v md5sum >/dev/null 2>&1 || { echo >&2 "[x] md5sum required but is not installed. On macOS install with 'brew install md5sum'. Aborting."; exit 1; }
 command -v shasum >/dev/null 2>&1 || { echo >&2 "[x] shasum required but is not installed. On macOS install with 'brew install shasum'. Aborting."; exit 1; }
 command -v gpg >/dev/null 2>&1 || { echo >&2 "[x] gpg required but is not installed. On macOS install with 'brew install gpg'. Aborting."; exit 1; }
 command -v rpm >/dev/null 2>&1 || { echo >&2 "[x] rpm required but is not installed. On macOS install with 'brew install rpm'. Aborting."; exit 1; }
@@ -80,13 +79,11 @@ echo "= Checking signatures and hashes of artifacts ...                         
 echo "==============================================================================="
 echo
 
-for ARTIFACT in $(find * -type f ! \( -name '*.asc' -o -name '*.md5' -o -name '*.sha1' -o -name '*.sha256' \) ); do
-  md5sum -c ${ARTIFACT}.md5 && \
-  shasum -a1 -c ${ARTIFACT}.sha1 && \
+find * -type f ! \( -name '*.asc' -o -name '*.sha256' \) -print | while read -r ARTIFACT ; do
   shasum -a256 -c ${ARTIFACT}.sha256 && \
   gpg --verify ${ARTIFACT}.asc ${ARTIFACT} && \
-  echo "[✓] Signatures verified for $ARTIFACT" \
-    || { echo "[x] Invalid signature for $ARTIFACT. Aborting."; exit 1; }
+  echo "[✓] Signatures verified for ${ARTIFACT}" \
+    || { echo "[x] Invalid signature for ${ARTIFACT}. Aborting."; exit 1; }
 done
 
 echo
@@ -96,7 +93,7 @@ echo "==========================================================================
 echo
 
 GA_RELEASE=${RELEASE%%-rc?}
-for ARCHIVE in $(ls *.{tar.gz,zip,rpm}); do
+find * -type f \( -name '*.tar.gz' -or -name '*.zip' -or -name '*.rpm' \) -print | while read -r ARCHIVE ; do
   REL_ARCHIVE=${ARCHIVE/-rc?}
   case $ARCHIVE in
     *.tar.gz)
