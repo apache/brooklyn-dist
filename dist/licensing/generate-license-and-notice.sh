@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -146,6 +148,15 @@ if [ ! -z "$LIBRARIES" ] ; then
 fi
 
 process_dependencies() {
+  echo running mvn license-audit-maven-plugin:notices
+  echo mvn -X org.heneveld.maven:license-audit-maven-plugin:notices \
+        -DlicensesPreferred=Apache-2.0,Apache,EPL-1.0,BSD-2-Clause,BSD-3-Clause,CDDL-1.1,CDDL-1.0,CDDL \
+        -DoverridesFile=$TEMP_METADATA_FILE \
+        -DoutputYaml=true \
+        -DoutputFile=$TEMP_NOTICE_DATA_FILE \
+        $@
+  echo writing to $TEMP_MVN_OUT
+
   mvn -X org.heneveld.maven:license-audit-maven-plugin:notices \
         -DlicensesPreferred=Apache-2.0,Apache,EPL-1.0,BSD-2-Clause,BSD-3-Clause,CDDL-1.1,CDDL-1.0,CDDL \
         -DoverridesFile=$TEMP_METADATA_FILE \
