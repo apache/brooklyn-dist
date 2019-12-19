@@ -175,9 +175,7 @@ mkdir -p ${src_staging_dir}
 # * sandbox (which hasn't been vetted so thoroughly)
 # * release (where this is running, and people who *have* the release don't need to make it)
 # * jars and friends (these are sometimes included for tests, but those are marked as skippable,
-# * cli/vendor - that's not source controlled and not removed by mvn clean so ignore it in case it's already there
-#     and apache convention does not allow them in source builds; see PR #365
-rsync -rtp --exclude .git\* --exclude brooklyn-docs/ --exclude brooklyn-library/sandbox/ --exclude brooklyn-client/cli/vendor/ --exclude brooklyn-dist/release/ --exclude '**/*.[ejw]ar' . ${staging_dir}/${release_name}-src
+rsync -rtp --exclude .git\* --exclude brooklyn-docs/ --exclude brooklyn-library/sandbox/ --exclude brooklyn-dist/release/ --exclude '**/*.[ejw]ar' . ${staging_dir}/${release_name}-src
 
 rm -rf ${artifact_dir}
 mkdir -p ${artifact_dir}
