@@ -102,10 +102,10 @@ echo >&2 "The continuing version is: ${continue_version}"
 confirm || exit
 
 cat <<EOF
-OLD_MASTER_VERSION=${current_version}
-NEW_MASTER_VERSION=${continue_version}
-VERSION_NAME=${release_version}
-RC_NUMBER=${rc_suffix}
-SUBMODULES="$( perl -n -e 'if ($_ =~ /path += +(.*)$/) { print $1." " }' < .gitmodules )"
-MODULES=". \${SUBMODULES}"
+export OLD_MASTER_VERSION=${current_version}
+export NEW_MASTER_VERSION=${continue_version}
+export VERSION_NAME=${release_version}
+export RC_NUMBER=${rc_suffix}
+export SUBMODULES="$( perl -n -e 'if ($_ =~ /path += +(.*)$/) { print $1." " }' < .gitmodules )"
+export MODULES=". \${SUBMODULES}"
 EOF

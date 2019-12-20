@@ -175,9 +175,7 @@ mkdir -p ${src_staging_dir}
 # * sandbox (which hasn't been vetted so thoroughly)
 # * release (where this is running, and people who *have* the release don't need to make it)
 # * jars and friends (these are sometimes included for tests, but those are marked as skippable,
-# * cli/vendor - that's not source controlled and not removed by mvn clean so ignore it in case it's already there
-#     and apache convention does not allow them in source builds; see PR #365
-rsync -rtp --exclude .git\* --exclude brooklyn-docs/ --exclude brooklyn-library/sandbox/ --exclude brooklyn-client/cli/vendor/ --exclude brooklyn-dist/release/ --exclude '**/*.[ejw]ar' . ${staging_dir}/${release_name}-src
+rsync -rtp --exclude .git\* --exclude brooklyn-docs/ --exclude brooklyn-library/sandbox/ --exclude brooklyn-dist/release/ --exclude '**/*.[ejw]ar' . ${staging_dir}/${release_name}-src
 
 rm -rf ${artifact_dir}
 mkdir -p ${artifact_dir}
@@ -200,9 +198,9 @@ mkdir -p ${bin_staging_dir}
 
 # Perform the build
 if [ -z "${dry_run}" ]; then
-    ( cd ${src_staging_dir} && mvn deploy -Papache-release )
+    ( cd ${src_staging_dir} && mvn deploy -Dclient -Drpm -Ddeb -Papache-release )
 else
-    ( cd ${src_staging_dir} && mvn install -Papache-release )
+    ( cd ${src_staging_dir} && mvn install -Dclient -Drpm -Ddeb -Papache-release )
 fi
 
 # Re-pack the archive with the correct names
@@ -270,14 +268,12 @@ cp ${src_staging_dir}/brooklyn-dist/deb-packaging/target/apache-brooklyn-${curre
 ###############################################################################
 # Signatures and checksums
 
-# OSX doesn't have sha256sum, even if MacPorts md5sha1sum package is installed.
+# OSX doesn't have sha256sum, even if MacPorts package is installed.
 # Easy to fake it though.
 which sha256sum >/dev/null || alias sha256sum='shasum -a 256' && shopt -s expand_aliases
 
 ( cd ${artifact_dir} &&
     for a in *.tar.gz *.zip *.rpm *.deb; do
-        md5sum -b ${a} > ${a}.md5
-        sha1sum -b ${a} > ${a}.sha1
         sha256sum -b ${a} > ${a}.sha256
         gpg2 --armor --output ${a}.asc --detach-sig ${a}
     done
