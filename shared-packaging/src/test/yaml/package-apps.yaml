@@ -25,7 +25,7 @@ services:
       # privateKeyFile: ~/.ssh/<private key>
       user: ubuntu
   brooklyn.config:
-    package.file:  ~/.m2/repository/org/apache/brooklyn/deb-packaging/1.0.0-SNAPSHOT/deb-packaging-1.0.0-SNAPSHOT-all.deb # BROOKLYN_VERSION
+    package.file:  ~/.m2/repository/org/apache/brooklyn/deb-packaging/1.0.0/deb-packaging-1.0.0-all.deb # BROOKLYN_VERSION
 
 ---
 
@@ -38,7 +38,7 @@ services:
       # privateKeyFile: ~/.ssh/<private key>
       user: vagrant
   brooklyn.config:
-    package.file: ~/.m2/repository/org/apache/brooklyn/deb-packaging/1.0.0-SNAPSHOT/deb-packaging-1.0.0-SNAPSHOT-all.deb # BROOKLYN_VERSION
+    package.file: ~/.m2/repository/org/apache/brooklyn/deb-packaging/1.0.0/deb-packaging-1.0.0-all.deb # BROOKLYN_VERSION
 
 ---
 
@@ -51,7 +51,7 @@ services:
       # privateKeyFile: ~/.ssh/<private key>
       user: vagrant
   brooklyn.config:
-    package.file: ~/.m2/repository/org/apache/brooklyn/rpm-packaging/1.0.0-SNAPSHOT/rpm-packaging-1.0.0-SNAPSHOT-noarch.rpm # BROOKLYN_VERSION
+    package.file: ~/.m2/repository/org/apache/brooklyn/rpm-packaging/1.0.0/rpm-packaging-1.0.0-noarch.rpm # BROOKLYN_VERSION
 
 ---
 
@@ -64,6 +64,6 @@ services:
       # privateKeyFile: ~/.ssh/<private key>
       user: vagrant
   brooklyn.config:
-    package.file: ~/.m2/repository/org/apache/brooklyn/rpm-packaging/1.0.0-SNAPSHOT/rpm-packaging-1.0.0-SNAPSHOT-noarch.rpm # BROOKLYN_VERSION
+    package.file: ~/.m2/repository/org/apache/brooklyn/rpm-packaging/1.0.0/rpm-packaging-1.0.0-noarch.rpm # BROOKLYN_VERSION
 
 
