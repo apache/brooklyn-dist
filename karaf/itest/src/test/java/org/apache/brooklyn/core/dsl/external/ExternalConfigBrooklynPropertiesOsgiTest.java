@@ -38,10 +38,7 @@ import org.apache.brooklyn.util.guava.Maybe;
 import org.apache.brooklyn.util.osgi.OsgiTestResources;
 import org.apache.karaf.features.BootFinished;
 import org.apache.karaf.features.FeaturesService;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
@@ -52,6 +49,7 @@ import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.Bundle;
 import org.osgi.service.cm.ConfigurationAdmin;
 
+@Ignore // See Thread at https://lists.apache.org/thread.html/rc4c563e1d320164b75a52581e65ff9c5888917153d3241865ec94a38%40%3Cdev.brooklyn.apache.org%3E
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)
 public class ExternalConfigBrooklynPropertiesOsgiTest {
