@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import org.apache.karaf.features.BootFinished;
 import org.apache.karaf.features.FeaturesService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -41,6 +42,7 @@ import org.osgi.framework.BundleContext;
  * 
  * Keeping it a non-integration test so we have at least a basic OSGi sanity check. (takes 14 sec)
  */
+@Ignore // See Thread at https://lists.apache.org/thread.html/rc4c563e1d320164b75a52581e65ff9c5888917153d3241865ec94a38%40%3Cdev.brooklyn.apache.org%3E
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
 public class AssemblyTest {
