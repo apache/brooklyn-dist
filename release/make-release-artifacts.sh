@@ -153,8 +153,16 @@ else
   export GPG_TTY GPG_AGENT_INFO
 fi
 
+# Determine which GPG command to use
+GPG_COMMAND=$((which gpg >> /dev/null && echo gpg) || (which gpg2 >> /dev/null && echo gpg2))
+
+if [ ! -z "${GPG_COMMAND}" ]; then
+    echo "gpg or gpg2 must be installed, exiting"
+    exit
+fi
+
 # A GPG no-op, but causes the password request to happen. It should then be cached by gpg-agent.
-gpg2 -o /dev/null --sign /dev/null
+$GPG_COMMAND -o /dev/null --sign /dev/null
 
 # Discover submodules
 submodules="$( perl -n -e 'if ($_ =~ /path += +(.*)$/) { print $1."\n" }' < .gitmodules )"
@@ -275,7 +283,7 @@ which sha256sum >/dev/null || alias sha256sum='shasum -a 256' && shopt -s expand
 ( cd ${artifact_dir} &&
     for a in *.tar.gz *.zip *.rpm *.deb; do
         sha256sum -b ${a} > ${a}.sha256
-        gpg2 --armor --output ${a}.asc --detach-sig ${a}
+        $GPG_COMMAND --armor --output ${a}.asc --detach-sig ${a}
     done
 )
 
