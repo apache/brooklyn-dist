@@ -156,7 +156,7 @@ fi
 # Determine which GPG command to use
 GPG_COMMAND=$((which gpg >> /dev/null && echo gpg) || (which gpg2 >> /dev/null && echo gpg2))
 
-if [ ! -z "${GPG_COMMAND}" ]; then
+if [ -z "${GPG_COMMAND}" ]; then
     echo "gpg or gpg2 must be installed, exiting"
     exit
 fi
