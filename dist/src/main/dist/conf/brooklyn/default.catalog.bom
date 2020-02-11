@@ -175,7 +175,8 @@ brooklyn.catalog:
     name: "Template 3: Bash Web Server and Scaling Riak Cluster"
     description: |
       Sample YAML building on Template 2, 
-      composing that blueprint with a Riak cluster and injecting the URL
+      composing that blueprint with a Riak cluster and injecting the URL.
+      We recommend using CentOS or Debian as they both provide the required 'riak' package.
     item:
       name: Bash Web Server and Riak Cluster (Brooklyn Example)
     
@@ -204,12 +205,12 @@ brooklyn.catalog:
             metric: riak.node.ops.1m.perNode
             # more than 100 ops per second (6k/min) scales out, less than 50 scales back
             # up to a max of 8 riak nodes here (can be changed in GUI / REST API afterwards)
-            metricLowerBound: 3000
-            metricUpperBound: 6000
-            minPoolSize: 3
-            maxPoolSize: 8
-            resizeUpStabilizationDelay: 30s
-            resizeDownStabilizationDelay: 5m
+            autoscaler.metricUpperBound: 6000
+            autoscaler.metricLowerBound: 3000
+            autoscaler.minPoolSize: 3
+            autoscaler.maxPoolSize: 8
+            autoscaler.resizeUpStabilizationDelay: 30s
+            autoscaler.resizeDownStabilizationDelay: 5m
           
       location:
         jclouds:aws-ec2:
@@ -224,7 +225,8 @@ brooklyn.catalog:
     description: |
       Sample YAML to provision a cluster of the bash/python web server nodes,
       with sensors configured, and a load balancer pointing at them,
-      and resilience policies for node replacement and scaling
+      and resilience policies for node replacement and scaling.
+      We recommend using CentOS or Debian as they both provide the required 'riak' package.
     item:
       name: Resilient Load-Balanced Bash Web Cluster (Brooklyn Example)
       
@@ -328,15 +330,15 @@ brooklyn.catalog:
             metric: reqs.per_sec.per_node
             
             # really low numbers, so you can trigger a scale-out just by hitting reload a lot
-            metricUpperBound: 3
-            metricLowerBound: 1
+            autoscaler.metricUpperBound: 3
+            autoscaler.metricLowerBound: 1
             
             # sustain 3 reqs/sec for 2s and it will scale out
-            resizeUpStabilizationDelay: 2s
+            autoscaler.resizeUpStabilizationDelay: 2s
             # only scale down when sustained for 1m
-            resizeDownStabilizationDelay: 1m
-      
-            maxPoolSize: 10
+            autoscaler.resizeDownStabilizationDelay: 1m
+
+            autoscaler.maxPoolSize: 10
             
       # and add a load-balancer pointing at the cluster
       - type:           load-balancer
