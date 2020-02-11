@@ -92,9 +92,29 @@ sudo systemctl start brooklyn
 echo "Waiting for Apache Brooklyn to start..."
 sleep 10
 
-while ! (sudo grep "BundleEvent STARTED - org.apache.brooklyn.karaf-init" /var/log/brooklyn/brooklyn.debug.log) > /dev/null ; do
+while ! (sudo grep "Brooklyn initialisation (part two) complete" /var/log/brooklyn/brooklyn.debug.log) > /dev/null ; do
   sleep 10
   echo ".... waiting for Apache Brooklyn to start at `date`"
 done
 
-echo "Apache Brooklyn started!"
+echo "============================================================================================="
+echo "==           SSSSSSS\                                SS\       SS\                         =="
+echo "==           SS  __SS\                               SS |      SS |                        =="
+echo "==           SS |  SS | SSSSSS\   SSSSSS\   SSSSSS\  SS |  SS\ SS |SS\   SS\ SSSSSSS\      =="
+echo "==           SSSSSSS\ |SS  __SS\ SS  __SS\ SS  __SS\ SS | SS  |SS |SS |  SS |SS  __SS\     =="
+echo "==           SS  __SS\ SS |  \__|SS /  SS |SS /  SS |SSSSSS  / SS |SS |  SS |SS |  SS |    =="
+echo "==           SS |  SS |SS |      SS |  SS |SS |  SS |SS  _SS<  SS |SS |  SS |SS |  SS |    =="
+echo "==           SSSSSSS  |SS |      \SSSSSS  |\SSSSSS  |SS | \SS\ SS |\SSSSSSS |SS |  SS |    =="
+echo "==           \_______/ \__|       \______/  \______/ \__|  \__|\__| \____SS |\__|  \__|    =="
+echo "==                                                                 SS\   SS |              =="
+echo "==                                                                \SSSSSS  |               =="
+echo "==                                                                 \______/                =="
+echo "==                 SSSSSS\    SS\                          SS\                     SS\    =="
+echo "==                SS  __SS\   SS |                         SS |                    SS |   =="
+echo "==                SS /  \__|SSSSSS\    SSSSSS\   SSSSSS\ SSSSSS\    SSSSSS\   SSSSSSS |   =="
+echo "==                \SSSSSS\  \_SS  _|   \____SS\ SS  __SS\\_SS  _|  SS  __SS\ SS  __SS |   =="
+echo "==                 \____SS\   SS |     SSSSSSS |SS |  \__| SS |    SSSSSSSS |SS /  SS |   =="
+echo "==                SS\   SS |  SS |SS\ SS  __SS |SS |       SS |SS\ SS   ____|SS |  SS |   =="
+echo "==                \SSSSSS  |  \SSSS  |\SSSSSSS |SS |       \SSSS  |\SSSSSSS\ \SSSSSSS |   =="
+echo "==                 \______/    \____/  \_______|\__|        \____/  \_______| \_______|   =="
+echo "============================================================================================"
