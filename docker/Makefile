@@ -17,7 +17,7 @@
 # under the License.
 #
 
-BROOKLYN_VERSION=1.0.0-SNAPSHOT
+BROOKLYN_VERSION=1.1.0-SNAPSHOT
 
 default: all
 
