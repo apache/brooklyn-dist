@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<featuresProcessing xmlns="http://karaf.apache.org/xmlns/features-processing/v1.0.0">
+
+    <!--
+
+        Licensed to the Apache Software Foundation (ASF) under one or more
+        contributor license agreements.  See the NOTICE file distributed with
+        this work for additional information regarding copyright ownership.
+        The ASF licenses this file to You under the Apache License, Version 2.0
+        (the "License"); you may not use this file except in compliance with
+        the License.  You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    -->
+
+
+    <!--
+      File copied from standard Brooklyn 1.0.0, which uses Karaf 4.2.7.
+      Original file contained the blacklistedRepositories section.
+      All modifications are commented.
+    -->
+    
+    
+    <blacklistedRepositories>
+        <repository>mvn:org.apache.karaf.features/framework/4.3.0-SNAPSHOT/xml/features</repository>
+        <repository>mvn:org.apache.karaf.features/standard/4.3.0-SNAPSHOT/xml/features</repository>
+        <repository>mvn:org.apache.karaf.features/enterprise/4.3.0-SNAPSHOT/xml/features</repository>
+        <repository>mvn:org.apache.karaf.features/enterprise-legacy/4.3.0-SNAPSHOT/xml/features</repository>
+        <repository>mvn:org.apache.karaf.features/spring/4.3.0-SNAPSHOT/xml/features</repository>
+        <repository>mvn:org.apache.karaf.features/spring-legacy/4.3.0-SNAPSHOT/xml/features</repository>
+    </blacklistedRepositories>
+
+
+    <!--
+      Upgrades BouncyCastle (to fix vulnerabilities), and related dependencies.
+      The old versions are referenced by jclouds.
+      
+      For more info on the override mechanism used here, see:
+       - https://issues.apache.org/jira/browse/KARAF-5376?focusedCommentId=16431939&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-16431939
+       - https://github.com/apache/karaf/blob/master/features/core/src/test/resources/org/apache/karaf/features/internal/service/org.apache.karaf.features.xml
+       - https://stackoverflow.com/a/53589206
+    -->
+    <bundleReplacements>
+        <bundle originalUri="mvn:net.i2p.crypto/eddsa/0.1.0"
+                replacement="mvn:net.i2p.crypto/eddsa/0.2.0" />
+        <bundle originalUri="mvn:com.hierynomus/sshj/0.20.0"
+                replacement="mvn:com.hierynomus/sshj/0.22.0" />
+        <bundle originalUri="mvn:org.bouncycastle/bcprov-ext-jdk15on/1.51"
+                replacement="mvn:org.bouncycastle/bcprov-ext-jdk15on/1.61" />
+        <bundle originalUri="mvn:org.bouncycastle/bcpkix-jdk15on/1.51"
+                replacement="mvn:org.bouncycastle/bcpkix-jdk15on/1.61" />
+        <bundle originalUri="mvn:net.i2p.crypto/eddsa/0.1.0"
+                replacement="mvn:net.i2p.crypto/eddsa/0.2.0" />
+    </bundleReplacements>
+
+</featuresProcessing>
