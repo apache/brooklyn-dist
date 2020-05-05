@@ -45,9 +45,14 @@
         <feature>package</feature>
         <feature>service</feature>
         <feature>system</feature>
-        <!-- load BouncyCastle early, to avoid refreshing of org.apache.sshd.core/0.14.0 later -->
+        
+        <!-- load BouncyCastle/eddsa early, to avoid refreshing of org.apache.sshd.core later -->
+        <bundle dependency="true">mvn:net.i2p.crypto/eddsa/${eddsa.version}</bundle>
         <bundle dependency="true">mvn:org.bouncycastle/bcprov-ext-jdk15on/${bouncycastle.version}</bundle>
         <bundle dependency="true">mvn:org.bouncycastle/bcpkix-jdk15on/${bouncycastle.version}</bundle>
+        
+        <!-- load spifly early as otherwise jetty and pax-jetty load 1.2.2 and 1.2 respectively, which weirdly causes bundles refreshes -->
+        <bundle start-level="30">mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/${spifly.version}</bundle>
     </feature>
 
     <feature name="brooklyn-startup-features" version="${project.version}" description="Bundles to add to startup.properties">
