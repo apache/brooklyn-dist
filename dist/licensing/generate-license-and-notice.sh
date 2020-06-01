@@ -64,6 +64,7 @@ Typical usage is to have one root --notice then one or more -notice ... --notice
 EOF
 }
 
+PREFERRED_LICENSES="Apache-2.0,Apache,EPL-2.0,EPL-1.0,BSD-2-Clause,BSD-3-Clause,EDL-1.0,CDDL-1.1,CDDL-1.0,CDDL"
 OUTPUT_DIR=.
 SUFFIX=""
 LICENSES=()
@@ -150,7 +151,7 @@ fi
 process_dependencies() {
   echo running mvn license-audit-maven-plugin:notices
   echo mvn -X org.heneveld.maven:license-audit-maven-plugin:notices \
-        -DlicensesPreferred=Apache-2.0,Apache,EPL-1.0,BSD-2-Clause,BSD-3-Clause,CDDL-1.1,CDDL-1.0,CDDL \
+        -DlicensesPreferred="$PREFERRED_LICENSES" \
         -DoverridesFile=$TEMP_METADATA_FILE \
         -DoutputYaml=true \
         -DoutputFile=$TEMP_NOTICE_DATA_FILE \
@@ -158,7 +159,7 @@ process_dependencies() {
   echo writing to $TEMP_MVN_OUT
 
   mvn -X org.heneveld.maven:license-audit-maven-plugin:notices \
-        -DlicensesPreferred=Apache-2.0,Apache,EPL-1.0,BSD-2-Clause,BSD-3-Clause,CDDL-1.1,CDDL-1.0,CDDL \
+        -DlicensesPreferred="$PREFERRED_LICENSES" \
         -DoverridesFile=$TEMP_METADATA_FILE \
         -DoutputYaml=true \
         -DoutputFile=$TEMP_NOTICE_DATA_FILE \
