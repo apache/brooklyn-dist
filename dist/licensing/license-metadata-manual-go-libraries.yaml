@@ -32,13 +32,11 @@
   notices:
   - Copyright (c) 2016 Jeremy Saenz & Contributors
 
-- id: github.com/NodePrime/jsonpath/cli/jsonpath
-  url: github.com/NodePrime/jsonpath/
-  name: github.com/NodePrime/jsonpath/cli/jsonpath
-  description: OpenSource JSON-Path
-  license: MIT
-  notices:
-  - Copyright (c) 2015 NodePrime Inc.
+- id: github.com/kubernetes/client-go/util/jsonpath
+  url: github.com/kubernetes/client-go
+  name: Go client for Kubernetes
+  description: Only used for the JSON-Path library
+  license: Apache-2.0
 
 - id: golang.org/x/crypto/ssh
   url: https://godoc.org/golang.org/x/crypto/ssh
