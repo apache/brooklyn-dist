@@ -28,21 +28,21 @@ First it is useful to know how these routines work.
 
 It builds for various modes depending where the item is being used:
 
-* The projects and JARs strictly speaking only require any 3rd party items
-  included therein.  There usually aren't any (one exception is JS has been checked out
-  locally).  Where these are required, they should be in a `license-inclusions-source-*` file.
-  This mode is called `binary-omitted`. (For projects where there are no such inclusions,
+* The projects and JARs strictly NOTICE and LICENSE only require any 3rd party items included therein.  
+  There usually aren't any, except for some JS and Go where some code is checked out locally).  
+  Where these are required, they should be in a `license-inclusions-source-*` file.
+  This mode is called `source-only`. (For projects where there are no such inclusions,
   the build adds a stock Apache LICENSE and Apache Brooklyn NOTICE.)
   
 * Because people will usually build these and need the resulting information, and
   because attribution is good, we include details of runtime dependencies in some places
-  (e.g. the root of projects) in a separate section in the NOTICE. These dependencies can 
+  (e.g. the root of projects) in a separate DEPENDENCIES file. These dependencies can 
   be specified in files matching `license-inclusions-binary-*` (this is not needed for `mvn` 
-  deps which are inferred automatically). This mode is called `binary-additional`.
+  deps which are inferred automatically). This mode is called `source-then-additional-binary`.
 
 * The TGZ includes third-party dependencies and so needs LICENSE and NOTICE updates
   for everything that is bundled, including all `license-inclusions-{source,binary}-*`. 
-  This mode is called `binary-primary`.
+  This mode is called `binary`.
 
 The generation then proceeds by collecting the relevant `license-inclusions-*` under the project
 directory, giving a list of project `id` fields, and collecting `license-metadata-*` files containing 

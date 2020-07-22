@@ -63,35 +63,37 @@ prefix_and_join_array() {
   done
 }
 
-# takes root dir in first arg, then regex expression 
+# takes a base dir in first arg, then sub-project dir to build, then output, mode, then search root relative to output dir 
 make_for() {
-  PROJ=$(cd $1 ; pwd -P)
-  OUT=${PROJ}/$2
-  MODE=$3
-  SEARCH_ROOT=$4
-  ARGS=$5
-  if [ -z "$SEARCH_ROOT" ] ; then SEARCH_ROOT=$PROJ ; fi
+  BASE=$(cd $1 ; pwd -P)
+  PROJ=$(cd $BASE ; cd $2; pwd -P)
+  OUT=$(cd $BASE ; cd $3; pwd -P)
+  MODE=$4
+  SEARCH_ROOT=$5
+  if [ -z "$SEARCH_ROOT" ] ; then SEARCH_ROOT=. ; fi
+  SEARCH_ROOT=$(cd $BASE ; cd $SEARCH_ROOT; pwd -P)
+  ARGS=$6
 
-  echo Generating for $PROJ mode $MODE to $2...
+  echo Generating for $PROJ mode $MODE to $OUT...
   echo ""
   
   pushd $PROJ > /dev/null
   
-  if [ "$MODE" == "binary-additional" ] ; then
+  if [ "$MODE" == "source-then-additional-binary" ] ; then
 
     $REF_DIR/generate-license-and-notice.sh \
       -o $OUT \
       --license $PARTS_DIR/license-top \
-      --license $PARTS_DIR/license-deps \
-      --notice $PARTS_DIR/notice-top --notice-compute-with-flags "
+      --license $PARTS_DIR/license-deps-with-additional-binary \
+      --notice $PARTS_DIR/notice-top-with-additional-binary --notice-compute-with-flags "
         -DextrasFiles=$(prefix_and_join_array "" ":" "" $(find -L $SEARCH_ROOT -name "license-inclusions-source-*"))
         -DonlyExtras=true" \
-      --notice $PARTS_DIR/notice-additional --notice-compute-with-flags "
+      --notice $PARTS_DIR/notice-additional-binary --notice-compute-with-flags "
         -DextrasFiles=$(prefix_and_join_array "" ":" "" $(find -L $SEARCH_ROOT -name "license-inclusions-binary-*"))" \
       $ARGS \
       --libraries ${REF_DIR} ${SEARCH_ROOT} 
     
-  elif [ "$MODE" == "binary-primary" ] ; then
+  elif [ "$MODE" == "binary" ] ; then
 
     $REF_DIR/generate-license-and-notice.sh \
       -o $OUT \
@@ -102,13 +104,13 @@ make_for() {
       $ARGS \
       --libraries ${REF_DIR} ${SEARCH_ROOT} 
       
-  elif [ "$MODE" == "binary-omitted" ] ; then
+  elif [ "$MODE" == "source-only" ] ; then
 
     $REF_DIR/generate-license-and-notice.sh \
       -o $OUT \
       --license $PARTS_DIR/license-top \
-      --license $PARTS_DIR/license-deps \
-      --notice $PARTS_DIR/notice-top --notice-compute-with-flags "
+      --license $PARTS_DIR/license-deps-source-dist \
+      --notice $PARTS_DIR/notice-top-source-dist --notice-compute-with-flags "
         -DextrasFiles=$(prefix_and_join_array "" ":" "" $(find -L $SEARCH_ROOT -name "license-inclusions-source-*"))
         -DonlyExtras=true" \
       $ARGS \
@@ -123,6 +125,16 @@ make_for() {
   popd > /dev/null
 }
 
+make_for_source() {
+    make_for "$1" "$2" "$3" source-then-additional-binary "$4" "$5"
+    # DEPENDENCIES 
+    mv $OUT/NOTICE $OUT/DEPENDENCIES
+    echo "" >> $OUT/DEPENDENCIES
+    cat $OUT/LICENSE >> $OUT/DEPENDENCIES
+    rm $OUT/LICENSE
+    
+    make_for "$1" "$2" "$3" source-only "$4" "$5"
+}
 
 # build licenses for all the projects
 
@@ -133,38 +145,36 @@ else
 
 
 # include deps in files pulled in to Go CLI binary builds
-make_for $ROOT_DIR/brooklyn-client/cli/ release/license/files binary-primary
-make_for $ROOT_DIR/brooklyn-client/cli/ . binary-additional
+make_for $ROOT_DIR/brooklyn-client/cli/ . release/license/files binary
+make_for_source $ROOT_DIR/brooklyn-client/cli/ . .
 
 # Server CLI has embedded JS; gets custom files in sub-project root, also included in JAR
-make_for $ROOT_DIR/brooklyn-server/server-cli/ . binary-additional
+make_for_source $ROOT_DIR/brooklyn-server/server-cli/ . .
 
 # UI gets files at root
-make_for $ROOT_DIR/brooklyn-ui/ . binary-additional
+make_for_source $ROOT_DIR/brooklyn-ui/ features .
 # for UI also do for each standalone module
 for x in $(ls $ROOT_DIR/brooklyn-ui/ui-modules/*/package.json) ; do
-  make_for ${x%package.json} . binary-additional
+  make_for_source ${x%package.json} . .
   # and in modules which make a WAR/JAR files we embed binaries
-  if [ -d ${x%package.json}/src/main/webapp ] ; then make_for ${x%package.json} src/main/webapp/WEB-INF/classes/META-INF/ binary-primary ; fi
+  if [ -d ${x%package.json}/src/main/webapp ] ; then make_for ${x%package.json} . src/main/webapp/WEB-INF/classes/META-INF/ binary ; fi
 done
 
 # main projects have their binaries included at root
-make_for $ROOT_DIR/brooklyn-server/ . binary-additional
-make_for $ROOT_DIR/brooklyn-client/ . binary-additional
-make_for $ROOT_DIR/brooklyn-library/ . binary-additional
-# dist is trickier, just don't mention binaries in the generated items
-make_for $ROOT_DIR/brooklyn-dist/ . binary-omitted
+make_for_source $ROOT_DIR/brooklyn-server/ karaf/features .
+make_for_source $ROOT_DIR/brooklyn-client/ java .
+make_for_source $ROOT_DIR/brooklyn-library karaf/features .
+make_for_source $ROOT_DIR/brooklyn-dist karaf/features .
 
+ 
 # brooklyn-docs skipped
 # the docs don't make a build and don't include embedded code so no special license there
 
-# and the binary dists; dist/ project which has biggest deps set, but search in all brooklyn projects
-make_for $ROOT_DIR/brooklyn-dist/dist src/main/license/files/ binary-primary $ROOT_DIR
-cp $OUT/{NOTICE,LICENSE} $PROJ/../karaf/apache-brooklyn/src/main/resources/
+# for the root source do as for dist but get the additional includes from all brooklyn projects
+make_for_source $ROOT_DIR/brooklyn-dist karaf/features .. $ROOT_DIR
 
-# finally in root project list everything
-make_for $ROOT_DIR/brooklyn-dist/dist ../.. binary-additional $ROOT_DIR
-
+# and the binary dist is the same, stored in a couple places for inclusion in the binary builds
+make_for $ROOT_DIR/brooklyn-dist karaf/features dist/src/main/license/files/ binary $ROOT_DIR
+cp $OUT/{NOTICE,LICENSE} $PROJ/../apache-brooklyn/src/main/resources/ 
 
 fi
-

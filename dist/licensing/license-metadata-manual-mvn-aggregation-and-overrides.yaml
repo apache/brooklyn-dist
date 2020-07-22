@@ -55,6 +55,7 @@
   - javax.ws.rs.javax.ws.rs-api
   - javax.servlet.javax.servlet-api
   - org.jboss.spec.javax.xml.bind.jboss-jaxb-api_2.3_spec
+  - com.sun.activation.javax.activation
 - ids: 
   - javax.annotation.jsr250-api
   - org.jboss.spec.javax.annotation.jboss-annotations-api_1.2_spec:1.0.0.Final

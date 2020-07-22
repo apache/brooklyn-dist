@@ -1,0 +1,17 @@
+Notice: |
+
+  Apache Brooklyn
+  Copyright 2014-2020 The Apache Software Foundation
+
+  This product includes software developed at
+  The Apache Software Foundation (http://www.apache.org/).
+
+  This software is released under the Apache Software License, verison 2.0.
+  This license and the licenses for all dependencies are included below
+  following the dependencies and their notices.
+
+Source dependencies:
+
+  # This software includes the following third-party components in its source code.
+  # Additional runtime dependencies are required when built and are listed in the subsequent section.
+

@@ -1,6 +1,6 @@
 
 Runtime dependencies:
 
-  # This artifact depends on additional third-party components at runtime.
+  # This software depends on additional third-party components at runtime.
   # These are not bundled here but may be included as part of a build.
 
