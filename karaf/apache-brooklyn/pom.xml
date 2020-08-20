@@ -63,6 +63,12 @@
       <version>${project.version}</version>
       <type>xml</type>
       <classifier>features</classifier>
+      <exclusions>
+        <exclusion>
+          <groupId>org.javassist</groupId>
+          <artifactId>javassist</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
