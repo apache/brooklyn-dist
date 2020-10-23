@@ -71,6 +71,7 @@ LICENSES=()
 NOTICE_SECTION_TYPE=()
 NOTICE_SECTION_ARG=()
 LIBRARIES=()
+LICENSE_MVN_OPTS=""
 
 while [ ! -z "$*" ] ; do
 
@@ -150,15 +151,15 @@ fi
 
 process_dependencies() {
   echo running mvn license-audit-maven-plugin:notices
-  echo mvn -X org.heneveld.maven:license-audit-maven-plugin:notices \
+  echo mvn ${LICENSE_MVN_OPTS} org.heneveld.maven:license-audit-maven-plugin:notices \
         -DlicensesPreferred="$PREFERRED_LICENSES" \
         -DoverridesFile=$TEMP_METADATA_FILE \
         -DoutputYaml=true \
         -DoutputFile=$TEMP_NOTICE_DATA_FILE \
         $@
-  echo writing to $TEMP_MVN_OUT
+  echo writing to $TEMP_MVN_OUT with LICENSE_MVN_OPTS \"${LICENSE_MVN_OPTS}\"
 
-  mvn -X org.heneveld.maven:license-audit-maven-plugin:notices \
+  mvn ${LICENSE_MVN_OPTS} org.heneveld.maven:license-audit-maven-plugin:notices \
         -DlicensesPreferred="$PREFERRED_LICENSES" \
         -DoverridesFile=$TEMP_METADATA_FILE \
         -DoutputYaml=true \

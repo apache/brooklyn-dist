@@ -55,7 +55,7 @@ prefix_and_join_array() {
   PREFIX=$2
   JOIN_BEFORE_PREFIX=$1
   JOIN_AFTER_PREFIX=$3
-  echo -n ${PREFIX}$4
+  echo -n "${PREFIX}$4"
   shift 4
   while (($#  >= 1)) ; do
     echo -n "${JOIN_BEFORE_PREFIX}${PREFIX}${JOIN_AFTER_PREFIX}$1"
