@@ -45,7 +45,7 @@
         <pax.exam.version>4.13.1</pax.exam.version>
         <pax.url.version>2.5.2</pax.url.version>
 
-        <ops4j.base.version>1.5.0</ops4j.base.version>
+        <ops4j.base.version>1.5.1</ops4j.base.version>
         <tinybundles.version>1.0.0</tinybundles.version>
 
         <!-- feature repositories -->
