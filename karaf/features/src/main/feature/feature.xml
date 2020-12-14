@@ -53,6 +53,9 @@
     </feature>
 
     <feature name="brooklyn-startup-features" version="${project.version}" description="Bundles to add to startup.properties">
+        <!--        <bundle dependency="true">mvn:org.apache.servicemix.specs.activation-api-1.1</bundle>-->
+<!--        <bundle dependency="true">mvn:org.apache.servicemix.specs.activation-api-1.1/2.9.0</bundle>-->
+        <bundle dependency='true'>wrap:mvn:javax.activation/activation/1.1</bundle>
         <!-- Register javax.mail along with pax-logging-service so it doesn't get refreshed later -->
         <bundle>mvn:javax.mail/mail/${javax.mail.version}</bundle>
     </feature>
