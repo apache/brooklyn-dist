@@ -62,7 +62,7 @@
 
     <feature name="brooklyn-guava-optional-deps" version="${project.version}" description="Guava dependencies to avoid refreshing the bundle">
         <!-- Register javax.annotation (coming from cxf-jaxrs) before guava so it doesn't get rewired when it sees it -->
-        <bundle>mvn:javax.annotation/javax.annotation-api/${cxf.javax.annotation-api.version}</bundle>
+        <bundle>mvn:jakarta.annotation/jakarta.annotation-api/${jakarta.annotation-api.version}</bundle>
     </feature>
 
     <feature name="brooklyn-config" version="${project.version}">
