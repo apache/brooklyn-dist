@@ -50,14 +50,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.karaf.features</groupId>
-      <artifactId>enterprise</artifactId>
-      <classifier>features</classifier>
-      <version>${karaf.version}</version>
-      <type>xml</type>
-    </dependency>
-
-    <dependency>
       <groupId>org.apache.brooklyn</groupId>
       <artifactId>brooklyn-features</artifactId>
       <version>${project.version}</version>
