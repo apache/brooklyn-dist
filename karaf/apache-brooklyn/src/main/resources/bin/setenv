@@ -20,9 +20,6 @@
 if [ -z "${JAVA_MAX_MEM}" ] ; then
     export JAVA_MAX_MEM="2G"
 fi
-if [ -z "${JAVA_MAX_PERM_MEM}" ] ; then
-    export JAVA_MAX_PERM_MEM="256m"
-fi
 # use the default DNS TTL, if not specified
 if [ -z "${DNS_TTL}" ] ; then
     export DNS_TTL="60"
@@ -100,3 +97,6 @@ export EXTRA_JAVA_OPTS="-Dhttps.protocols=TLSv1.1,TLSv1.2 ${EXTRA_JAVA_OPTS}"
 
 # Set the persistence directory
 export EXTRA_JAVA_OPTS="-Dbrooklyn.persistence.dir=${BROOKLYN_PERSISTENCE_DIR} ${EXTRA_JAVA_OPTS}"
+
+# Set the memory available to AMP
+export EXTRA_JAVA_OPTS="-Xmx${JAVA_MAX_MEM} ${EXTRA_JAVA_OPTS}"
