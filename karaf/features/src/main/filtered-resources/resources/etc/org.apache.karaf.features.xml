@@ -55,6 +55,10 @@
                 replacement="mvn:org.bouncycastle/bcprov-ext-jdk15on/${bouncycastle.version}" />
         <bundle originalUri="mvn:org.bouncycastle/bcpkix-jdk15on/1.51"
                 replacement="mvn:org.bouncycastle/bcpkix-jdk15on/${bouncycastle.version}" />
+        <bundle originalUri="mvn:org.bouncycastle/bcprov-ext-jdk15on/1.66"
+                replacement="mvn:org.bouncycastle/bcprov-ext-jdk15on/${bouncycastle.version}" />
+        <bundle originalUri="mvn:org.bouncycastle/bcpkix-jdk15on/1.66"
+                replacement="mvn:org.bouncycastle/bcpkix-jdk15on/${bouncycastle.version}" />
         <bundle originalUri="mvn:net.i2p.crypto/eddsa/0.1.0"
                 replacement="mvn:net.i2p.crypto/eddsa/0.2.0" />
     </bundleReplacements>
