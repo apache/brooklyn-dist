@@ -31,7 +31,7 @@
     <artifactId>brooklyn-dist-features</artifactId>
     <name>Brooklyn Dist Karaf Features</name>
     <description>Defines Karaf features for Karaf runtime</description>
-    <packaging>feature</packaging>
+    <packaging>kar</packaging>
 
     <dependencies>
         <dependency>
@@ -55,33 +55,27 @@
             <classifier>features</classifier>
             <type>xml</type>
         </dependency>
-
-        <dependency>
-            <groupId>org.apache.karaf.features</groupId>
-            <artifactId>standard</artifactId>
-            <classifier>features</classifier>
-            <version>${karaf.version}</version>
-            <type>xml</type>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.karaf.features</groupId>
-            <artifactId>enterprise</artifactId>
-            <classifier>features</classifier>
-            <version>${karaf.version}</version>
-            <type>xml</type>
-            <scope>runtime</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate-osgi</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
     </dependencies>
 
 
     <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <filtering>false</filtering>
+            <includes>
+              <include>**/*</include>
+            </includes>
+          </resource>
+          <resource>
+            <directory>src/main/filtered-resources</directory>
+            <filtering>true</filtering>
+            <includes>
+              <include>**/*</include>
+            </includes>
+          </resource>
+        </resources>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -103,6 +97,43 @@
                     <resolver>(obr)</resolver>
                 </configuration>
             </plugin>
+
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-dependency-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>unpack</id>
+                  <phase>process-resources</phase>
+                  <goals>
+                    <goal>copy</goal>
+                  </goals>
+                  <configuration>
+                    <artifactItems>
+                      <artifactItem>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>brooklyn-dist-config</artifactId>
+                        <version>${project.version}</version>
+                        <classifier>classrename</classifier>
+                        <type>cfg</type>
+                        <outputDirectory>${project.build.directory}/classes/resources/etc</outputDirectory>
+                        <destFileName>${project.groupId}.classrename.cfg</destFileName>
+                      </artifactItem>
+                      <artifactItem>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>brooklyn-dist-config</artifactId>
+                        <version>${project.version}</version>
+                        <classifier>osgilauncher</classifier>
+                        <type>cfg</type>
+                        <outputDirectory>${project.build.directory}/classes/resources/etc</outputDirectory>
+                        <destFileName>${project.groupId}.osgilauncher.cfg</destFileName>
+                      </artifactItem>
+                    </artifactItems>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+
         </plugins>
     </build>
 
