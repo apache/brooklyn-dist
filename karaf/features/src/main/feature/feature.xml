@@ -52,7 +52,9 @@
         <bundle dependency="true">mvn:org.bouncycastle/bcpkix-jdk15on/${bouncycastle.version}</bundle>
     </feature>
 
-    <feature name="brooklyn-startup-features" version="${project.version}" description="Bundles to add to startup.properties">
+    <feature name="brooklyn-startup-features" version="${project.version}" description="Bundles to load early">
+        <!-- this might not be needed as a separate feature anymore; the load order has changed -->
+
         <!--        <bundle dependency="true">mvn:org.apache.servicemix.specs.activation-api-1.1</bundle>-->
         <!--        <bundle dependency="true">mvn:org.apache.servicemix.specs.activation-api-1.1/2.9.0</bundle>-->
         <bundle dependency="true">mvn:com.sun.activation/jakarta.activation/${jakarta.activation.version}</bundle>
@@ -103,6 +105,36 @@
     <feature name="brooklyn-jsgui-prereqs" version="${project.version}" description="Brooklyn REST JavaScript Web GUI">
         <feature>pax-jetty</feature> <!-- jaas bundle -->
         <feature>war</feature>
+
+        <!-- we update the versions of these bundles; as per the org.apache.karaf.features.xml file in this project,
+             these need to be declared here -->
+        <bundle>mvn:org.eclipse.jetty.websocket/javax-websocket-client-impl/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty.websocket/javax-websocket-server-impl/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty.websocket/websocket-api/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty.websocket/websocket-client/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty.websocket/websocket-common/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty.websocket/websocket-server/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty.websocket/websocket-servlet/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-client/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-continuation/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-deploy/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-http/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-io/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-jaas/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-jaspi/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-jmx/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-jndi/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-plus/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-proxy/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-rewrite/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-security/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-server/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-servlet/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-servlets/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-util-ajax/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-util/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-webapp/${jetty.version}</bundle>
+        <bundle>mvn:org.eclipse.jetty/jetty-xml/${jetty.version}</bundle>
     </feature>
 
     <feature name="brooklyn-jsgui" version="${project.version}" description="Brooklyn REST JavaScript Web GUI">
