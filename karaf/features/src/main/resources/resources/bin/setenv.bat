@@ -65,3 +65,5 @@ rem SET KARAF_OPTS
 rem Enable debug mode
 rem SET KARAF_DEBUG
 
+rem Set the TLS protocol versions
+SET EXTRA_JAVA_OPTS=-Dhttps.protocols=TLSv1.2,TLSv1.1,TLSv1,SSLv3 %EXTRA_JAVA_OPTS%
