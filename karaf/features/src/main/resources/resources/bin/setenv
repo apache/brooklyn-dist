@@ -93,7 +93,7 @@ export EXTRA_JAVA_OPTS="-XX:SoftRefLRUPolicyMSPerMB=1 ${EXTRA_JAVA_OPTS}"
 export EXTRA_JAVA_OPTS="-Dsun.net.inetaddr.ttl=${DNS_TTL} ${EXTRA_JAVA_OPTS}"
 
 # Set the TLS protocol versions
-export EXTRA_JAVA_OPTS="-Dhttps.protocols=TLSv1.1,TLSv1.2 ${EXTRA_JAVA_OPTS}"
+export EXTRA_JAVA_OPTS="-Dhttps.protocols=TLSv1.2,TLSv1.1,TLSv1,SSLv3 ${EXTRA_JAVA_OPTS}"
 
 # Set the persistence directory
 export EXTRA_JAVA_OPTS="-Dbrooklyn.persistence.dir=${BROOKLYN_PERSISTENCE_DIR} ${EXTRA_JAVA_OPTS}"
