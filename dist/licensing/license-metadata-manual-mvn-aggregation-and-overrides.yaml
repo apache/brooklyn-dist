@@ -155,6 +155,12 @@
     name: Jython Software License
     comment: Original link http://www.jython.org/Project/license.html is no longer valid
 
+- id: io.github.x-stream.mxparser:1.2.2
+  copyright_by: Extreme! Lab, Indiana University
+  license:
+    - url: https://raw.githubusercontent.com/x-stream/mxparser/master/LICENSE.txt
+      name: "Indiana University Extreme! Lab Software License, version 1.2"
+
 - id: xpp3:xpp3_min:*
   copyright_by: Extreme! Lab, Indiana University
   license:
@@ -168,6 +174,8 @@
   #    name: Public Domain
   #    comment: "The license applies to the XmlPull API (all classes directly in the org.xmlpull.v1 package)"
 
+- id: org.apache.sshd.sshd-osgi:2.5.1
+  license: Apache-2.0
 - id: org.codehaus.jettison:jettison
   url: https://github.com/codehaus/jettison
   license: Apache-2.0
