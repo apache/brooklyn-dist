@@ -175,6 +175,7 @@ make_for_source $ROOT_DIR/brooklyn-dist karaf/features .. $ROOT_DIR
 
 # and the binary dist is the same, stored in a couple places for inclusion in the binary builds
 make_for $ROOT_DIR/brooklyn-dist karaf/features dist/src/main/license/files/ binary $ROOT_DIR
-cp $OUT/{NOTICE,LICENSE} $PROJ/../apache-brooklyn/src/main/resources/ 
+cp $OUT/{NOTICE,LICENSE} $PROJ/../features/src/main/resources/resources/
+cp $OUT/{NOTICE,LICENSE} $PROJ/../apache-brooklyn/src/main/resources/
 
 fi
