@@ -55,15 +55,16 @@
     <feature name="brooklyn-startup-features" version="${project.version}" description="Bundles to load early">
         <!-- this might not be needed as a separate feature anymore; the load order has changed -->
 
-        <!-- use jakarta not servicemix -->
-        <bundle dependency="true">mvn:com.sun.activation/jakarta.activation/${jakarta.activation.version}</bundle>
         <!--        <bundle dependency="true">mvn:org.apache.servicemix.specs.activation-api-1.1</bundle>-->
         <!--        <bundle dependency="true">mvn:org.apache.servicemix.specs.activation-api-1.1/2.9.0</bundle>-->
-
+        <bundle dependency="true">mvn:com.sun.activation/jakarta.activation/${jakarta.activation.version}</bundle>
         <!-- Register javax.mail along with pax-logging-service so it doesn't get refreshed later -->
         <bundle dependency="true">mvn:javax.mail/mail/${javax.mail.version}</bundle>
+    </feature>
 
-        <bundle dependency="true">mvn:jakarta.annotation/jakarta.annotation-api/${jakarta.annotation-api.version}</bundle>
+    <feature name="brooklyn-guava-optional-deps" version="${project.version}" description="Guava dependencies to avoid refreshing the bundle">
+        <!-- Register javax.annotation (coming from cxf-jaxrs) before guava so it doesn't get rewired when it sees it -->
+        <bundle>mvn:jakarta.annotation/jakarta.annotation-api/${jakarta.annotation-api.version}</bundle>
     </feature>
 
     <feature name="brooklyn-config" version="${project.version}">
@@ -87,13 +88,11 @@
         </configfile>
     </feature>
 
-    <feature name="brooklyn-headless" version="${project.version}" description="All Brooklyn bundles with the exception of the launcher and actual ui+rest">
-        <feature prerequisite="true">brooklyn-startup-features</feature>
-        <feature prerequisite="true">brooklyn-standard-karaf</feature>
+    <feature name="brooklyn-headless" version="${project.version}" description="All Brooklyn bundles witht the exception of the launcher">
         <feature prerequisite="true">brooklyn-config</feature>
         <feature prerequisite="true">brooklyn-catalog</feature>
-        <feature prerequisite="true">brooklyn-essential-deps</feature>
-
+        <feature prerequisite="true">brooklyn-standard-karaf</feature>
+        <feature prerequisite="true">brooklyn-guava-optional-deps</feature>
         <feature>brooklyn-core</feature>
         <feature>brooklyn-locations-jclouds</feature>
         <feature>brooklyn-commands</feature>
