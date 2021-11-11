@@ -463,26 +463,10 @@
             <configuration>
               <supportedProjectTypes>
                 <supportedProjectType>jar</supportedProjectType>
+                <supportedProjectType>bundle</supportedProjectType>
               </supportedProjectTypes>
               <instructions>
-                <!--
-                  Exclude packages used by Brooklyn that are not OSGi bundles. Including any
-                  of the below may cause bundles to fail to load into the catalogue with
-                  messages like "Unable to resolve 150.0: missing requirement [150.0]
-                  osgi.wiring.package; (osgi.wiring.package=com.maxmind.geoip2)".
-                -->
-                <Import-Package>
-                  !com.maxmind.geoip2.*,
-                  !io.airlift.command.*,
-                  !io.cloudsoft.winrm4j.*,
-                  !javax.inject.*,
-                  !org.apache.felix.framework.*,
-                  !org.osgi.jmx,
-                  !org.python.*,
-                  !org.reflections.*,
-                  !org.w3c.tidy.*,
-                  *
-                </Import-Package>
+                <!-- previously many packages were excluded from import-package; that seems wrong, however -->
                 <!--
                   Brooklyn-Feature prefix triggers inclusion of the project's metadata in the
                   server's features list.
