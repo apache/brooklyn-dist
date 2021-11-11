@@ -43,10 +43,15 @@
              maven projects see the same versions we include via osgi, at least that is the intention! -->
 
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
+            <groupId>org.apache.brooklyn</groupId>
+            <artifactId>brooklyn-utils-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.brooklyn</groupId>
+            <artifactId>brooklyn-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.brooklyn</groupId>
             <artifactId>brooklyn-launcher</artifactId>
@@ -64,7 +69,6 @@
             <artifactId>camp-server</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.brooklyn</groupId>
             <artifactId>brooklyn-policy</artifactId>
