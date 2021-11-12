@@ -88,10 +88,10 @@
 
     <feature name="brooklyn-headless" version="${project.version}" description="All Brooklyn bundles with the exception of the launcher and actual ui+rest">
         <feature prerequisite="true">brooklyn-startup-features</feature>
+        <feature prerequisite="true">brooklyn-essential-deps</feature>
         <feature prerequisite="true">brooklyn-standard-karaf</feature>
         <feature prerequisite="true">brooklyn-config</feature>
         <feature prerequisite="true">brooklyn-catalog</feature>
-        <feature prerequisite="true">brooklyn-essential-deps</feature>
 
         <feature>brooklyn-core</feature>
         <feature>brooklyn-locations-jclouds</feature>
