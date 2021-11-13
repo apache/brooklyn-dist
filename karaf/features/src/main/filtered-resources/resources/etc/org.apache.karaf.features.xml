@@ -70,10 +70,11 @@
             replacement="mvn:org.bouncycastle/bcprov-ext-jdk15on/${bouncycastle.version}" />
         <bundle originalUri="mvn:org.bouncycastle/bcpkix-jdk15on/[1.51,${bouncycastle.version}]"
             replacement="mvn:org.bouncycastle/bcpkix-jdk15on/${bouncycastle.version}" />
-        <bundle originalUri="mvn:net.i2p.crypto/eddsa/[0.1.0,${eddsa.version}]"
-            replacement="mvn:net.i2p.crypto/eddsa/${eddsa.version}" />
-        <bundle originalUri="mvn:com.hierynomus/sshj/[0.20.0,${sshj.version}]"
-            replacement="mvn:com.hierynomus/sshj/${sshj.version}" />
+        <!-- now we wrap these so blacklist entirely -->
+<!--        <bundle originalUri="mvn:net.i2p.crypto/eddsa/[0.1.0,${eddsa.version}]"-->
+<!--            replacement="mvn:net.i2p.crypto/eddsa/${eddsa.version}" />-->
+<!--        <bundle originalUri="mvn:com.hierynomus/sshj/[0.20.0,${sshj.version}]"-->
+<!--            replacement="mvn:com.hierynomus/sshj/${sshj.version}" />-->
 
 
          <!-- Lower versions of these pulled in by cxf-jackson and possibly others -->
@@ -192,8 +193,8 @@
         <bundle>mvn:org.bouncycastle/bcprov-jdk15on/[1.51,${bouncycastle.version})</bundle>
         <bundle>mvn:org.bouncycastle/bcprov-ext-jdk15on/[1.51,${bouncycastle.version})</bundle>
         <bundle>mvn:org.bouncycastle/bcpkix-jdk15on/[1.51,${bouncycastle.version})</bundle>
-        <bundle>mvn:net.i2p.crypto/eddsa/[0.1.0,${eddsa.version})</bundle>
-        <bundle>mvn:com.hierynomus/sshj/[0.20.0,${sshj.version})</bundle>
+        <bundle>mvn:net.i2p.crypto/eddsa/[0.1.0,999]</bundle>
+        <bundle>mvn:com.hierynomus/sshj/[0.20.0,999]</bundle>
         <bundle>mvn:org.yaml/snakeyaml/[1,${snakeyaml.version})</bundle>
         <bundle>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/[2.10,${fasterxml.jackson.version})</bundle>
         <bundle>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/[2.10,${fasterxml.jackson.version})</bundle>
