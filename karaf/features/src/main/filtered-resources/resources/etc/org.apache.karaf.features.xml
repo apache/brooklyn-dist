@@ -58,9 +58,12 @@
        - https://stackoverflow.com/a/53589206
     -->
     <bundleReplacements>
-        <!-- Several things declare javax for annotation-api, but jakarta replaces those; having just one speeds up dependency resolution -->
-        <bundle originalUri="mvn:javax.annotation/javax.annotation-api/[1.3,1.4)"
+        <!-- JSR305 complements javax.annotation with more classes in same package and new subpackages eg meta;
+             both have multiple providers; we have standardized on the replacements below -->
+        <bundle originalUri="mvn:javax.annotation/javax.annotation-api/(0,999]"
                 replacement="mvn:jakarta.annotation/jakarta.annotation-api/${jakarta.annotation-api.version}" />
+        <bundle originalUri="mvn:com.google.code.findbugs/jsr305/(0,999]"
+                replacement="mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jsr305/${jsr305.bundle.version}" />
 
         <!-- For crypto, both the karaf ssh feature and jclouds use lower versions than we want;
              (some lower versions may have CVEs, and in any case it is preferable to have one version where compatible) -->
@@ -170,6 +173,12 @@
                 replacement="mvn:org.eclipse.jetty/jetty-webapp/${jetty.version}" />
         <bundle originalUri="mvn:org.eclipse.jetty/jetty-xml/[9.4,${jetty.version}]"
                 replacement="mvn:org.eclipse.jetty/jetty-xml/${jetty.version}" />
+        <bundle originalUri="mvn:org.XXXapache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/[1.2,${spifly.version})"
+                replacement="mvn:org.XXXapache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/${spifly.version}" />
+
+        <!-- cxf uses servicemix's variant; other use javax standard one -->
+        <bundle originalUri="mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxrs-api-2.1/(0,3)"
+                replacement="mvn:javax.ws.rs/javax.ws.rs-api/${jax-rs-api.version}" />
 
         <!-- the objectweb (dis)assembly jars are usually needed at multiple major version levels;
              see brooklyn-server/pom.xml for discussion; no choice but to allow the multiple versions,
@@ -189,7 +198,6 @@
     </bundleReplacements>
 
     <blacklistedBundles>
-        <bundle>mvn:javax.annotation/javax.annotation-api/[1.3,1.4)</bundle>
         <bundle>mvn:org.bouncycastle/bcprov-jdk15on/[1.51,${bouncycastle.version})</bundle>
         <bundle>mvn:org.bouncycastle/bcprov-ext-jdk15on/[1.51,${bouncycastle.version})</bundle>
         <bundle>mvn:org.bouncycastle/bcpkix-jdk15on/[1.51,${bouncycastle.version})</bundle>
@@ -203,7 +211,9 @@
         <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/[2.10,${fasterxml.jackson.version})</bundle>
         <bundle>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/[2.10,${fasterxml.jackson.version})</bundle>
         <bundle>mvn:javax.mail/mail/[1.4.4,${javax.mail.version})</bundle>
+
         <bundle>mvn:javax.ws.rs/javax.ws.rs-api/[2,${jax-rs-api.version})</bundle>
+        <bundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxrs-api-2.1/[0,3)</bundle> <!-- use javax above -->
 
         <!-- Blacklisted bundles must be pulled in elsewhere at the correct version.
              This might mean explicit dependencies declared in a feature. -->
@@ -237,6 +247,12 @@
         <bundle>mvn:org.eclipse.jetty/jetty-util/[9.4,${jetty.version})</bundle>
         <bundle>mvn:org.eclipse.jetty/jetty-webapp/[9.4,${jetty.version})</bundle>
         <bundle>mvn:org.eclipse.jetty/jetty-xml/[9.4,${jetty.version})</bundle>
+
+        <!-- we supply wrapped versions -->
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okhttp/3.12.1_1</bundle>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okio/1.15.0_1</bundle>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jsr305/(0,999]</bundle>
+
     </blacklistedBundles>
 
 </featuresProcessing>
