@@ -222,6 +222,10 @@
 
         <bundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxb-api-2.2/[0,999]</bundle> <!-- use jakarta -->
 
+        <!-- use the packages from java 1.8, prevent duplicates -->
+        <bundle>mvn:jakarta.xml.bind/jakarta.xml.bind-api/${jakarta.xml.bind-api.version}</bundle>
+        <bundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxws-api-2.2/2.9.0</bundle>
+
         <bundle>mvn:jakarta.ws.rs/jakarta.ws.rs-api/[0,${jax-rs-api.version})</bundle>     <!-- use right version -->
         <bundle>mvn:jakarta.ws.rs/jakarta.ws.rs-api/(${jax-rs-api.version},999]</bundle>   <!-- exclude 2.1.99 -->
         <bundle>mvn:javax.ws.rs/javax.ws.rs-api/[0,999]</bundle>  <!-- use jakarta above -->

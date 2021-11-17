@@ -58,7 +58,7 @@
     <feature name="brooklyn-startup-features" version="${project.version}" description="Bundles to load early">
         <!-- this might not be needed as a separate feature anymore; the load order has changed -->
 
-        <!-- use jakarta not servicemix -->
+        <!-- use jakarta not servicemix or javax -->
         <bundle dependency="true">mvn:com.sun.activation/jakarta.activation/${jakarta.activation.version}</bundle>
         <!--        <bundle dependency="true">mvn:org.apache.servicemix.specs.activation-api-1.1</bundle>-->
         <!--        <bundle dependency="true">mvn:org.apache.servicemix.specs.activation-api-1.1/2.9.0</bundle>-->
@@ -66,7 +66,10 @@
         <!-- Register javax.mail along with pax-logging-service so it doesn't get refreshed later -->
         <bundle dependency="true">mvn:javax.mail/mail/${javax.mail.version}</bundle>
 
-        <bundle dependency="true">mvn:jakarta.annotation/jakarta.annotation-api/${jakarta.annotation-api.version}</bundle>
+        <bundle>mvn:jakarta.annotation/jakarta.annotation-api/${jakarta.annotation-api.version}</bundle>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jsr305/${jsr305.bundle.version}</bundle>  <!-- complementary to above, but split packages; excluded by karaf.features.xml as not needed, confuses things -->
+        <bundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxws-api-2.2/2.9.0</bundle>  <!-- used by cxf, provides javax.xml.ws... -->
+        <bundle>mvn:jakarta.xml.bind/jakarta.xml.bind-api/${jakarta.xml.bind-api.version}</bundle>  <!-- preferred over servicemix jaxb (identical) -->
     </feature>
 
     <feature name="brooklyn-config" version="${project.version}">

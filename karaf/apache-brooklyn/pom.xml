@@ -70,6 +70,19 @@
       <version>${project.version}</version>
     </dependency>
 
+    <!-- not needed if coming from jre, and doesn't work if not from jre
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+    </dependency>
+    -->
+    <!-- only for java 9+
+    <dependency>
+      <groupId>jakarta.activation</groupId>
+      <artifactId>jakarta.activation-api</artifactId>
+    </dependency>
+    -->
+
     <dependency>
       <groupId>org.apache.brooklyn</groupId>
       <artifactId>brooklyn-dist-features</artifactId>
