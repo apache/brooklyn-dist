@@ -101,7 +101,7 @@
 
         <!-- Others discovered by looking at the build -->
 
-        <!-- Guava SHOULD have two versions as Swagger is more recent than what jclouds supports
+        <!-- Guava might need tidy-up between jclouds and swagger; but at the moment is okay
         <bundle originalUri="mvn:com.google.guava/guava/[18.0, 27.0.1-jre]" ... />
         -->
 
@@ -109,8 +109,13 @@
         <bundle originalUri="mvn:javax.mail/mail/[1.4.4,${javax.mail.version}]"
                 replacement="mvn:javax.mail/mail/${javax.mail.version}" />
 
-        <bundle originalUri="mvn:javax.ws.rs/javax.ws.rs-api/[2,${jax-rs-api.version}]"
-                replacement="mvn:javax.ws.rs/javax.ws.rs-api/${jax-rs-api.version}" />
+        <!-- cxf uses servicemix's variant; other use javax standard one; but jakarta is better; note some cheat and v2.1.1 exports as 2.1.99.b01 -->
+        <bundle originalUri="mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxrs-api-2.1/[0,999]"
+                replacement="mvn:jakarta.ws.rs/jakarta.ws.rs-api/${jax-rs-api.version}" />
+        <bundle originalUri="mvn:javax.ws.rs/javax.ws.rs-api/[0,999]" 
+                replacement="mvn:jakarta.ws.rs/jakarta.ws.rs-api/${jax-rs-api.version}" />
+        <bundle originalUri="mvn:jakarta.ws.rs/jakarta.ws.rs-api/[0,999]" 
+                replacement="mvn:jakarta.ws.rs/jakarta.ws.rs-api/${jax-rs-api.version}" />
 
         <bundle originalUri="mvn:org.apache.httpcomponents/httpcore-osgi/[4.4,${httpcomponents.httpcore.version}]"
                 replacement="mvn:org.apache.httpcomponents/httpcore-osgi/${httpcomponents.httpcore.version}" />
@@ -173,12 +178,11 @@
                 replacement="mvn:org.eclipse.jetty/jetty-webapp/${jetty.version}" />
         <bundle originalUri="mvn:org.eclipse.jetty/jetty-xml/[9.4,${jetty.version}]"
                 replacement="mvn:org.eclipse.jetty/jetty-xml/${jetty.version}" />
-        <bundle originalUri="mvn:org.XXXapache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/[1.2,${spifly.version})"
-                replacement="mvn:org.XXXapache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/${spifly.version}" />
 
-        <!-- cxf uses servicemix's variant; other use javax standard one -->
-        <bundle originalUri="mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxrs-api-2.1/(0,3)"
-                replacement="mvn:javax.ws.rs/javax.ws.rs-api/${jax-rs-api.version}" />
+        <!-- this would be nice, but without it we get missing requirement [org.eclipse.jetty.security.jaspi/...]
+        <bundle originalUri="mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/[1.2,${spifly.version}]"
+                replacement="mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/${spifly.version}" />
+        -->
 
         <!-- the objectweb (dis)assembly jars are usually needed at multiple major version levels;
              see brooklyn-server/pom.xml for discussion; no choice but to allow the multiple versions,
@@ -212,11 +216,26 @@
         <bundle>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/[2.10,${fasterxml.jackson.version})</bundle>
         <bundle>mvn:javax.mail/mail/[1.4.4,${javax.mail.version})</bundle>
 
-        <bundle>mvn:javax.ws.rs/javax.ws.rs-api/[2,${jax-rs-api.version})</bundle>
-        <bundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxrs-api-2.1/[0,3)</bundle> <!-- use javax above -->
+        <bundle>mvn:javax.annotation/javax.annotation-api/[0,999]</bundle> <!-- use jakarta, per above -->
+        <bundle>mvn:com.google.code.findbugs/jsr305/[0,999]</bundle> <!-- use servicemix, or just exclude -->
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jsr305/[0,999]</bundle>  <!-- just exclude, not needed, confuses with standard javax.annotation package from jakarta -->
+
+        <bundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxb-api-2.2/[0,999]</bundle> <!-- use jakarta -->
+
+        <bundle>mvn:jakarta.ws.rs/jakarta.ws.rs-api/[0,${jax-rs-api.version})</bundle>     <!-- use right version -->
+        <bundle>mvn:jakarta.ws.rs/jakarta.ws.rs-api/(${jax-rs-api.version},999]</bundle>   <!-- exclude 2.1.99 -->
+        <bundle>mvn:javax.ws.rs/javax.ws.rs-api/[0,999]</bundle>  <!-- use jakarta above -->
+        <bundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxrs-api-2.1/[0,999]</bundle> <!-- use javax above -->
+
+        <!-- we supply wrapped versions -->
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okhttp/3.12.1_1</bundle>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okio/1.15.0_1</bundle>
+
+        <!-- <bundle>mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/[1.2,${spifly.version})</bundle> --> <!-- see spifly above -->
 
         <!-- Blacklisted bundles must be pulled in elsewhere at the correct version.
-             This might mean explicit dependencies declared in a feature. -->
+             Note that replacements might need blacklisting also.
+             To be safe sometimes we rely on explicit dependencies declared in a feature. -->
 
         <bundle>mvn:org.apache.httpcomponents/httpcore-osgi/[4.4,${httpcomponents.httpcore.version})</bundle>
         <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jzlib/[1,${jzlib.osgi.version})</bundle>
@@ -247,11 +266,6 @@
         <bundle>mvn:org.eclipse.jetty/jetty-util/[9.4,${jetty.version})</bundle>
         <bundle>mvn:org.eclipse.jetty/jetty-webapp/[9.4,${jetty.version})</bundle>
         <bundle>mvn:org.eclipse.jetty/jetty-xml/[9.4,${jetty.version})</bundle>
-
-        <!-- we supply wrapped versions -->
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okhttp/3.12.1_1</bundle>
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okio/1.15.0_1</bundle>
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jsr305/(0,999]</bundle>
 
     </blacklistedBundles>
 
