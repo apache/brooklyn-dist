@@ -179,10 +179,9 @@
         <bundle originalUri="mvn:org.eclipse.jetty/jetty-xml/[9.4,${jetty.version}]"
                 replacement="mvn:org.eclipse.jetty/jetty-xml/${jetty.version}" />
 
-        <!-- this would be nice, but without it we get missing requirement [org.eclipse.jetty.security.jaspi/...]
-        <bundle originalUri="mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/[1.2,${spifly.version}]"
+        <!-- would be nice to map 1.2, but without that we get missing requirement [org.eclipse.jetty.security.jaspi/...] -->
+        <bundle originalUri="mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/[1.3,${spifly.version}]"
                 replacement="mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/${spifly.version}" />
-        -->
 
         <!-- the objectweb (dis)assembly jars are usually needed at multiple major version levels;
              see brooklyn-server/pom.xml for discussion; no choice but to allow the multiple versions,
@@ -235,7 +234,7 @@
         <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okhttp/3.12.1_1</bundle>
         <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okio/1.15.0_1</bundle>
 
-        <!-- <bundle>mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/[1.2,${spifly.version})</bundle> --> <!-- see spifly above -->
+        <bundle>mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/[1.3,${spifly.version})</bundle> <!-- see spifly above -->
 
         <!-- Blacklisted bundles must be pulled in elsewhere at the correct version.
              Note that replacements might need blacklisting also.
