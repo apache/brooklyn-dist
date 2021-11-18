@@ -110,6 +110,7 @@
     </feature>
 
     <feature name="brooklyn-jsgui-prereqs" version="${project.version}" description="Brooklyn REST JavaScript Web GUI">
+        <bundle>mvn:org.apache.brooklyn/brooklyn-karaf-jetty-config/${project.version}</bundle> <!-- bring in this config at same time as pax-jetty, to avoid refresh -->
         <feature>pax-jetty</feature> <!-- jaas bundle -->
         <feature>war</feature>
 
@@ -151,7 +152,6 @@
 
     <feature name="brooklyn-boot" version="${project.version}" description="Bundles to start on boot">
         <feature prerequisite="true">brooklyn-headless</feature>
-        <bundle>mvn:org.apache.brooklyn/brooklyn-karaf-jetty-config/${project.version}</bundle>
         <feature>brooklyn-osgi-launcher</feature>
         <feature>brooklyn-jsgui</feature>
         <feature>brooklyn-rest-resources</feature>
