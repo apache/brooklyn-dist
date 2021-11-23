@@ -230,8 +230,6 @@
         <bundle>mvn:javax.ws.rs/javax.ws.rs-api/[0,999]</bundle>  <!-- use jakarta above -->
         <bundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxrs-api-2.1/[0,999]</bundle> <!-- use javax above -->
 
-        <bundle>mvn:org.yaml/snakeyaml/[1,${snakeyaml.version})</bundle> <!-- use latest version only -->
-
         <!-- we supply wrapped versions -->
         <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okhttp/3.12.1_1</bundle>
         <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okio/1.15.0_1</bundle>
