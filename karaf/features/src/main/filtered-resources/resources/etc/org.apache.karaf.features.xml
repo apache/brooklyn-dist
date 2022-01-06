@@ -109,7 +109,8 @@
         <bundle originalUri="mvn:javax.mail/mail/[1.4.4,${javax.mail.version}]"
                 replacement="mvn:javax.mail/mail/${javax.mail.version}" />
 
-        <!-- cxf uses servicemix's variant; other use javax standard one; but jakarta is better; note some cheat and v2.1.1 exports as 2.1.99.b01 -->
+        <!-- cxf uses servicemix's variant; other use javax standard one; but jakarta is better; note some cheat and v2.1.1 exports as 2.1.99.b01;
+             also note service-mix jersey-core used by jclouds but excluded by us also brings in these classes at 1.1.1 -->
         <bundle originalUri="mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxrs-api-2.1/[0,999]"
                 replacement="mvn:jakarta.ws.rs/jakarta.ws.rs-api/${jakarta.rs-api.version}" />
         <bundle originalUri="mvn:javax.ws.rs/javax.ws.rs-api/[0,999]" 
