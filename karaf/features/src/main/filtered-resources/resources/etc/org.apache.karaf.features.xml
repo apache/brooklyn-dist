@@ -97,17 +97,14 @@
                 replacement="mvn:com.fasterxml.jackson.core/jackson-databind/${fasterxml.jackson.version}" />
         <bundle originalUri="mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/[2.10,${fasterxml.jackson.version}]"
                 replacement="mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${fasterxml.jackson.version}" />
-
+        <bundle originalUri="mvn:com.fasterxml.jackson.datatype/jackson-datatype-jsr310/[2.10,${fasterxml.jackson.version}]"
+                replacement="mvn:com.fasterxml.jackson.datatype/jackson-datatype-jsr310/${fasterxml.jackson.version}" />
 
         <!-- Others discovered by looking at the build -->
 
         <!-- Guava might need tidy-up between jclouds and swagger; but at the moment is okay
         <bundle originalUri="mvn:com.google.guava/guava/[18.0, 27.0.1-jre]" ... />
         -->
-
-
-        <bundle originalUri="mvn:javax.mail/mail/[1.4.4,${javax.mail.version}]"
-                replacement="mvn:javax.mail/mail/${javax.mail.version}" />
 
         <!-- cxf uses servicemix's variant; other use javax standard one; but jakarta is better; note some cheat and v2.1.1 exports as 2.1.99.b01;
              also note service-mix jersey-core used by jclouds but excluded by us also brings in these classes at 1.1.1 -->
@@ -214,20 +211,20 @@
         <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/[2.10,${fasterxml.jackson.version})</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/[2.10,${fasterxml.jackson.version})</bundle>
         <bundle>mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/[2.10,${fasterxml.jackson.version})</bundle>
-        <bundle>mvn:javax.mail/mail/[1.4.4,${javax.mail.version})</bundle>
+        <bundle>mvn:com.fasterxml.jackson.datatype/jackson-datatype-jsr310/[2.10,${fasterxml.jackson.version})</bundle>
+        <bundle>mvn:javax.mail/mail/[0,999]</bundle> <!-- we use jakarta.mail-api now -->
 
         <bundle>mvn:javax.annotation/javax.annotation-api/[0,999]</bundle> <!-- use jakarta, per above -->
         <bundle>mvn:com.google.code.findbugs/jsr305/[0,999]</bundle> <!-- use servicemix, or just exclude -->
         <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jsr305/[0,999]</bundle>  <!-- just exclude, not needed, confuses with standard javax.annotation package from jakarta -->
 
-        <bundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxb-api-2.2/[0,999]</bundle> <!-- use jakarta -->
-
         <!-- use the packages from java 1.8, prevent duplicates -->
         <bundle>mvn:jakarta.xml.bind/jakarta.xml.bind-api/${jakarta.xml.bind-api.version}</bundle>
+        <bundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxb-api-2.2/[0,999]</bundle> <!-- note 2.3 _is_ needed to provide 2.3 version of javax.xml.bind for jakarta.ws and fasterxml jaxb -->
         <bundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxws-api-2.2/2.9.0</bundle>
 
         <bundle>mvn:jakarta.ws.rs/jakarta.ws.rs-api/[0,${jakarta.rs-api.version})</bundle>     <!-- use right version -->
-        <bundle>mvn:jakarta.ws.rs/jakarta.ws.rs-api/(${jakarta.rs-api.version},999]</bundle>   <!-- exclude 2.1.99 -->
+        <bundle>mvn:jakarta.ws.rs/jakarta.ws.rs-api/(${jakarta.rs-api.version},999]</bundle>   <!-- specifically exclude bogus 2.1.99 -->
         <bundle>mvn:javax.ws.rs/javax.ws.rs-api/[0,999]</bundle>  <!-- use jakarta above -->
         <bundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxrs-api-2.1/[0,999]</bundle> <!-- use javax above -->
 
