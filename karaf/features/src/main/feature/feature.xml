@@ -27,7 +27,7 @@
         <feature>wrap</feature>
 
         <bundle start-level="9">mvn:org.apache.geronimo.specs/geronimo-osgi-registry/1.1</bundle>  <!-- from cxf but triggers jetty restart so load early -->
-        <feature>brooklyn-jsgui-prereqs</feature> <!-- provides jetty for pax-web-core which we want, and much more which doesn't hurt -->
+
         <feature>pax-web-core</feature> <!-- provides objectweb 8.0.1 for aries-proxy -->
         <feature>aries-proxy</feature> <!-- seems confused about objectweb; feature declares 9.0 but bundle wires optionally to 8.0.1 -->
 
@@ -53,6 +53,8 @@
         <feature>package</feature>
         <feature>service</feature>
         <feature>system</feature>
+
+        <feature>brooklyn-jsgui-prereqs</feature> <!-- provides jetty for pax-web-core which we want, and much more which doesn't hurt -->
     </feature>
 
     <feature name="brooklyn-startup-features" version="${project.version}" description="Bundles to load early">
@@ -63,8 +65,9 @@
         <!--        <bundle dependency="true">mvn:org.apache.servicemix.specs.activation-api-1.1</bundle>-->
         <!--        <bundle dependency="true">mvn:org.apache.servicemix.specs.activation-api-1.1/2.9.0</bundle>-->
 
-        <!-- Register javax.mail along with pax-logging-service so it doesn't get refreshed later -->
-        <bundle dependency="true">mvn:javax.mail/mail/${javax.mail.version}</bundle>
+        <!-- Register javax.mail along with pax-logging-service so it doesn't get refreshed later; now replaced by jakarta -->
+        <!-- <bundle dependency="true">mvn:javax.mail/mail/${javax.mail.version}</bundle> -->
+        <bundle start-level="10" dependency="true">mvn:jakarta.mail/jakarta.mail-api/${jakarta.mail.version}</bundle>
 
         <bundle>mvn:jakarta.annotation/jakarta.annotation-api/${jakarta.annotation-api.version}</bundle>
         <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jsr305/${jsr305.bundle.version}</bundle>  <!-- complementary to above, but split packages; excluded by karaf.features.xml as not needed, confuses things -->
