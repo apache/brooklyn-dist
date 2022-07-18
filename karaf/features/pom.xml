@@ -55,6 +55,14 @@
             <classifier>features</classifier>
             <type>xml</type>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.karaf.features</groupId>
+            <artifactId>framework</artifactId>
+            <version>${karaf.version}</version>
+            <type>kar</type>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
 
@@ -132,6 +140,66 @@
                   </configuration>
                 </execution>
               </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>org.apache.karaf.features</groupId>
+                            <artifactId>framework</artifactId>
+                            <version>${karaf.version}</version>
+                            <type>kar</type>
+                            <overWrite>true</overWrite>
+                            <outputDirectory>${project.basedir}/target/kars</outputDirectory>
+                        </artifactItem>
+                    </artifactItems>
+                    <useBaseVersion>true</useBaseVersion>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <exportAntProperties>true</exportAntProperties>
+                            <tasks>
+                                <echo message="Unpacking KARs to override" />
+                                <unzip src="${project.basedir}/target/kars/framework-${karaf.version}.kar" dest="${project.basedir}/target/kars-expanded/"/>
+
+                                <!-- then read the contents, so we can set those in the src/main/filtered-resources/ here
+                                     do replacements and remove license headers as needed -->
+
+                                <echo message="Exporting properties for contents of KAR resources to be included in this project's resources" />
+                                <loadfile property="kar.config.properties" srcFile="${project.basedir}/target/kars-expanded/resources/etc/config.properties">
+                                  <filterchain>
+                                    <tokenfilter>
+                                      <linetokenizer/>
+                                      <replaceregex pattern="sun\.misc,(.*)" replace="sun\.misc, sun.security.x509,\1"/>
+                                    </tokenfilter>
+                                  </filterchain>
+                                </loadfile>
+
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
