@@ -104,6 +104,15 @@
                     <startLevel>50</startLevel>
                     <resolver>(obr)</resolver>
                 </configuration>
+
+                <executions>
+                  <execution>
+                    <!-- override this id so that 'verify' doesn't run by default, as this mojo sets system property karaf.home = target/karaf which can break subsequent KAR builds -->
+                    <id>default-verify</id>
+                    <phase>NEVER</phase>
+                  </execution>
+                </executions>
+
             </plugin>
 
             <plugin>
