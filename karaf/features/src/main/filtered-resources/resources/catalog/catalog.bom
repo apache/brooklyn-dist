@@ -19,5 +19,4 @@ brooklyn.catalog:
   version: "1.1.0-SNAPSHOT" # BROOKLYN_VERSION
 
   items:
-  - 'file:catalog/catalog-core.bom'
-  - 'file:catalog/catalog-templates.bom'
+  - 'file:catalog/catalog-brooklyn-default.bom'

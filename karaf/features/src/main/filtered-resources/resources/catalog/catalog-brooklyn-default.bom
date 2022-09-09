@@ -18,18 +18,19 @@
 brooklyn.catalog:
   version: "1.1.0-SNAPSHOT" # BROOKLYN_VERSION
 
-  brooklyn.libraries:
+  # this is the set of items included by default with Apache Brooklyn,
+  # if referenced by catalog.bom. or the catalog.bom can be replaced entirely.
 
-  # very common building blocks
-  - mvn:org.apache.brooklyn/brooklyn-core/1.1.0-SNAPSHOT # BROOKLYN_VERSION
-  - mvn:org.apache.brooklyn/brooklyn-policy/1.1.0-SNAPSHOT # BROOKLYN_VERSION
+  items:
+  # the most useful stuff
+  - 'file:catalog/catalog-core.bom'
 
-  # often useful server-related entities
-  - mvn:org.apache.brooklyn/brooklyn-software-base/1.1.0-SNAPSHOT # BROOKLYN_VERSION
+  # occasionally useful server-related entities
+  - 'file:catalog/catalog-brooklyn-software-base.bom'
 
-  # possibly useful test entities
-  - mvn:org.apache.brooklyn/brooklyn-test-framework/1.1.0-SNAPSHOT # BROOKLYN_VERSION
+  # occasionally useful blueprints for common software
+  - 'file:catalog/catalog-library-software.bom'
 
-  # convenient aliases for common things
-  - mvn:org.apache.brooklyn/brooklyn-karaf-init/1.1.0-SNAPSHOT # BROOKLYN_VERSION
+  # brooklyn standard examples
+  - 'file:catalog/catalog-templates-brooklyn-samples.bom'
 

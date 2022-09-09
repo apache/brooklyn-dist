@@ -20,16 +20,6 @@ brooklyn.catalog:
 
   brooklyn.libraries:
 
-  # very common building blocks
-  - mvn:org.apache.brooklyn/brooklyn-core/1.1.0-SNAPSHOT # BROOKLYN_VERSION
-  - mvn:org.apache.brooklyn/brooklyn-policy/1.1.0-SNAPSHOT # BROOKLYN_VERSION
-
-  # often useful server-related entities
-  - mvn:org.apache.brooklyn/brooklyn-software-base/1.1.0-SNAPSHOT # BROOKLYN_VERSION
-
-  # possibly useful test entities
-  - mvn:org.apache.brooklyn/brooklyn-test-framework/1.1.0-SNAPSHOT # BROOKLYN_VERSION
-
-  # convenient aliases for common things
-  - mvn:org.apache.brooklyn/brooklyn-karaf-init/1.1.0-SNAPSHOT # BROOKLYN_VERSION
+  # possibly useful blueprints for common software (but often users will want to replace)
+  - mvn:org.apache.brooklyn/brooklyn-library-catalog/1.1.0-SNAPSHOT # BROOKLYN_VERSION
 
