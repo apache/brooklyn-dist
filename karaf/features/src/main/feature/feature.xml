@@ -75,33 +75,10 @@
         <bundle>mvn:jakarta.xml.bind/jakarta.xml.bind-api/${jakarta.xml.bind-api.version}</bundle>  <!-- preferred over servicemix jaxb (identical) -->
     </feature>
 
-    <feature name="brooklyn-config" version="${project.version}">
-        <configfile finalname="${karaf.etc}/${groupId}.classrename.cfg" override="false">
-            mvn:${project.groupId}/brooklyn-dist-config/${project.version}/cfg/classrename
-        </configfile>
-        <configfile finalname="${karaf.etc}/${groupId}.osgilauncher.cfg" override="false">
-            mvn:${project.groupId}/brooklyn-dist-config/${project.version}/cfg/osgilauncher
-        </configfile>
-    </feature>
-
-    <feature name="brooklyn-catalog" version="${project.version}">
-        <configfile finalname="${karaf.home}/catalog/catalog.bom" override="false">
-            mvn:${project.groupId}/brooklyn-dist-config/${project.version}/bom/catalog
-        </configfile>
-        <configfile finalname="${karaf.home}/catalog/catalog-core.bom" override="false">
-            mvn:${project.groupId}/brooklyn-dist-config/${project.version}/bom/catalog-core
-        </configfile>
-        <configfile finalname="${karaf.home}/catalog/catalog-templates.bom" override="false">
-            mvn:${project.groupId}/brooklyn-dist-config/${project.version}/bom/catalog-templates
-        </configfile>
-    </feature>
-
     <feature name="brooklyn-headless" version="${project.version}" description="All Brooklyn bundles with the exception of the launcher and actual ui+rest">
         <feature prerequisite="true">brooklyn-startup-features</feature>
         <feature prerequisite="true">brooklyn-essential-deps</feature>
         <feature prerequisite="true">brooklyn-standard-karaf</feature>
-        <feature prerequisite="true">brooklyn-config</feature>
-        <feature prerequisite="true">brooklyn-catalog</feature>
 
         <feature>brooklyn-core</feature>
         <feature>brooklyn-locations-jclouds</feature>
