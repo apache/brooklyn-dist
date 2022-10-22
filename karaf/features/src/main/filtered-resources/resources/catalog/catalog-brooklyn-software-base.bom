@@ -51,6 +51,11 @@ brooklyn.catalog:
         type: org.apache.brooklyn.entity.software.base.VanillaWindowsProcess
         name: Vanilla Windows Process
         description: A basic Windows entity configured with scripts, e.g. for launch, check-running and stop
+    - id: org.apache.brooklyn.entity.software.base.WorkflowSoftwareProcess
+      item:
+        type: org.apache.brooklyn.entity.software.base.WorkflowSoftwareProcess
+        name: Workflow Software Process
+        description: A base entity for SSH-based machines expecting workflow to define how to start and stop
     - id: org.apache.brooklyn.entity.java.VanillaJavaApp
       item:
         type: org.apache.brooklyn.entity.java.VanillaJavaApp
