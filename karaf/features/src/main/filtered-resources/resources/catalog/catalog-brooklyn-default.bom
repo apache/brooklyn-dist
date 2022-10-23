@@ -25,8 +25,11 @@ brooklyn.catalog:
   # the most useful stuff
   - 'file:catalog/catalog-core.bom'
 
-  # occasionally useful server-related entities
+  # useful server-related entities
   - 'file:catalog/catalog-brooklyn-software-base.bom'
+
+  # brooklyn nodes
+  - 'file:catalog/catalog-brooklyn-software-brooklyn.bom'
 
   # occasionally useful blueprints for common software
   - 'file:catalog/catalog-library-software.bom'

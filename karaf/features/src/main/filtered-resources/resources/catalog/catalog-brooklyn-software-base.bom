@@ -60,20 +60,6 @@ brooklyn.catalog:
       item:
         type: org.apache.brooklyn.entity.java.VanillaJavaApp
         name: Vanilla Java App
-    - id: org.apache.brooklyn.entity.brooklynnode.BrooklynNode
-      item:
-        type: org.apache.brooklyn.entity.brooklynnode.BrooklynNode
-        name: Brooklyn Node
-        description: Deploys a Brooklyn management server
-    - id: org.apache.brooklyn.entity.brooklynnode.BrooklynCluster
-      item:
-        type: org.apache.brooklyn.entity.brooklynnode.BrooklynCluster
-        name: Brooklyn Cluster
-    - id: org.apache.brooklyn.entity.brooklynnode.LocalBrooklynNode
-      item:
-        type: org.apache.brooklyn.entity.brooklynnode.LocalBrooklynNode
-        name: Local Brooklyn Node
-        description: An entity that represents the local Brooklyn server.
     - id: org.apache.brooklyn.entity.software.base.VanillaSoftwareProcess
       item:
         type: org.apache.brooklyn.entity.software.base.VanillaSoftwareProcess
