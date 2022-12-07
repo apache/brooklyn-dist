@@ -67,12 +67,14 @@
 
         <!-- For crypto, both the karaf ssh feature and jclouds use lower versions than we want;
              (some lower versions may have CVEs, and in any case it is preferable to have one version where compatible) -->
+        <bundle originalUri="mvn:org.bouncycastle/bcutil-jdk15on/[1.51,${bouncycastle.version}]"
+            replacement="mvn:org.bouncycastle/bcutil-jdk18on/${bouncycastle.version}" />
         <bundle originalUri="mvn:org.bouncycastle/bcprov-jdk15on/[1.51,${bouncycastle.version}]"
-            replacement="mvn:org.bouncycastle/bcprov-jdk15on/${bouncycastle.version}" />
+            replacement="mvn:org.bouncycastle/bcprov-jdk18on/${bouncycastle.version}" />
         <bundle originalUri="mvn:org.bouncycastle/bcprov-ext-jdk15on/[1.51,${bouncycastle.version}]"
-            replacement="mvn:org.bouncycastle/bcprov-ext-jdk15on/${bouncycastle.version}" />
+            replacement="mvn:org.bouncycastle/bcprov-jdk18on/${bouncycastle.version}" />
         <bundle originalUri="mvn:org.bouncycastle/bcpkix-jdk15on/[1.51,${bouncycastle.version}]"
-            replacement="mvn:org.bouncycastle/bcpkix-jdk15on/${bouncycastle.version}" />
+            replacement="mvn:org.bouncycastle/bcpkix-jdk18on/${bouncycastle.version}" />
         <!-- now we wrap these so blacklist entirely -->
 <!--        <bundle originalUri="mvn:net.i2p.crypto/eddsa/[0.1.0,${eddsa.version}]"-->
 <!--            replacement="mvn:net.i2p.crypto/eddsa/${eddsa.version}" />-->
@@ -199,6 +201,7 @@
     </bundleReplacements>
 
     <blacklistedBundles>
+        <bundle>mvn:org.bouncycastle/bcutil-jdk15on/[1.51,${bouncycastle.version})</bundle>
         <bundle>mvn:org.bouncycastle/bcprov-jdk15on/[1.51,${bouncycastle.version})</bundle>
         <bundle>mvn:org.bouncycastle/bcprov-ext-jdk15on/[1.51,${bouncycastle.version})</bundle>
         <bundle>mvn:org.bouncycastle/bcpkix-jdk15on/[1.51,${bouncycastle.version})</bundle>
