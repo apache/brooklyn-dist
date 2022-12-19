@@ -64,12 +64,6 @@
       <classifier>features</classifier>
     </dependency>
 
-    <dependency>
-      <groupId>org.apache.brooklyn</groupId>
-      <artifactId>brooklyn-library-catalog</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
     <!-- not needed if coming from jre, and doesn't work if not from jre
     <dependency>
       <groupId>jakarta.xml.bind</groupId>
@@ -120,7 +114,7 @@
         <configuration>
           <framework>framework</framework>
           <installedFeatures>
-            <feature>wrapper</feature> <!-- https://karaf.apache.org/manual/latest/wrapper -->
+            <feature>wrapper</feature>
           </installedFeatures>
           <startupFeatures>
             <feature>eventadmin</feature>
