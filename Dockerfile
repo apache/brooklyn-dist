@@ -15,10 +15,11 @@
 # specific language governing permissions and limitations
 # under the License.
 
-FROM maven:3.5.2-jdk-8-alpine
+FROM maven:3.8.6-eclipse-temurin-8
 
 # Install necessary binaries to build brooklyn-dist
-RUN apk add --no-cache git rpm dpkg
+#RUN apk add --no-cache git rpm dpkg
+RUN apt-get update && apt-get install -y git rpm dpkg
 
 # Make sure the /var/tmp (for RPM build) is writable for all users
 RUN mkdir -p /var/tmp/ && chmod -R 777 /var/tmp/
