@@ -46,8 +46,8 @@ node(label: 'ubuntu') {
             }
 
             stage('Run tests') {
-                environmentDockerImage.inside('-i --name brooklyn-${DOCKER_TAG} -v ${WORKSPACE}/.m2:/var/maven/.m2 --mount type=bind,source="${HOME}/.m2/settings.xml",target=/var/maven/.m2/settings.xml,readonly -v ${WORKSPACE}:/usr/build -w /usr/build') {
-                    sh 'mvn clean install -Prpm -Pdeb -Duser.home=/var/maven -Duser.name=jenkins'
+                environmentDockerImage.inside('-i --name brooklyn-${DOCKER_TAG} -v ${WORKSPACE}/.m2:/var/maven/.m2 --mount type=bind,source="${HOME}/.m2/settings.xml",target=/var/maven/.m2/settings.xml,readonly -v /var/run/docker.sock:/var/run/docker.sock -v ${WORKSPACE}:/usr/build -w /usr/build') {
+                    sh 'mvn clean install -Prpm -Pdeb -Pdocker -Duser.home=/var/maven -Duser.name=jenkins'
                 }
             }
         }
