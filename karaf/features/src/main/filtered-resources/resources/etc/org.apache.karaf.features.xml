@@ -275,6 +275,9 @@
         <bundle>mvn:org.eclipse.jetty/jetty-webapp/[9.4,${jetty.version})</bundle>
         <bundle>mvn:org.eclipse.jetty/jetty-xml/[9.4,${jetty.version})</bundle>
 
+        <!-- this needs snakeyaml 1.x, until jclouds 2.6 is released; we don't use it so not a problem -->
+        <bundle>mvn:org.apache.jclouds.api/byon</bundle>
+
     </blacklistedBundles>
 
 </featuresProcessing>
