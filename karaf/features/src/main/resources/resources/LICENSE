@@ -438,6 +438,49 @@ Dependency licenses:
     NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+  CC0 1.0 Universal: |
+    
+    CC0 1.0 Universal (CC0 1.0)
+    
+    Creative Commons - No Copyright
+    
+    The person who associated a work with this deed has dedicated the work to the public domain by waiving all of his or her rights to the work worldwide under copyright law, including all related and neighboring rights, to the extent allowed by law.
+    
+    You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.
+    
+    Legal Code
+    
+    Statement of Purpose
+    
+    The laws of most jurisdictions throughout the world automatically confer exclusive Copyright and Related Rights (defined below) upon the creator and subsequent owner(s) (each and all, an "owner") of an original work of authorship and/or a database (each, a "Work").
+    
+    Certain owners wish to permanently relinquish those rights to a Work for the purpose of contributing to a commons of creative, cultural and scientific works ("Commons") that the public can reliably and without fear of later claims of infringement build upon, modify, incorporate in other works, reuse and redistribute as freely as possible in any form whatsoever and for any purposes, including without limitation commercial purposes. These owners may contribute to the Commons to promote the ideal of a free culture and the further production of creative, cultural and scientific works, or to gain reputation or greater distribution for their Work in part through the use and efforts of others.
+    
+    For these and/or other purposes and motivations, and without any expectation of additional consideration or compensation, the person associating CC0 with a Work (the "Affirmer"), to the extent that he or she is an owner of Copyright and Related Rights in the Work, voluntarily elects to apply CC0 to the Work and publicly distribute the Work under its terms, with knowledge of his or her Copyright and Related Rights in the Work and the meaning and intended legal effect of CC0 on those rights.
+    
+    1. Copyright and Related Rights. A Work made available under CC0 may be protected by copyright and related or neighboring rights ("Copyright and Related Rights"). Copyright and Related Rights include, but are not limited to, the following:
+    
+    the right to reproduce, adapt, distribute, perform, display, communicate, and translate a Work;
+    moral rights retained by the original author(s) and/or performer(s);
+    publicity and privacy rights pertaining to a person's image or likeness depicted in a Work;
+    rights protecting against unfair competition in regards to a Work, subject to the limitations in paragraph 4(a), below;
+    rights protecting the extraction, dissemination, use and reuse of data in a Work;
+    database rights (such as those arising under Directive 96/9/EC of the European Parliament and of the Council of 11 March 1996 on the legal protection of databases, and under any national implementation thereof, including any amended or successor version of such directive); and
+    other similar, equivalent or corresponding rights throughout the world based on applicable law or treaty, and any national implementations thereof.
+    2. Waiver. To the greatest extent permitted by, but not in contravention of, applicable law, Affirmer hereby overtly, fully, permanently, irrevocably and unconditionally waives, abandons, and surrenders all of Affirmer's Copyright and Related Rights and associated claims and causes of action, whether now known or unknown (including existing as well as future claims and causes of action), in the Work (i) in all territories worldwide, (ii) for the maximum duration provided by applicable law or treaty (including future time extensions), (iii) in any current or future medium and for any number of copies, and (iv) for any purpose whatsoever, including without limitation commercial, advertising or promotional purposes (the "Waiver"). Affirmer makes the Waiver for the benefit of each member of the public at large and to the detriment of Affirmer's heirs and successors, fully intending that such Waiver shall not be subject to revocation, rescission, cancellation, termination, or any other legal or equitable action to disrupt the quiet enjoyment of the Work by the public as contemplated by Affirmer's express Statement of Purpose.
+    
+    3. Public License Fallback. Should any part of the Waiver for any reason be judged legally invalid or ineffective under applicable law, then the Waiver shall be preserved to the maximum extent permitted taking into account Affirmer's express Statement of Purpose. In addition, to the extent the Waiver is so judged Affirmer hereby grants to each affected person a royalty-free, non transferable, non sublicensable, non exclusive, irrevocable and unconditional license to exercise Affirmer's Copyright and Related Rights in the Work (i) in all territories worldwide, (ii) for the maximum duration provided by applicable law or treaty (including future time extensions), (iii) in any current or future medium and for any number of copies, and (iv) for any purpose whatsoever, including without limitation commercial, advertising or promotional purposes (the "License"). The License shall be deemed effective as of the date CC0 was applied by Affirmer to the Work. Should any part of the License for any reason be judged legally invalid or ineffective under applicable law, such partial invalidity or ineffectiveness shall not invalidate the remainder of the License, and in such case Affirmer hereby affirms that he or she will not (i) exercise any of his or her remaining Copyright and Related Rights in the Work or (ii) assert any associated claims and causes of action with respect to the Work, in either case contrary to Affirmer's express Statement of Purpose.
+    
+    4. Limitations and Disclaimers.
+    
+    No trademark or patent rights held by Affirmer are waived, abandoned, surrendered, licensed or otherwise affected by this document.
+    Affirmer offers the Work as-is and makes no representations or warranties of any kind concerning the Work, express, implied, statutory or otherwise, including without limitation warranties of title, merchantability, fitness for a particular purpose, non infringement, or the absence of latent or other defects, accuracy, or the present or absence of errors, whether or not discoverable, all to the greatest extent permissible under applicable law.
+    Affirmer disclaims responsibility for clearing rights of other persons that may apply to the Work or any use thereof, including without limitation any person's Copyright and Related Rights in the Work. Further, Affirmer disclaims responsibility for obtaining any necessary consents, permissions or other rights required for any use of the Work.
+    Affirmer understands and acknowledges that Creative Commons is not a party to this document and has no duty or obligation with respect to this CC0 or use of the Work.
+    
+    
+    
+
   Common Development and Distribution License, version 1.0: |
     COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) 
     Version 1.0
@@ -1099,54 +1142,118 @@ Dependency licenses:
     Awesome, nor vice versa. **Please do not use brand logos for any purpose except
     to represent the company, product, or service to which they refer.**
 
-  Indiana University Extreme! Lab Software License, vesion 1.1.1: |
-    Indiana University Extreme! Lab Software License
+  Indiana University Extreme! Lab Software License, version 1.2: |
+    Indiana University Extreme! Lab Software License, Version 1.2
     
-    Version 1.1.1
-    
-    Copyright (c) 2002 Extreme! Lab, Indiana University. All rights reserved.
+    Copyright (C) 2003 The Trustees of Indiana University.
+    All rights reserved.
     
     Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions
-    are met:
+    modification, are permitted provided that the following conditions are
+    met:
     
-    1. Redistributions of source code must retain the above copyright notice,
-       this list of conditions and the following disclaimer.
+    1) All redistributions of source code must retain the above
+       copyright notice, the list of authors in the original source
+       code, this list of conditions and the disclaimer listed in this
+       license;
     
-    2. Redistributions in binary form must reproduce the above copyright
-       notice, this list of conditions and the following disclaimer in
-       the documentation and/or other materials provided with the distribution.
+    2) All redistributions in binary form must reproduce the above
+       copyright notice, this list of conditions and the disclaimer
+       listed in this license in the documentation and/or other
+       materials provided with the distribution;
     
-    3. The end-user documentation included with the redistribution, if any,
-       must include the following acknowledgment:
+    3) Any documentation included with all redistributions must include
+       the following acknowledgement:
     
-      "This product includes software developed by the Indiana University
-      Extreme! Lab (http://www.extreme.indiana.edu/)."
+         "This product includes software developed by the Indiana
+         University Extreme! Lab.  For further information please visit
+         http://www.extreme.indiana.edu/"
     
-    Alternately, this acknowledgment may appear in the software itself,
-    if and wherever such third-party acknowledgments normally appear.
+       Alternatively, this acknowledgment may appear in the software
+       itself, and wherever such third-party acknowledgments normally
+       appear.
     
-    4. The names "Indiana Univeristy" and "Indiana Univeristy Extreme! Lab"
-    must not be used to endorse or promote products derived from this
-    software without prior written permission. For written permission,
-    please contact http://www.extreme.indiana.edu/.
+    4) The name "Indiana University" or "Indiana University
+       Extreme! Lab" shall not be used to endorse or promote
+       products derived from this software without prior written
+       permission from Indiana University.  For written permission,
+       please contact http://www.extreme.indiana.edu/.
     
-    5. Products derived from this software may not use "Indiana Univeristy"
-    name nor may "Indiana Univeristy" appear in their name, without prior
-    written permission of the Indiana University.
+    5) Products derived from this software may not use "Indiana
+       University" name nor may "Indiana University" appear in their name,
+       without prior written permission of the Indiana University.
     
-    THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESSED OR IMPLIED
-    WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-    MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-    IN NO EVENT SHALL THE AUTHORS, COPYRIGHT HOLDERS OR ITS CONTRIBUTORS
-    BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-    BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-    ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    Indiana University provides no reassurances that the source code
+    provided does not infringe the patent or any other intellectual
+    property rights of any other entity.  Indiana University disclaims any
+    liability to any recipient for claims brought by any other entity
+    based on infringement of intellectual property rights or otherwise.
     
+    LICENSEE UNDERSTANDS THAT SOFTWARE IS PROVIDED "AS IS" FOR WHICH
+    NO WARRANTIES AS TO CAPABILITIES OR ACCURACY ARE MADE. INDIANA
+    UNIVERSITY GIVES NO WARRANTIES AND MAKES NO REPRESENTATION THAT
+    SOFTWARE IS FREE OF INFRINGEMENT OF THIRD PARTY PATENT, COPYRIGHT, OR
+    OTHER PROPRIETARY RIGHTS.  INDIANA UNIVERSITY MAKES NO WARRANTIES THAT
+    SOFTWARE IS FREE FROM "BUGS", "VIRUSES", "TROJAN HORSES", "TRAP
+    DOORS", "WORMS", OR OTHER HARMFUL CODE.  LICENSEE ASSUMES THE ENTIRE
+    RISK AS TO THE PERFORMANCE OF SOFTWARE AND/OR ASSOCIATED MATERIALS,
+    AND TO THE PERFORMANCE AND VALIDITY OF INFORMATION GENERATED USING
+    SOFTWARE.
+
+  Java HTML Tidy License: |
+    /**
+    *  Java HTML Tidy - JTidy
+    *  HTML parser and pretty printer
+    *
+    *  Copyright (c) 1998-2000 World Wide Web Consortium (Massachusetts
+    *  Institute of Technology, Institut National de Recherche en
+    *  Informatique et en Automatique, Keio University). All Rights
+    *  Reserved.
+    *
+    *  Contributing Author(s):
+    *
+    *     Dave Raggett <dsr@w3.org>
+    *     Andy Quick <ac.quick@sympatico.ca> (translation to Java)
+    *     Gary L Peskin <garyp@firstech.com> (Java development)
+    *     Sami Lempinen <sami@lempinen.net> (release management)
+    *     Fabrizio Giustina <fgiust at users.sourceforge.net>
+    *
+    *  The contributing author(s) would like to thank all those who
+    *  helped with testing, bug fixes, and patience.  This wouldn't
+    *  have been possible without all of you.
+    *
+    *  COPYRIGHT NOTICE:
+    * 
+    *  This software and documentation is provided "as is," and
+    *  the copyright holders and contributing author(s) make no
+    *  representations or warranties, express or implied, including
+    *  but not limited to, warranties of merchantability or fitness
+    *  for any particular purpose or that the use of the software or
+    *  documentation will not infringe any third party patents,
+    *  copyrights, trademarks or other rights. 
+    *
+    *  The copyright holders and contributing author(s) will not be
+    *  liable for any direct, indirect, special or consequential damages
+    *  arising out of any use of the software or documentation, even if
+    *  advised of the possibility of such damage.
+    *
+    *  Permission is hereby granted to use, copy, modify, and distribute
+    *  this source code, or portions hereof, documentation and executables,
+    *  for any purpose, without fee, subject to the following restrictions:
+    *
+    *  1. The origin of this source code must not be misrepresented.
+    *  2. Altered versions must be plainly marked as such and must
+    *     not be misrepresented as being the original source.
+    *  3. This Copyright notice may not be removed or altered from any
+    *     source or altered source distribution.
+    * 
+    *  The copyright holders and contributing author(s) specifically
+    *  permit, without fee, and encourage the use of this source code
+    *  as a component for supporting the Hypertext Markup Language in
+    *  commercial products. If you use this source code in a product,
+    *  acknowledgment is not required but would be appreciated.
+    *
+    */
 
   MIT License: |
     MIT License
