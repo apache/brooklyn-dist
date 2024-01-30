@@ -16,10 +16,10 @@
 # under the License.
 #
 brooklyn.catalog:
-  version: "1.1.0-SNAPSHOT" # BROOKLYN_VERSION
+  version: "1.2.0-SNAPSHOT" # BROOKLYN_VERSION
 
   brooklyn.libraries:
 
   # possibly useful blueprints for common software (but often users will want to replace)
-  - mvn:org.apache.brooklyn/brooklyn-library-catalog/1.1.0-SNAPSHOT # BROOKLYN_VERSION
+  - mvn:org.apache.brooklyn/brooklyn-library-catalog/1.2.0-SNAPSHOT # BROOKLYN_VERSION
 
