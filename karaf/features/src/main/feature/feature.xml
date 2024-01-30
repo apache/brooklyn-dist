@@ -61,7 +61,8 @@
         <!-- this might not be needed as a separate feature anymore; the load order has changed -->
 
         <!-- use jakarta not servicemix or javax -->
-        <bundle dependency="true">mvn:com.sun.activation/jakarta.activation/${jakarta.activation.version}</bundle>
+<!--        <bundle dependency="true">mvn:com.sun.activation/jakarta.activation/${jakarta.activation.version}</bundle>-->
+        <bundle dependency="true" start-level="30">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.activation-api-1.1/${activator.servicemix.version}</bundle>
         <!--        <bundle dependency="true">mvn:org.apache.servicemix.specs.activation-api-1.1</bundle>-->
         <!--        <bundle dependency="true">mvn:org.apache.servicemix.specs.activation-api-1.1/2.9.0</bundle>-->
 
@@ -94,7 +95,7 @@
         <bundle>mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/1.3.5</bundle> <!-- needed for websocket, to avoid osgi-extender error -->
         <bundle>mvn:org.apache.geronimo.specs/geronimo-jaspic_1.0_spec/1.1</bundle>               <!-- between pax-web 7.3.23 and 7.3.27 removed from pax, but needed for jetty websocket -->
         <feature>brooklyn-standard-karaf</feature>
-        <feature>pax-jetty</feature> <!-- jaas bundle -->
+        <feature>pax-web-jetty</feature> <!-- jaas bundle -->
         <feature>war</feature>
 
         <bundle>mvn:org.apache.geronimo.components/geronimo-jaspi/2.0.0</bundle>   <!-- needed since eclipse jetty 9.4.49.v20220914 -->
@@ -117,7 +118,7 @@
         <bundle>mvn:org.eclipse.jetty/jetty-jaspi/${jetty.version}</bundle>
         <bundle>mvn:org.eclipse.jetty/jetty-jmx/${jetty.version}</bundle>
         <bundle>mvn:org.eclipse.jetty/jetty-jndi/${jetty.version}</bundle>
-        <bundle>mvn:org.eclipse.jetty/jetty-plus/${jetty.version}</bundle>
+<!--        <bundle>mvn:org.eclipse.jetty/jetty-plus/${jetty.version}</bundle>-->
         <bundle>mvn:org.eclipse.jetty/jetty-proxy/${jetty.version}</bundle>
         <bundle>mvn:org.eclipse.jetty/jetty-rewrite/${jetty.version}</bundle>
         <bundle>mvn:org.eclipse.jetty/jetty-security/${jetty.version}</bundle>

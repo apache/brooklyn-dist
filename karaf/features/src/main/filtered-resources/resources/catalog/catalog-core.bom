@@ -16,20 +16,20 @@
 # under the License.
 #
 brooklyn.catalog:
-  version: "1.1.0-SNAPSHOT" # BROOKLYN_VERSION
+  version: "1.2.0-SNAPSHOT" # BROOKLYN_VERSION
 
   brooklyn.libraries:
 
   # very common building blocks
-  - mvn:org.apache.brooklyn/brooklyn-core/1.1.0-SNAPSHOT # BROOKLYN_VERSION
-  - mvn:org.apache.brooklyn/brooklyn-policy/1.1.0-SNAPSHOT # BROOKLYN_VERSION
+  - mvn:org.apache.brooklyn/brooklyn-core/1.2.0-SNAPSHOT # BROOKLYN_VERSION
+  - mvn:org.apache.brooklyn/brooklyn-policy/1.2.0-SNAPSHOT # BROOKLYN_VERSION
 
   # often useful server-related entities
-  - mvn:org.apache.brooklyn/brooklyn-software-base/1.1.0-SNAPSHOT # BROOKLYN_VERSION
+  - mvn:org.apache.brooklyn/brooklyn-software-base/1.2.0-SNAPSHOT # BROOKLYN_VERSION
 
   # possibly useful test entities
-  - mvn:org.apache.brooklyn/brooklyn-test-framework/1.1.0-SNAPSHOT # BROOKLYN_VERSION
+  - mvn:org.apache.brooklyn/brooklyn-test-framework/1.2.0-SNAPSHOT # BROOKLYN_VERSION
 
   # convenient aliases for common things
-  - mvn:org.apache.brooklyn/brooklyn-karaf-init/1.1.0-SNAPSHOT # BROOKLYN_VERSION
+  - mvn:org.apache.brooklyn/brooklyn-karaf-init/1.2.0-SNAPSHOT # BROOKLYN_VERSION
 
