@@ -24,7 +24,7 @@ set -e
 # usage, e.g.:  change-version.sh 0.3.0-SNAPSHOT 0.3.0-RC1
 #          or:  change-version.sh MARKER 0.3.0-SNAPSHOT 0.3.0-RC1
 
-[ -d .git ] || {
+[ -d .git ] || [ -f .git ] || {
   echo "Must run in brooklyn project root directory"
   exit 1
 }
